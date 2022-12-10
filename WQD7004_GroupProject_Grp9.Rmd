@@ -1,0 +1,181 @@
+---
+title: "WQD7004 Group Project - Group 9"
+output: 
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: true
+      smooth_scroll: true
+    toc_depth: 2
+    number_sections: true
+    theme: spacelab
+---
+
+# Introduction
+This is introduction
+
+# Objectives
+
+# Methodology
+
+## Data Understanding
+
+```{r include = FALSE, warning = FALSE}
+# load library
+library(stringr)
+library(dplyr)
+library(data.table)
+
+# read csv
+airline_df <- read.csv("Airline Passenger Satisfaction Dataset\\train_unclean.csv"
+                       , header = TRUE
+                       , stringsAsFactors = TRUE)
+
+# display dataframe
+head(airline_df)
+
+# data dimension
+dim(airline_df)
+
+# data class
+sapply(airline_df, class)
+
+# summary statistics
+summary(airline_df)
+```
+
+## Data Cleaning
+
+```{r include = FALSE, warning = FALSE}
+# check duplicate
+dim(airline_df[duplicated(airline_df$id),])[1]
+# no duplicate
+
+# check NA count in each column
+colSums(is.na(airline_df))
+# Departure.Delay.in.Minutes: 92
+# Arrival.Delay.in.Minutes: 310
+
+# check distinct values for each categorical column
+levels(airline_df$Gender)
+levels(airline_df$Customer.Type)
+levels(airline_df$Type.of.Travel)
+levels(airline_df$Class)
+```
+
+```{r include = FALSE, warning = FALSE}
+# data cleaning
+# convert gender and customer type into proper case
+airline_df$Gender.C = as.factor(str_to_title(airline_df$Gender))
+levels(airline_df$Gender)
+airline_df$Customer.Type.C = as.factor(str_to_title(airline_df$Customer.Type))
+levels(airline_df$Customer.Type)
+
+# clean type of travel
+airline_df$Type.of.Travel.C <- 
+  ifelse(grepl('^b', airline_df$Type.of.Travel, ignore.case = TRUE), 
+         "Business Travel",
+         "Personal Travel")
+airline_df$Type.of.Travel.C <- as.factor(airline_df$Type.of.Travel.C)
+levels(airline_df$Type.of.Travel.C)
+
+# clean class
+airline_df$Class.C <- 
+  ifelse(grepl('^b', airline_df$Class, ignore.case = TRUE), 
+         "Business",
+         ifelse(grepl('^(ekon|econ|Eco$)', airline_df$Class, ignore.case = TRUE),
+                "Eco",
+                "Eco Plus")
+         )
+airline_df$Class.C <- as.factor(airline_df$Class.C)
+levels(airline_df$Class.C)
+
+# clean inflight wifi service rating
+# set ratings above 5 as NA and replace with mean exclude 0
+airline_df$Inflight.wifi.service.C <- airline_df$Inflight.wifi.service
+airline_df$Inflight.wifi.service.C[airline_df$Inflight.wifi.service.C > 5] <- NA
+airline_df$Inflight.wifi.service.C[is.na(airline_df$Inflight.wifi.service.C)] <-
+  mean(airline_df$Inflight.wifi.service.C
+       [airline_df$Inflight.wifi.service.C > 0]
+       , na.rm = TRUE
+       )
+# convert to integer
+airline_df$Inflight.wifi.service.C <- 
+  round(airline_df$Inflight.wifi.service.C)
+
+# clean food and drink rating
+# set ratings above 5 as NA and replace with mean exclude 0
+airline_df$Food.and.drink.C <- airline_df$Food.and.drink
+airline_df$Food.and.drink.C[airline_df$Food.and.drink.C > 5] <- NA
+airline_df$Food.and.drink.C[is.na(airline_df$Food.and.drink.C)] <-
+  mean(airline_df$Food.and.drink.C
+       [airline_df$Food.and.drink.C > 0]
+       , na.rm = TRUE
+       )
+# convert to integer
+airline_df$Food.and.drink.C <- 
+  round(airline_df$Food.and.drink.C)
+
+# clean seat comfort
+# set ratings above 5 as NA and replace with mean exclude 0
+airline_df$Seat.comfort.C <- airline_df$Seat.comfort
+airline_df$Seat.comfort.C[airline_df$Seat.comfort.C > 5] <- NA
+airline_df$Seat.comfort.C[is.na(airline_df$Seat.comfort.C)] <-
+  mean(airline_df$Seat.comfort.C
+       [airline_df$Seat.comfort.C > 0]
+       , na.rm = TRUE
+       )
+# convert to integer
+airline_df$Seat.comfort.C <- 
+  round(airline_df$Seat.comfort.C)
+
+# convert all ratings column to ordinal factor
+ratings <- c("Inflight.wifi.service.C", "Food.and.drink.C", "Seat.comfort.C",
+          "Departure.Arrival.time.convenient",	"Ease.of.Online.booking",
+          "Gate.location", "Online.boarding", "Inflight.entertainment",
+          "On.board.service",	"Leg.room.service",	"Baggage.handling",
+          "Checkin.service",	"Inflight.service",	"Cleanliness"
+          )
+airline_df[ratings] <- lapply(airline_df[ratings], 
+                              factor, 
+                              levels=c(0, 1, 2, 3, 4, 5)
+                              )
+
+# replace NA with 0
+# Departure & Arrival delay in minutes
+delay_cols <- c("Departure.Delay.in.Minutes", "Arrival.Delay.in.Minutes")
+airline_df[delay_cols][is.na(airline_df[delay_cols])] <- 0
+
+# rearrange columns
+col_order <- c("X", "id", "Gender", "Gender.C", "Customer.Type",
+               "Customer.Type.C", "Age", "Type.of.Travel", "Type.of.Travel.C",
+               "Class", "Class.C","Flight.Distance", "Inflight.wifi.service", 
+               "Inflight.wifi.service.C", "Departure.Arrival.time.convenient",	
+               "Ease.of.Online.booking", "Gate.location", "Food.and.drink",
+               "Food.and.drink.C", "Online.boarding", "Seat.comfort", 
+               "Seat.comfort.C", "Inflight.entertainment", "On.board.service",	
+               "Leg.room.service", "Baggage.handling", "Checkin.service",	
+               "Inflight.service",	"Cleanliness", "Departure.Delay.in.Minutes",
+               "Arrival.Delay.in.Minutes", "satisfaction"
+               )
+airline_df <- airline_df[, col_order]
+
+# drop columns
+drop_col <- c("Gender", "Customer.Type", "Type.of.Travel", "Class",
+              "Inflight.wifi.service", "Food.and.drink", "Seat.comfort")
+airline_df[, drop_col] <- list(NULL)
+
+# rename columns
+old_colnames <- c("Gender.C", "Customer.Type.C", "Type.of.Travel.C", "Class.C", 
+                  "Inflight.wifi.service.C", "Food.and.drink.C", "Seat.comfort.C"
+                  )
+new_colnames <- drop_col
+setnames(airline_df, old = old_colnames, new = new_colnames)
+```
+
+## Analyses
+
+
+# Results
+
+# Conclusion
