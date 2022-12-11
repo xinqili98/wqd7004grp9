@@ -173,6 +173,10 @@ new_colnames <- drop_col
 setnames(airline_df, old = old_colnames, new = new_colnames)
 ```
 
+```{r include = FALSE, warning = FALSE}
+write.csv(airline_df,'Airline Passenger Satisfaction Dataset\\train_clean.csv')
+```
+
 ## Analyses
 
 
