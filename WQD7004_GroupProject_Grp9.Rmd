@@ -178,6 +178,156 @@ write.csv(airline_df,'Airline Passenger Satisfaction Dataset\\train_clean.csv')
 ```
 
 ## Analyses
+# Visualization
+install.packages('ggrepel')
+install.packages('GGally')
+install.packages('vip')
+install.packages('patchwork')
+install.packages('ggplot2')
+install.packages('dplyr')
+install.packages('magrittr')
+
+library(ggrepel)
+library(GGally)
+library(vip)
+library(patchwork)
+library(ggplot2)
+library(dplyr)
+library(magrittr) 
+
+
+#2a customer gender by customer type- table
+cs_gender_cust_type_df <- airline_df %>%
+  group_by(Gender, Customer.Type) %>%
+  summarise(counts = n())
+  cs_gender_cust_type_df 
+#2b customer gender by customer type- graph
+cs_gender_cust_type_g <- 
+  ggplot(cs_gender_cust_type_df, 
+         aes(x = Customer.Type,
+             y = counts)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(x = "Customer Type", y = "Frequency") + 
+  facet_wrap(~Gender) +
+  scale_fill_brewer(palette="Spectral")+ 
+  ggtitle("Customer Type by Gender in Train Dataset")
+cs_gender_cust_type_g
+
+#3a customer gender by customer type and type of travel- table
+cs_gender_cust_type_travel_df <- airline_df %>%
+  group_by(Gender, Customer.Type, Type.of.Travel) %>%
+  summarise(counts = n())
+  cs_gender_cust_type_travel_df 
+#3b customer gender by customer type and type of travel- graph
+cs_gender_cust_type_travel_g <- 
+  ggplot(cs_gender_cust_type_travel_df, 
+         aes(x = Customer.Type,
+             y = counts, 
+             fill = Type.of.Travel)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(x = "Customer.Type", y = "Frequency") + 
+  facet_wrap(~Gender) +
+  scale_fill_brewer(palette="Spectral")+ 
+  ggtitle("Customer Type by Gender and Travel Type in Train Dataset")
+cs_gender_cust_type_travel_g
+
+
+#4a customer gender by type of travel and class- table
+cs_gender_travel_class_df <- airline_df %>%
+  group_by(Gender, Type.of.Travel, Class) %>%
+  summarise(counts = n())
+  cs_gender_travel_class_df 
+#4b customer type by type of travel and class- graph
+cs_gender_travel_class_g <- 
+  ggplot(cs_gender_travel_class_df, 
+         aes(x = Type.of.Travel,
+             y = counts, 
+             fill = Class)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(x = "Type of Travel", y = "Frequency") + 
+  facet_wrap(~Gender) +
+  scale_fill_brewer(palette="Spectral")+ 
+  ggtitle("Customer Type by Travel Type and Class in Train Dataset")
+cs_gender_travel_class_g
+
+#5a Create age group
+airline_df["age_group"] = cut(airline_df$Age, c(0, 10, 20, 30, 40, 50, 60, 70, 80, Inf), c("0-10", "11-20", "21-30","31-40","41-50","51-60","61-70","71-80", ">80"), include.lowest=TRUE)
+
+#5b customer gender by age group and customer type- table
+cs_gender_age_type_df <- airline_df %>%
+  group_by(Gender, age_group,Customer.Type) %>%
+  summarise(counts = n())
+  cs_gender_age_type_df 
+#5c customer gender by age group and customer type- graph
+cs_gender_age_type_g <- 
+  ggplot(cs_gender_age_type_df, 
+         aes(x = age_group,
+             y = counts,
+             fill = Customer.Type)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(x = "age_group", y = "Frequency") + 
+  facet_wrap(~Gender) +
+  scale_fill_brewer(palette="Spectral")+ 
+  ggtitle("Customer Type by Gender and Age Group in Train Dataset")
+cs_gender_age_type_g
+
+#6a Satisfaction count graph
+satisfaction_count <- airline_df %>% 
+  count(satisfaction) %>% 
+  ggplot(aes(x = satisfaction, y = n, fill = satisfaction)) +
+  geom_bar(stat = "identity", colour = "black", alpha = 0.75) +
+  geom_text(aes(label = n), 
+                position=position_dodge(width=0.9), 
+                vjust=-0.5) + 
+  ylim(0, 60000) + 
+  labs(y = "Count") + 
+  scale_fill_brewer(palette="Spectral") + 
+  ggtitle("Satisfaction variable in Train Dataset")
+satisfaction_count
+
+#6b customer gender by satisfaction- table
+cs_gender_satisfied_df <- airline_df %>%
+  group_by(Gender, satisfaction) %>%
+  summarise(counts = n())
+  cs_gender_satisfied_df 
+  
+#6c customer gender by satisfaction- graph
+cs_gender_satisfied_g <- 
+  ggplot(cs_gender_satisfied_df, 
+         aes(x = satisfaction,
+             y = counts)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(x = "satisfaction", y = "Frequency") + 
+  facet_wrap(~Gender) +
+  scale_fill_brewer(palette="Spectral") + 
+  ggtitle("Satisfaction by Gender in Train Dataset")
+cs_gender_satisfied_g
+
+#6d customer gender by age group and satisfaction- table
+cs_gender_age_satisfied_df <- airline_df %>%
+  group_by(Gender, age_group, satisfaction) %>%
+  summarise(counts = n())
+  cs_gender_age_satisfied_df 
+  
+#6e customer gender by age group and satisfaction- graph
+cs_gender_age_satisfied_g <- 
+  ggplot(cs_gender_age_satisfied_df, 
+         aes(x = satisfaction,
+             y = counts,
+             fill = age_group)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(x = "satisfaction", y = "Frequency") + 
+  facet_wrap(~Gender) +
+  scale_fill_brewer(palette="Spectral") + 
+  ggtitle("Satisfaction by Gender and Age Group in Train Dataset")
+cs_gender_age_satisfied_g
+
+#7 age histogram
+age_hist<- ggplot(data = airline_df, aes( x = Age)) + 
+  geom_density(fill="navy blue", color="black", alpha=0.75) +
+  labs(title = "Distribution of Age", 
+       subtitle = "Airline Passenger Satisfaction")
+age_hist       
 
 
 # Results
