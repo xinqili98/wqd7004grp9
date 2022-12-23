@@ -6,7 +6,7 @@ output:
     toc_float:
       collapsed: true
       smooth_scroll: true
-    toc_depth: 2
+    toc_depth: 3
     number_sections: true
     theme: spacelab
 ---
@@ -25,6 +25,14 @@ This is introduction
 library(stringr)
 library(dplyr)
 library(data.table)
+library(ggplot2)
+library(ggpubr)
+library(tidyr)
+library(ggrepel)
+library(GGally)
+library(vip)
+library(patchwork)
+library(magrittr)
 
 # read csv
 airline_df <- read.csv("Airline Passenger Satisfaction Dataset\\train_unclean.csv"
@@ -171,36 +179,51 @@ old_colnames <- c("Gender.C", "Customer.Type.C", "Type.of.Travel.C", "Class.C",
                   )
 new_colnames <- drop_col
 setnames(airline_df, old = old_colnames, new = new_colnames)
-```
 
-```{r include = FALSE, warning = FALSE}
-write.csv(airline_df,'Airline Passenger Satisfaction Dataset\\train_clean.csv')
+# drop X column
+airline_df[, "X"] <- list(NULL)
 ```
 
 ## Analyses
-# Visualization
-install.packages('ggrepel')
-install.packages('GGally')
-install.packages('vip')
-install.packages('patchwork')
-install.packages('ggplot2')
-install.packages('dplyr')
-install.packages('magrittr')
 
-library(ggrepel)
-library(GGally)
-library(vip)
-library(patchwork)
-library(ggplot2)
-library(dplyr)
-library(magrittr) 
+### Customer Gender
 
-
+```{r include = FALSE, warning = FALSE}
 #2a customer gender by customer type- table
 cs_gender_cust_type_df <- airline_df %>%
   group_by(Gender, Customer.Type) %>%
   summarise(counts = n())
-  cs_gender_cust_type_df 
+
+#3a customer gender by customer type and type of travel- table
+cs_gender_cust_type_travel_df <- airline_df %>%
+  group_by(Gender, Customer.Type, Type.of.Travel) %>%
+  summarise(counts = n())
+
+#4a customer gender by type of travel and class- table
+cs_gender_travel_class_df <- airline_df %>%
+  group_by(Gender, Type.of.Travel, Class) %>%
+  summarise(counts = n())
+
+#5a Create age group
+airline_df["age_group"] = cut(airline_df$Age, c(0, 10, 20, 30, 40, 50, 60, 70, 80, Inf), c("0-10", "11-20", "21-30","31-40","41-50","51-60","61-70","71-80", ">80"), include.lowest=TRUE)
+
+#5b customer gender by age group and customer type- table
+cs_gender_age_type_df <- airline_df %>%
+  group_by(Gender, age_group,Customer.Type) %>%
+  summarise(counts = n())
+
+#6b customer gender by satisfaction- table
+cs_gender_satisfied_df <- airline_df %>%
+  group_by(Gender, satisfaction) %>%
+  summarise(counts = n())
+
+#6d customer gender by age group and satisfaction- table
+cs_gender_age_satisfied_df <- airline_df %>%
+  group_by(Gender, age_group, satisfaction) %>%
+  summarise(counts = n())
+```
+
+```{r echo = FALSE, warning = FALSE}
 #2b customer gender by customer type- graph
 cs_gender_cust_type_g <- 
   ggplot(cs_gender_cust_type_df, 
@@ -213,11 +236,6 @@ cs_gender_cust_type_g <-
   ggtitle("Customer Type by Gender in Train Dataset")
 cs_gender_cust_type_g
 
-#3a customer gender by customer type and type of travel- table
-cs_gender_cust_type_travel_df <- airline_df %>%
-  group_by(Gender, Customer.Type, Type.of.Travel) %>%
-  summarise(counts = n())
-  cs_gender_cust_type_travel_df 
 #3b customer gender by customer type and type of travel- graph
 cs_gender_cust_type_travel_g <- 
   ggplot(cs_gender_cust_type_travel_df, 
@@ -231,12 +249,6 @@ cs_gender_cust_type_travel_g <-
   ggtitle("Customer Type by Gender and Travel Type in Train Dataset")
 cs_gender_cust_type_travel_g
 
-
-#4a customer gender by type of travel and class- table
-cs_gender_travel_class_df <- airline_df %>%
-  group_by(Gender, Type.of.Travel, Class) %>%
-  summarise(counts = n())
-  cs_gender_travel_class_df 
 #4b customer type by type of travel and class- graph
 cs_gender_travel_class_g <- 
   ggplot(cs_gender_travel_class_df, 
@@ -250,14 +262,6 @@ cs_gender_travel_class_g <-
   ggtitle("Customer Type by Travel Type and Class in Train Dataset")
 cs_gender_travel_class_g
 
-#5a Create age group
-airline_df["age_group"] = cut(airline_df$Age, c(0, 10, 20, 30, 40, 50, 60, 70, 80, Inf), c("0-10", "11-20", "21-30","31-40","41-50","51-60","61-70","71-80", ">80"), include.lowest=TRUE)
-
-#5b customer gender by age group and customer type- table
-cs_gender_age_type_df <- airline_df %>%
-  group_by(Gender, age_group,Customer.Type) %>%
-  summarise(counts = n())
-  cs_gender_age_type_df 
 #5c customer gender by age group and customer type- graph
 cs_gender_age_type_g <- 
   ggplot(cs_gender_age_type_df, 
@@ -284,12 +288,6 @@ satisfaction_count <- airline_df %>%
   scale_fill_brewer(palette="Spectral") + 
   ggtitle("Satisfaction variable in Train Dataset")
 satisfaction_count
-
-#6b customer gender by satisfaction- table
-cs_gender_satisfied_df <- airline_df %>%
-  group_by(Gender, satisfaction) %>%
-  summarise(counts = n())
-  cs_gender_satisfied_df 
   
 #6c customer gender by satisfaction- graph
 cs_gender_satisfied_g <- 
@@ -302,12 +300,6 @@ cs_gender_satisfied_g <-
   scale_fill_brewer(palette="Spectral") + 
   ggtitle("Satisfaction by Gender in Train Dataset")
 cs_gender_satisfied_g
-
-#6d customer gender by age group and satisfaction- table
-cs_gender_age_satisfied_df <- airline_df %>%
-  group_by(Gender, age_group, satisfaction) %>%
-  summarise(counts = n())
-  cs_gender_age_satisfied_df 
   
 #6e customer gender by age group and satisfaction- graph
 cs_gender_age_satisfied_g <- 
@@ -327,8 +319,133 @@ age_hist<- ggplot(data = airline_df, aes( x = Age)) +
   geom_density(fill="navy blue", color="black", alpha=0.75) +
   labs(title = "Distribution of Age", 
        subtitle = "Airline Passenger Satisfaction")
-age_hist       
+age_hist
+```
 
+### Customer Type
+```{r include = FALSE, warning = FALSE}
+# customer type
+cs_type_df <- airline_df %>%
+  group_by(Customer.Type) %>%
+  summarise(counts = n()) %>% 
+  mutate(perc = counts / sum(counts)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+# customer type by type of travel and class
+cs_type_travel_class_df <- airline_df %>%
+  group_by(Customer.Type, Type.of.Travel, Class) %>%
+  summarise(counts = n())
+
+# customer type by satisfaction
+cs_type_satisfaction_df <- airline_df %>%
+  group_by(Customer.Type, satisfaction) %>%
+  summarise(counts = n())
+
+# customer type by satisfaction and satisfaction level in each factors
+cs_type_satisfaction_lvl_df <- airline_df[c(3,8:21,24)]
+cs_type_satisfaction_lvl_df <- 
+  cs_type_satisfaction_lvl_df %>% 
+  pivot_longer(-c(Customer.Type, satisfaction),
+               names_to = "factors",
+               values_to = "satisfaction.level")  %>%
+  group_by(Customer.Type, satisfaction, factors, satisfaction.level) %>%
+  summarise(counts = n())
+```
+
+```{r echo = FALSE, warning = FALSE}
+# customer type
+cs_type_g <- 
+  ggplot(cs_type_df, 
+         aes(x = "",
+             y = perc, 
+             fill = Customer.Type)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  guides(fill=guide_legend(title="Customer Type")) +
+  geom_text(aes(label = labels), 
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE) +
+  scale_fill_brewer(palette="Spectral") +
+  labs(title = "Customer Type") +
+  theme_void()
+cs_type_g
+
+# customer type by type of travel and class
+cs_type_travel_class_g <- 
+  ggplot(cs_type_travel_class_df, 
+         aes(x = Type.of.Travel,
+             y = counts, 
+             fill = Class)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(title = "Customer Type by Type of Travel and Class",
+       x = "Type of Travel",
+       y = "Frequency") + 
+  facet_wrap(~Customer.Type) +
+  scale_fill_brewer(palette="Spectral")
+cs_type_travel_class_g
+
+# customer type by gender and age
+cs_type_gender_age_g <-
+  ggplot(airline_df, 
+         aes(x = Gender,
+             y = Age,
+             fill = Gender,
+             color = Gender)) + 
+  geom_violin(width = 0.3, position = position_dodge())+
+  geom_boxplot(width = 0.1, color = "black", alpha = 0.2) +
+  labs(title = "Customer Type by Gender and Age", 
+       x = "Gender",
+       y = "Age") + 
+  facet_wrap(~Customer.Type) +
+  scale_fill_brewer(palette="Spectral")
+cs_type_gender_age_g
+
+# Flight distance by customer type and class
+cs_type_flight_d_g <- 
+  ggplot(airline_df, 
+         aes(x = Flight.Distance,
+             fill = Customer.Type)) +
+  geom_density(alpha = 0.3) +
+  labs(title = "Flight Distance by Customer Type and Class",
+       y = "Flight Distance", 
+       x = "Customer Type") + 
+  guides(fill=guide_legend(title="Customer Type")) +
+  facet_grid(Class ~ .) + 
+  scale_fill_brewer(palette = "Spectral")
+cs_type_flight_d_g
+
+# Customer Type by satisfaction
+cs_type_satisfaction_g <- 
+  ggplot(cs_type_satisfaction_df, 
+         aes(x = satisfaction,
+             y = counts, 
+             fill = satisfaction)) + 
+  geom_bar(stat='identity', position = "dodge", width = 0.5) +
+  guides(fill=guide_legend(title="Satisfaction")) +
+  labs(title = "Satisfaction by Customer Type",
+       x = "Satisfaction",
+       y = "Frequency") + 
+  facet_wrap(~Customer.Type) +
+  scale_fill_brewer(palette="Spectral")
+cs_type_satisfaction_g
+```
+
+```{r echo = FALSE, warning = FALSE, fig.height = 20, fig.width = 12}
+# Customer type by satisfaction and satisfaction level in each factors
+cs_type_satisfaction_lvl_g <- 
+  ggplot(cs_type_satisfaction_lvl_df, 
+         aes(x = satisfaction.level,
+             y = counts, 
+             fill = satisfaction)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(title = "Customer Type by satisfaction and satisfaction level in each factors",
+       x = "Satisfaction Level",
+       y = "") + 
+  facet_grid(factors~Customer.Type) +
+  scale_fill_brewer(palette="Spectral")
+cs_type_satisfaction_lvl_g
+```
 
 # Results
 
