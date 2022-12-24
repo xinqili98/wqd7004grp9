@@ -1,13 +1,16 @@
 ---
 title: "WQD7004 Group Project - Group 9"
-output: 
+output:
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
   html_document:
-    toc: true
+    toc: yes
     toc_float:
-      collapsed: true
-      smooth_scroll: true
+      collapsed: yes
+      smooth_scroll: yes
     toc_depth: 3
-    number_sections: true
+    number_sections: yes
     theme: spacelab
 ---
 
@@ -446,8 +449,11 @@ cs_type_satisfaction_lvl_g <-
   scale_fill_brewer(palette="Spectral")
 cs_type_satisfaction_lvl_g
 ```
-# Type of Travel
 
+
+### Type of Travel
+
+```{r echo = FALSE, warning = FALSE}
 # Type of Travel of Airline Passengers
 p_1 <- ggplot(airline_df, aes(Type.of.Travel)) + geom_bar()+
   labs(title = "Type of Travel of Airline Passengers") + 
@@ -456,7 +462,6 @@ p_1 <- ggplot(airline_df, aes(Type.of.Travel)) + geom_bar()+
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_1)  
 
 # Satisfaction across Type of Travel
 # q <- ggplot(df, aes(Type.of.Travel, colour = satisfaction, fill = satisfaction)) + geom_bar() +
@@ -470,7 +475,6 @@ p_2 <- ggplot(airline_df, aes(Type.of.Travel, colour = satisfaction, fill = sati
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_2)  
 
 # Gender across Type of Travel
 p_3 <- ggplot(airline_df, aes(Type.of.Travel, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
@@ -480,7 +484,6 @@ p_3 <- ggplot(airline_df, aes(Type.of.Travel, colour = Gender, fill = Gender)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_3) 
 
 # Customer.Type across Type of Travel
 p_4 <- ggplot(airline_df, aes(Type.of.Travel, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
@@ -490,7 +493,6 @@ p_4 <- ggplot(airline_df, aes(Type.of.Travel, colour = Customer.Type, fill = Cus
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_4) 
 
 # Customer.Type across Type of Travel
 p_5 <- ggplot(airline_df, aes(Type.of.Travel, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
@@ -500,7 +502,6 @@ p_5 <- ggplot(airline_df, aes(Type.of.Travel, colour = Class, fill = Class)) + g
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_5) 
 
 # Age across Type of Travel
 p_6 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_density(alpha = 0.5) + 
@@ -510,7 +511,6 @@ p_6 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Trave
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_6) 
 
 # Flight Distance across Type of Travel
 p_7 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) +
@@ -524,7 +524,6 @@ p_7 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_7) 
 
 # Inflight.wifi.service across Type of Travel
 p_8 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -534,7 +533,6 @@ p_8 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Type.of.Travel, fi
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_8) 
 
 # Departure.Arrival.time.convenient across Type of Travel
 p_9 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -544,7 +542,6 @@ p_9 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Type.o
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_9) 
 
 # Ease.of.Online.booking across Type of Travel
 p_10 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -554,7 +551,6 @@ p_10 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Type.of.Travel, 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_10) 
 
 # Gate.location across Type of Travel
 p_11 <- ggplot(airline_df, aes(Gate.location, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -564,7 +560,6 @@ p_11 <- ggplot(airline_df, aes(Gate.location, colour = Type.of.Travel, fill = Ty
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_11) 
 
 # Online.boarding across Type of Travel
 p_12 <- ggplot(airline_df, aes(Online.boarding, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -574,7 +569,6 @@ p_12 <- ggplot(airline_df, aes(Online.boarding, colour = Type.of.Travel, fill = 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_12) 
 
 # Seat.comfort across Type of Travel
 p_13 <- ggplot(airline_df, aes(Seat.comfort, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -584,7 +578,6 @@ p_13 <- ggplot(airline_df, aes(Seat.comfort, colour = Type.of.Travel, fill = Typ
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_13) 
 
 # Inflight.entertainment across Type of Travel
 p_14 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -594,7 +587,6 @@ p_14 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Type.of.Travel, 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_14) 
 
 # On.board.service across Type of Travel
 p_15 <- ggplot(airline_df, aes(On.board.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -604,7 +596,6 @@ p_15 <- ggplot(airline_df, aes(On.board.service, colour = Type.of.Travel, fill =
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_15) 
 
 # Leg.room.service across Type of Travel
 p_16 <- ggplot(airline_df, aes(Leg.room.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -614,7 +605,6 @@ p_16 <- ggplot(airline_df, aes(Leg.room.service, colour = Type.of.Travel, fill =
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_16) 
 
 # Baggage.handling across Type of Travel
 p_17 <- ggplot(airline_df, aes(Baggage.handling, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -624,7 +614,6 @@ p_17 <- ggplot(airline_df, aes(Baggage.handling, colour = Type.of.Travel, fill =
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_17) 
 
 # Checkin.service across Type of Travel
 p_18 <- ggplot(airline_df, aes(Checkin.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -634,7 +623,6 @@ p_18 <- ggplot(airline_df, aes(Checkin.service, colour = Type.of.Travel, fill = 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_18) 
 
 # Inflight.service across Type of Travel
 p_19 <- ggplot(airline_df, aes(Inflight.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -644,7 +632,6 @@ p_19 <- ggplot(airline_df, aes(Inflight.service, colour = Type.of.Travel, fill =
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_19) 
 
 # Cleanliness across Type of Travel
 p_20 <- ggplot(airline_df, aes(Cleanliness, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -654,7 +641,6 @@ p_20 <- ggplot(airline_df, aes(Cleanliness, colour = Type.of.Travel, fill = Type
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_20) 
 
 # Departure.Delay.in.Minutes across Type of Travel
 p_21 <- ggplot(airline_df, aes(Departure.Delay.in.Minutes, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -664,7 +650,6 @@ p_21 <- ggplot(airline_df, aes(Departure.Delay.in.Minutes, colour = Type.of.Trav
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_21)  
 
 # Arrival.Delay.in.Minutes across Type of Travel
 p_22 <- ggplot(airline_df, aes(Arrival.Delay.in.Minutes, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
@@ -674,7 +659,6 @@ p_22 <- ggplot(airline_df, aes(Arrival.Delay.in.Minutes, colour = Type.of.Travel
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5)) 
-print(p_22)  
 
 # Combine graphs
 # install.packages("ggpubr")
@@ -696,7 +680,6 @@ q_1 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_1
 
 # Satisfaction by Type.of.Travel and Customer.Type
 q_2 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
@@ -710,7 +693,6 @@ q_2 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_2
 
 # Satisfaction by Type.of.Travel and Class
 q_3 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
@@ -724,7 +706,6 @@ q_3 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_3
 
 # Satisfaction by Type.of.Travel and Inflight.wifi.service
 q_4 <- ggplot(airline_df, aes(x = Inflight.wifi.service, fill = satisfaction)) +
@@ -738,7 +719,6 @@ q_4 <- ggplot(airline_df, aes(x = Inflight.wifi.service, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_4
 
 # Satisfaction by Type.of.Travel and Departure.Arrival.time.convenient
 q_5 <- ggplot(airline_df, aes(x = Departure.Arrival.time.convenient, fill = satisfaction)) +
@@ -752,7 +732,6 @@ q_5 <- ggplot(airline_df, aes(x = Departure.Arrival.time.convenient, fill = sati
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_5
 
 # Satisfaction by Type.of.Travel and Ease.of.Online.booking
 q_6 <- ggplot(airline_df, aes(x = Ease.of.Online.booking, fill = satisfaction)) +
@@ -766,7 +745,6 @@ q_6 <- ggplot(airline_df, aes(x = Ease.of.Online.booking, fill = satisfaction)) 
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_6
 
 # Satisfaction by Type.of.Travel and Gate.location
 q_7 <- ggplot(airline_df, aes(x = Gate.location, fill = satisfaction)) +
@@ -780,7 +758,6 @@ q_7 <- ggplot(airline_df, aes(x = Gate.location, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_7
 
 # Satisfaction by Type.of.Travel and Food.and.drink
 q_8 <- ggplot(airline_df, aes(x = Food.and.drink, fill = satisfaction)) +
@@ -794,7 +771,6 @@ q_8 <- ggplot(airline_df, aes(x = Food.and.drink, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_8
 
 # Satisfaction by Type.of.Travel and Online.boarding
 q_9 <- ggplot(airline_df, aes(x = Online.boarding, fill = satisfaction)) +
@@ -808,7 +784,6 @@ q_9 <- ggplot(airline_df, aes(x = Online.boarding, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_9
 
 # Satisfaction by Type.of.Travel and Seat.comfort
 q_10 <- ggplot(airline_df, aes(x = Seat.comfort, fill = satisfaction)) +
@@ -822,7 +797,6 @@ q_10 <- ggplot(airline_df, aes(x = Seat.comfort, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_10
 
 # Satisfaction by Type.of.Travel and Inflight.entertainment
 q_11 <- ggplot(airline_df, aes(x = Inflight.entertainment, fill = satisfaction)) +
@@ -836,7 +810,6 @@ q_11 <- ggplot(airline_df, aes(x = Inflight.entertainment, fill = satisfaction))
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_11
 
 
 # Satisfaction by Type.of.Travel and On.board.service
@@ -851,7 +824,6 @@ q_12 <- ggplot(airline_df, aes(x = On.board.service, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_12
 
 # Satisfaction by Type.of.Travel and Leg.room.service
 q_13 <- ggplot(airline_df, aes(x = Leg.room.service, fill = satisfaction)) +
@@ -865,7 +837,6 @@ q_13 <- ggplot(airline_df, aes(x = Leg.room.service, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_13
 
 # Satisfaction by Type.of.Travel and Baggage.handling
 q_14 <- ggplot(airline_df, aes(x = Baggage.handling, fill = satisfaction)) +
@@ -879,7 +850,6 @@ q_14 <- ggplot(airline_df, aes(x = Baggage.handling, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_14
 
 # Satisfaction by Type.of.Travel and Checkin.service
 q_15 <- ggplot(airline_df, aes(x = Checkin.service, fill = satisfaction)) +
@@ -893,7 +863,6 @@ q_15 <- ggplot(airline_df, aes(x = Checkin.service, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_15
 
 # Satisfaction by Type.of.Travel and Inflight.service
 q_16 <- ggplot(airline_df, aes(x = Inflight.service, fill = satisfaction)) +
@@ -907,7 +876,6 @@ q_16 <- ggplot(airline_df, aes(x = Inflight.service, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5))
-q_16
 
 # Satisfaction by Type.of.Travel and Cleanliness
 q_17 <- ggplot(airline_df, aes(x = Cleanliness, fill = satisfaction)) +
@@ -921,11 +889,12 @@ q_17 <- ggplot(airline_df, aes(x = Cleanliness, fill = satisfaction)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+
   theme(strip.text.x = element_text(size = 5)) 
-q_17
 
 # Combine the graphs
 ggarrange(q_1,q_2, q_3, q_4, q_5, q_6, q_7, q_8, q_9,  nrow = 3, ncol=3) 
 ggarrange(q_10, q_11, q_12,q_13, q_14, q_15, q_16, q_17, nrow = 3, ncol=3)
+```
+
 
 # Results
 
