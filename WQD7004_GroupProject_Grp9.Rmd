@@ -513,8 +513,13 @@ p_6 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Trave
 print(p_6) 
 
 # Flight Distance across Type of Travel
-p_7 <- ggplot(airline_df, aes(Flight.Distance, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
-  labs(title = "Flight Distance across Type of Travel", colour = "Type.of.Travel")+ 
+p_7 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Flight Distance by Type.of.Travel",
+       y = "Frequency", 
+       x = "Flight Distance") + 
+  guides(fill=guide_legend(title="Type.of.Travel")) + 
+  scale_fill_brewer(palette = "Spectral")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
@@ -678,6 +683,250 @@ print(p_22)
 ggarrange(p_2, p_3, p_4, p_5, p_6, p_7, p_8, p_9,p_10, nrow = 3, ncol=3) 
 ggarrange(p_11, p_12, p_13, p_14, p_15, p_16, p_17, p_18,p_19, nrow = 3, ncol=3)      
 ggarrange(p_20, p_21, p_22, nrow = 3, ncol=1)
+
+# More than two Variables:
+# Satisfaction by Type.of.Travel and Gender
+q_1 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction Level by Type.of.Travel and Gender",y = "satisfaction", x = "Type.of.Travel") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Gender) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_1
+
+# Satisfaction by Type.of.Travel and Customer.Type
+q_2 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Customer.Type",y = "satisfaction", x = "Type.of.Travel") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Customer.Type) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_2
+
+# Satisfaction by Type.of.Travel and Class
+q_3 <- ggplot(airline_df, aes(x = Type.of.Travel, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Class",y = "satisfaction", x = "Type.of.Travel") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Class) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_3
+
+# Satisfaction by Type.of.Travel and Inflight.wifi.service
+q_4 <- ggplot(airline_df, aes(x = Inflight.wifi.service, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Inflight.wifi.service",y = "satisfaction", x = "Inflight.wifi.service") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_4
+
+# Satisfaction by Type.of.Travel and Departure.Arrival.time.convenient
+q_5 <- ggplot(airline_df, aes(x = Departure.Arrival.time.convenient, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Departure.Arrival.time.convenient",y = "satisfaction", x = "Departure.Arrival.time.convenient") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_5
+
+# Satisfaction by Type.of.Travel and Ease.of.Online.booking
+q_6 <- ggplot(airline_df, aes(x = Ease.of.Online.booking, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Ease.of.Online.booking",y = "satisfaction", x = "Ease.of.Online.booking") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_6
+
+# Satisfaction by Type.of.Travel and Gate.location
+q_7 <- ggplot(airline_df, aes(x = Gate.location, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Gate.location",y = "satisfaction", x = "Gate.location") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_7
+
+# Satisfaction by Type.of.Travel and Food.and.drink
+q_8 <- ggplot(airline_df, aes(x = Food.and.drink, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Food.and.drink",y = "satisfaction", x = "Food.and.drink") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_8
+
+# Satisfaction by Type.of.Travel and Online.boarding
+q_9 <- ggplot(airline_df, aes(x = Online.boarding, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Online.boarding",y = "satisfaction", x = "Online.boarding") + 
+  guides(fill=guide_legend(title="Satisfaction level")) + 
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_9
+
+# Satisfaction by Type.of.Travel and Seat.comfort
+q_10 <- ggplot(airline_df, aes(x = Seat.comfort, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Seat.comfort",y = "satisfaction", x = "Seat.comfort") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_10
+
+# Satisfaction by Type.of.Travel and Inflight.entertainment
+q_11 <- ggplot(airline_df, aes(x = Inflight.entertainment, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Inflight.entertainment",y = "satisfaction", x = "Inflight.entertainment") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_11
+
+
+# Satisfaction by Type.of.Travel and On.board.service
+q_12 <- ggplot(airline_df, aes(x = On.board.service, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and On.board.service",y = "satisfaction", x = "On.board.service") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_12
+
+# Satisfaction by Type.of.Travel and Leg.room.service
+q_13 <- ggplot(airline_df, aes(x = Leg.room.service, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Leg.room.service",y = "satisfaction", x = "Leg.room.service") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_13
+
+# Satisfaction by Type.of.Travel and Baggage.handling
+q_14 <- ggplot(airline_df, aes(x = Baggage.handling, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Baggage.handling",y = "satisfaction", x = "Baggage.handling") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_14
+
+# Satisfaction by Type.of.Travel and Checkin.service
+q_15 <- ggplot(airline_df, aes(x = Checkin.service, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Checkin.service",y = "satisfaction", x = "Checkin.service") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_15
+
+# Satisfaction by Type.of.Travel and Inflight.service
+q_16 <- ggplot(airline_df, aes(x = Inflight.service, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Inflight.service",y = "satisfaction", x = "Inflight.service") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5))
+q_16
+
+# Satisfaction by Type.of.Travel and Cleanliness
+q_17 <- ggplot(airline_df, aes(x = Cleanliness, fill = satisfaction)) +
+  geom_bar(alpha = 1) +
+  labs(title = "Satisfaction level by Type.of.Travel and Cleanliness",y = "satisfaction", x = "Cleanliness") + 
+  guides(fill=guide_legend(title="Satisfaction level")) +
+  facet_grid(~ Type.of.Travel) + scale_fill_brewer(type = 'div', palette = 9)+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+
+  theme(strip.text.x = element_text(size = 5)) 
+q_17
+
+# Combine the graphs
+ggarrange(q_1,q_2, q_3, q_4, q_5, q_6, q_7, q_8, q_9,  nrow = 3, ncol=3) 
+ggarrange(q_10, q_11, q_12,q_13, q_14, q_15, q_16, q_17, nrow = 3, ncol=3)
 
 # Results
 
