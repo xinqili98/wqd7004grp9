@@ -503,7 +503,7 @@ p_5 <- ggplot(airline_df, aes(Type.of.Travel, colour = Class, fill = Class)) + g
 print(p_5) 
 
 # Age across Type of Travel
-p_6 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
+p_6 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_density(alpha = 0.5) + 
   labs(title = "Age across Type of Travel", colour = "Type.of.Travel")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -519,7 +519,6 @@ p_7 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) +
        y = "Frequency", 
        x = "Flight Distance") + 
   guides(fill=guide_legend(title="Type.of.Travel")) + 
-  scale_fill_brewer(palette = "Spectral")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
