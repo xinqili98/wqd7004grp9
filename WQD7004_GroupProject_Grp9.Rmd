@@ -210,7 +210,8 @@ airline_df[, "X"] <- list(NULL)
 write.csv(airline_df,'Airline Passenger Satisfaction Dataset\\train_clean.csv')
 ```
 
-airline_df \### Customer Gender
+airline_df \
+### Customer Gender
 
 ```{r include = FALSE, warning = FALSE}
 #1a gender -table
@@ -1091,7 +1092,6 @@ q_17 <- ggplot(airline_df, aes(x = Cleanliness, fill = satisfaction)) +
   theme(strip.text.x = element_text(size = 5)) 
 
 # Combine the graphs
-ggarrange(q_1,nrow=1,ncol=1)
 ggarrange(q_1,q_2, q_3, q_4, q_5, q_6, q_7, q_8, q_9,  nrow = 3, ncol=3) 
 ggarrange(q_10, q_11, q_12,q_13, q_14, q_15, q_16, q_17, nrow = 3, ncol=3)
 ```
