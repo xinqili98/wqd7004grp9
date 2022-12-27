@@ -1,7 +1,7 @@
 ---
 title: "WQD7004 Group Project - Group 9"
 output:
-  pdf_document:
+  word_document:
     toc: yes
     toc_depth: '3'
   html_document:
@@ -12,9 +12,15 @@ output:
     toc_depth: 3
     number_sections: yes
     theme: spacelab
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+editor_options:
+  chunk_output_type: console
 ---
 
 # Introduction
+
 This is introduction
 
 # Objectives
@@ -24,6 +30,17 @@ This is introduction
 ## Data Understanding
 
 ```{r include = FALSE, warning = FALSE}
+# install.packages('stringr')
+# install.packages('data.table')
+# install.packages('ggpubr')
+# install.packages('tidyr')
+# install.packages('ggrepel')
+# install.packages('GGally')
+# install.packages('vip')
+# install.packages('patchwork')
+# install.packages('ggplot2')
+# install.packages('dplyr')
+# install.packages('magrittr')
 # load library
 library(stringr)
 library(dplyr)
@@ -189,9 +206,39 @@ airline_df[, "X"] <- list(NULL)
 
 ## Analyses
 
-### Customer Gender
+```{r include = FALSE, warning = FALSE}
+write.csv(airline_df,'Airline Passenger Satisfaction Dataset\\train_clean.csv')
+```
+
+airline_df \### Customer Gender
 
 ```{r include = FALSE, warning = FALSE}
+#1a gender -table
+cs_gender_df <- airline_df %>%
+  group_by(Gender) %>%
+  summarise(counts = n())%>% 
+  mutate(perc = counts / sum(counts)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+
+#1b gender -pie
+cs_gender_g <- 
+  ggplot(cs_gender_df, 
+         aes(x = "",
+             y = perc, 
+             fill = Gender)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  guides(fill=guide_legend(title="Customer Gender")) +
+  geom_text(aes(label = labels), 
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE) +
+  scale_fill_brewer(palette="PRGn") +
+  labs(title = "Customer Gender") +
+  theme_void()
+cs_gender_g
+
 #2a customer gender by customer type- table
 cs_gender_cust_type_df <- airline_df %>%
   group_by(Gender, Customer.Type) %>%
@@ -228,6 +275,7 @@ cs_gender_age_satisfied_df <- airline_df %>%
 
 ```{r echo = FALSE, warning = FALSE}
 #2b customer gender by customer type- graph
+# Disloyal customer comprises of 20% of the whole dataset, of which 19% of female customers are disloyal, i.e. 2 % higher than male customers.
 cs_gender_cust_type_g <- 
   ggplot(cs_gender_cust_type_df, 
          aes(x = Customer.Type,
@@ -240,6 +288,7 @@ cs_gender_cust_type_g <-
 cs_gender_cust_type_g
 
 #3b customer gender by customer type and type of travel- graph
+#From the customer type, it is observed that almost all the disloyal customers came from business travel(99%), regardless of the gender.
 cs_gender_cust_type_travel_g <- 
   ggplot(cs_gender_cust_type_travel_df, 
          aes(x = Customer.Type,
@@ -279,6 +328,7 @@ cs_gender_age_type_g <-
 cs_gender_age_type_g
 
 #6a Satisfaction count graph
+#57% of the whole datasets comprises of neutral or dissatisfied customers, regardless of gender.
 satisfaction_count <- airline_df %>% 
   count(satisfaction) %>% 
   ggplot(aes(x = satisfaction, y = n, fill = satisfaction)) +
@@ -305,6 +355,7 @@ cs_gender_satisfied_g <-
 cs_gender_satisfied_g
   
 #6e customer gender by age group and satisfaction- graph
+#Most of the disloyal customers aged between 21-30, followed by 31-40 age group. Possible reason is that people of younger adults are more inclined in trying different airlines that offers good deals. 
 cs_gender_age_satisfied_g <- 
   ggplot(cs_gender_age_satisfied_df, 
          aes(x = satisfaction,
@@ -323,9 +374,159 @@ age_hist<- ggplot(data = airline_df, aes( x = Age)) +
   labs(title = "Distribution of Age", 
        subtitle = "Airline Passenger Satisfaction")
 age_hist
+
+
+# Inflight.wifi.service across Gender
+service1_g <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+
+  labs(title = "Inflight.wifi.service vs Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service1_g
+# Departure.Arrival.time.convenient across Gender
+service2_g <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Gender, fill = Gender)) + geom_bar(position = "dodge")+ scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Departure.Arrival.time.convenient across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service2_g
+# Ease.of.Online.booking across Gender
+service3_g <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Ease.of.Online.booking across Type of Travel", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service3_g
+# Gate.location across Gender
+service4_g <- ggplot(airline_df, aes(Gate.location, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Gate.location across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service4_g
+# Food.and.Drink across Gender
+service0_g <- ggplot(airline_df, aes(Food.and.drink, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Gate.location across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service0_g
+# Online.boarding across Gender
+#In comparison, female customers are more satisfied in the online boarding service than male customers as most of the ratings are above 3 ratings.
+service5_g <- ggplot(airline_df, aes(Online.boarding, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Online.boarding across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service5_g
+# Seat.comfort across Gender
+#In comparison, female customers are more satisfied in the seat comfort aspect than male customers as most of the ratings are above 3 ratings.
+service6_g <- ggplot(airline_df, aes(Seat.comfort, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Seat.comfort across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service6_g
+# Inflight.entertainment across Gender
+service7_g <- ggplot(airline_df, aes(Inflight.entertainment, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+
+  labs(title = "Inflight.entertainment across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service7_g
+# On.board.service across Gender
+service8_g <- ggplot(airline_df, aes(On.board.service, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "On.board.service across Gender", colour = "Gender")+
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service8_g
+# Leg.room.service across Gender
+#Female passengers are more dissatisfied with the lower rating given to leg room service, as compared to male passengers.
+service9_g <- ggplot(airline_df, aes(Leg.room.service, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+
+  labs(title = "Leg.room.service across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service9_g
+# Baggage.handling across Gender
+#Female passengers are more dissatisfied in baggage handling service than male passengers. Possible reason is that female passengers carry cosmetic products that are fragile items and thus negligence in handling with care cause them to be unhappy with the service.
+service10_g <- ggplot(airline_df, aes(Baggage.handling, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Baggage.handling across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service10_g
+# Checkin.service across Gender
+service11_g <- ggplot(airline_df, aes(Checkin.service, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Checkin.service across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service11_g
+# Inflight.service across Gender
+#Female passengers are more dissatisfied in inflight service than male passengers.
+service12_g <- ggplot(airline_df, aes(Inflight.service, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Inflight.service across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service12_g
+# Cleanliness across Gender
+service13_g <- ggplot(airline_df, aes(Cleanliness, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+ 
+  labs(title = "Cleanliness across Gender", colour = "Gender")+ 
+  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) +
+  theme(plot.title = element_text(size = 5)) +
+  theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5)) 
+service13_g
+# Departure.Delay.in.Minutes across Gender
+service14_g <-
+  ggplot(airline_df, 
+         aes(x = Gender,
+             y = Departure.Delay.in.Minutes,
+             fill = Gender,
+             color = Gender)) + 
+  geom_violin(width = 0.3, position = position_dodge())+
+  geom_boxplot(width = 0.1, color = "black", alpha = 0.2) +
+  labs(title = "Departure.Delay.in.Minutes by Gender", 
+       x = "Gender",
+       y = "Departure.Delay.in.Minutes") + 
+  scale_fill_brewer(palette="Spectral")
+service14_g
+
+
 ```
 
 ### Customer Type
+
 ```{r include = FALSE, warning = FALSE}
 # customer type
 cs_type_df <- airline_df %>%
@@ -449,7 +650,6 @@ cs_type_satisfaction_lvl_g <-
   scale_fill_brewer(palette="Spectral")
 cs_type_satisfaction_lvl_g
 ```
-
 
 ### Type of Travel
 
@@ -891,6 +1091,7 @@ q_17 <- ggplot(airline_df, aes(x = Cleanliness, fill = satisfaction)) +
   theme(strip.text.x = element_text(size = 5)) 
 
 # Combine the graphs
+ggarrange(q_1,nrow=1,ncol=1)
 ggarrange(q_1,q_2, q_3, q_4, q_5, q_6, q_7, q_8, q_9,  nrow = 3, ncol=3) 
 ggarrange(q_10, q_11, q_12,q_13, q_14, q_15, q_16, q_17, nrow = 3, ncol=3)
 ```
