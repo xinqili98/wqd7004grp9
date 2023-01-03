@@ -6,7 +6,7 @@ output:
     toc_float:
       collapsed: yes
       smooth_scroll: yes
-    toc_depth: 3
+    toc_depth: 4
     number_sections: yes
     theme: spacelab
   word_document:
@@ -249,6 +249,38 @@ airline_df[, "X"] <- list(NULL)
 
 ```{r include = FALSE, warning = FALSE}
 # Summarize table for visualization
+# Customer Gender
+cs_gender_df <- airline_df %>%
+  group_by(Gender) %>%
+  summarise(counts = n())%>% 
+  mutate(perc = counts / sum(counts)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+# Customer type
+cs_type_df <- airline_df %>%
+  group_by(Customer.Type) %>%
+  summarise(counts = n()) %>% 
+  mutate(perc = counts / sum(counts)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+# Type of Travel
+type_travel_df <- airline_df %>%
+  group_by(Type.of.Travel) %>%
+  summarise(counts = n()) %>% 
+  mutate(perc = counts / sum(counts)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+# Class
+class_df <- airline_df %>%
+  group_by(Class) %>%
+  summarise(counts = n()) %>% 
+  mutate(perc = counts / sum(counts)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
 # Customer Type by ratings in each factors
 cs_type_ratings_df <- airline_df[c(3,8:21)]
 cs_type_ratings_df <- 
@@ -264,6 +296,126 @@ ratings_df <-
   cs_type_ratings_df %>%
   group_by(services, ratings) %>%
   summarise(freq = sum(counts))
+```
+
+#### Customers
+```{r include = FALSE, warning = FALSE}
+# Gender Pie Chart
+cs_gender_g <- 
+  ggplot(cs_gender_df, 
+         aes(x = "",
+             y = perc, 
+             fill = Gender)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  guides(fill=guide_legend(title="Customer Gender")) +
+  geom_text(aes(label = labels), 
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE) +
+  theme(plot.title = element_text(hjust = 1.0)) +
+  scale_fill_brewer(palette="PRGn") +
+  labs(title = "Customer Gender") +
+  theme_void()
+
+# Age Density Graph
+cs_age_g <- 
+  ggplot(data = airline_df, 
+         aes( x = Age)
+         ) + 
+  geom_density(fill="navy blue", color="black", alpha=0.75) +
+  labs(title = "Customer Age", 
+       x = "Age", 
+       y = "") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_fill_brewer(palette="Spectral")
+
+# customer type
+cs_type_g <- 
+  ggplot(cs_type_df, 
+         aes(x = "",
+             y = perc, 
+             fill = Customer.Type)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  guides(fill=guide_legend(title="Customer Type")) +
+  geom_text(aes(label = labels), 
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE) +
+  theme(plot.title = element_text(hjust = 1.0)) +
+  scale_fill_brewer(palette="Spectral") +
+  labs(title = "Customer Type") +
+  theme_void()
+
+# Type of Travel
+type_travel_g <- 
+  ggplot(type_travel_df, 
+         aes(x = "",
+             y = perc, 
+             fill = Type.of.Travel)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  guides(fill=guide_legend(title="Type of Travel")) +
+  geom_text(aes(label = labels), 
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE) +
+  theme(plot.title = element_text(hjust = 1.0)) +
+  scale_fill_brewer(palette="Spectral") +
+  labs(title = "Customer Travel Type") +
+  theme_void()
+
+# Class
+class_g <- 
+  ggplot(class_df, 
+         aes(x = "",
+             y = perc, 
+             fill = Class)) + 
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  guides(fill=guide_legend(title="Class")) +
+  geom_text(aes(label = labels), 
+            position = position_stack(vjust = 0.5),
+            show.legend = FALSE) +
+  theme(plot.title = element_text(hjust = 1.0)) +
+  scale_fill_brewer(palette="Spectral") +
+  labs(title = "Flight Class") +
+  theme_void()
+
+# Departure Delay in Minutes
+departure_delay_g <-
+  ggplot(airline_df, 
+         aes(x = "",
+             y = Departure.Delay.in.Minutes)) + 
+  geom_boxplot(width = 0.1, color = "black", alpha = 0.2) +
+  coord_cartesian(ylim =  c(0, 50)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Departure Delay in Minutes", 
+       x = "Departure Delay in Minutes",
+       y = "") + 
+  scale_fill_brewer(palette="Spectral")
+
+# Arrival Delay in Minutes
+arrival_delay_g <-
+  ggplot(airline_df, 
+         aes(x = "",
+             y = Arrival.Delay.in.Minutes)) + 
+  geom_boxplot(width = 0.1, color = "black", alpha = 0.2) +
+  coord_cartesian(ylim =  c(0, 50)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  labs(title = "Arrival Delay in Minutes", 
+       x = "Arrival Delay in Minutes",
+       y = "") + 
+  scale_fill_brewer(palette="Spectral")
+```
+
+```{r echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
+ggarrange(ggarrange(cs_gender_g, cs_age_g),
+          ggarrange(cs_type_g, type_travel_g, class_g, nrow = 1, ncol = 3, 
+                    align = "h", widths = c(1,1,1))
+          , nrow = 2, heights = c(1,1))
+```
+
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
+ggarrange(departure_delay_g, arrival_delay_g, ncol = 2)
 ```
 
 #### Service Ratings
@@ -286,14 +438,6 @@ ratings_g
 ### Customer Gender
 
 ```{r include = FALSE, warning = FALSE}
-#1a gender -table
-cs_gender_df <- airline_df %>%
-  group_by(Gender) %>%
-  summarise(counts = n())%>% 
-  mutate(perc = counts / sum(counts)) %>% 
-  arrange(perc) %>%
-  mutate(labels = scales::percent(perc))
-
 #2a customer gender by customer type- table
 cs_gender_cust_type_df <- airline_df %>%
   group_by(Gender, Customer.Type) %>%
@@ -329,22 +473,6 @@ cs_gender_age_satisfied_df <- airline_df %>%
 ```
 
 ```{r echo = FALSE, warning = FALSE}
-#1b gender -pie (Demographics)
-cs_gender_g <- 
-  ggplot(cs_gender_df, 
-         aes(x = "",
-             y = perc, 
-             fill = Gender)) + 
-  geom_bar(width = 1, stat = "identity") +
-  coord_polar("y", start = 0) +
-  guides(fill=guide_legend(title="Customer Gender")) +
-  geom_text(aes(label = labels), 
-            position = position_stack(vjust = 0.5),
-            show.legend = FALSE) +
-  scale_fill_brewer(palette="PRGn") +
-  labs(title = "Customer Gender") +
-  theme_void()
-cs_gender_g
 
 #2b customer gender by customer type- graph
 # Disloyal customer comprises of 20% of the whole dataset, of which 19% of female customers are disloyal, i.e. 2 % higher than male customers.
@@ -439,14 +567,6 @@ cs_gender_age_satisfied_g <-
   scale_fill_brewer(palette="Spectral") + 
   ggtitle("Satisfaction by Gender and Age Group in Train Dataset")
 cs_gender_age_satisfied_g
-
-#7 age histogram (Demographics)
-age_hist<- ggplot(data = airline_df, aes( x = Age)) + 
-  geom_density(fill="navy blue", color="black", alpha=0.75) +
-  labs(title = "Distribution of Age", 
-       subtitle = "Airline Passenger Satisfaction")
-age_hist
-
 
 # Inflight.wifi.service across Gender
 service1_g <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + scale_fill_manual(values=c("#9933FF","#33FFFF"))+
@@ -600,14 +720,6 @@ service14_g
 ### Customer Type
 
 ```{r include = FALSE, warning = FALSE}
-# customer type
-cs_type_df <- airline_df %>%
-  group_by(Customer.Type) %>%
-  summarise(counts = n()) %>% 
-  mutate(perc = counts / sum(counts)) %>% 
-  arrange(perc) %>%
-  mutate(labels = scales::percent(perc))
-
 # customer type by type of travel and class
 cs_type_travel_class_df <- airline_df %>%
   group_by(Customer.Type, Type.of.Travel, Class) %>%
@@ -630,23 +742,6 @@ cs_type_satisfaction_lvl_df <-
 ```
 
 ```{r echo = FALSE, warning = FALSE}
-# customer type
-cs_type_g <- 
-  ggplot(cs_type_df, 
-         aes(x = "",
-             y = perc, 
-             fill = Customer.Type)) + 
-  geom_bar(width = 1, stat = "identity") +
-  coord_polar("y", start = 0) +
-  guides(fill=guide_legend(title="Customer Type")) +
-  geom_text(aes(label = labels), 
-            position = position_stack(vjust = 0.5),
-            show.legend = FALSE) +
-  scale_fill_brewer(palette="Spectral") +
-  labs(title = "Customer Type") +
-  theme_void()
-cs_type_g
-
 # customer type by type of travel and class
 cs_type_travel_class_g <- 
   ggplot(cs_type_travel_class_df, 
