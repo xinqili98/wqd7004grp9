@@ -246,7 +246,6 @@ airline_df[, "X"] <- list(NULL)
 ## Analyses
 
 ### Overview
-
 ```{r include = FALSE, warning = FALSE}
 # Summarize table for visualization
 # Customer Gender
@@ -740,7 +739,10 @@ cs_type_satisfaction_lvl_df <-
   group_by(Customer.Type, satisfaction, factors, satisfaction.level) %>%
   summarise(counts = n())
 ```
+**Different perspectives from Customer Type**  
 
+* Both customers tend to choose the airline for business travel rather than personal travel, with a more distinct distribution of travel type in the disloyal customers group.  
+* Disloyal customers prefer Eco class for business travel, while majority of loyal customers prefer Business class for business travel but Eco class for personal travel.  
 ```{r echo = FALSE, warning = FALSE}
 # customer type by type of travel and class
 cs_type_travel_class_g <- 
@@ -752,10 +754,17 @@ cs_type_travel_class_g <-
   labs(title = "Customer Type by Type of Travel and Class",
        x = "Type of Travel",
        y = "Frequency") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
   facet_wrap(~Customer.Type) +
   scale_fill_brewer(palette="Spectral")
 cs_type_travel_class_g
+```
 
+* The distribution of age for gender in each customer type is similar.
+* The distribution of age for loyal and disloyal customers is unalike; widely-spread age distribution for loyal customers and non-symmetric bimodal age distribution for disloyal customers, with larger distribution in mid 20's.
+* The quartiles of the loyal customers fall between 30's to 50's, whereas the quartiles of disloyal customers are more concentrated at mid 20's to near 40's.
+* Most disloyal customers are younger than loyal customers.
+```{r echo = FALSE, warning = FALSE}
 # customer type by gender and age
 cs_type_gender_age_g <-
   ggplot(airline_df, 
@@ -768,10 +777,14 @@ cs_type_gender_age_g <-
   labs(title = "Customer Type by Gender and Age", 
        x = "Gender",
        y = "Age") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
   facet_wrap(~Customer.Type) +
   scale_fill_brewer(palette="Spectral")
 cs_type_gender_age_g
+```
 
+```{r include = FALSE, warning = FALSE}
+# Not showing
 # Flight distance by customer type and class
 cs_type_flight_d_g <- 
   ggplot(airline_df, 
@@ -779,13 +792,18 @@ cs_type_flight_d_g <-
              fill = Customer.Type)) +
   geom_density(alpha = 0.3) +
   labs(title = "Flight Distance by Customer Type and Class",
-       y = "Flight Distance", 
-       x = "Customer Type") + 
+       y = "", 
+       x = "Flight Distance") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
   guides(fill=guide_legend(title="Customer Type")) +
   facet_grid(Class ~ .) + 
   scale_fill_brewer(palette = "Spectral")
 cs_type_flight_d_g
+```
 
+* No significant difference in the satisfaction level of each customer type.
+* The number of customers whom satisfied with the service provided by the airline are slightly higher in each customer type group.
+```{r echo = FALSE, warning = FALSE}
 # Customer Type by satisfaction
 cs_type_satisfaction_g <- 
   ggplot(cs_type_satisfaction_df, 
@@ -797,25 +815,29 @@ cs_type_satisfaction_g <-
   labs(title = "Satisfaction by Customer Type",
        x = "Satisfaction",
        y = "Frequency") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
   facet_wrap(~Customer.Type) +
   scale_fill_brewer(palette="Spectral")
 cs_type_satisfaction_g
 ```
 
+* Similar distribution of ratings for each services in each customer type except in-flight Wifi service.
+* Both loyal and disloyal customers rated less than 4 for in-flight Wifi service, showing customers are not satisfied for this service provided by the airline.
 ```{r echo = FALSE, warning = FALSE, fig.height = 20, fig.width = 12}
-# Customer type by satisfaction and satisfaction level in each factors
-cs_type_satisfaction_lvl_g <- 
-  ggplot(cs_type_satisfaction_lvl_df, 
-         aes(x = satisfaction.level,
+# Ratings by customer type
+cs_type_ratings_g <- 
+  ggplot(cs_type_ratings_df, 
+         aes(x = ratings,
              y = counts, 
-             fill = satisfaction)) + 
+             fill = ratings)) + 
   geom_bar(stat='identity', position = "dodge") +
-  labs(title = "Customer Type by satisfaction and satisfaction level in each factors",
-       x = "Satisfaction Level",
+  labs(title = "Ratings in each services by customer type",
+       x = "Ratings",
        y = "") + 
-  facet_grid(factors~Customer.Type) +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  facet_grid(services ~ Customer.Type) +
   scale_fill_brewer(palette="Spectral")
-cs_type_satisfaction_lvl_g
+cs_type_ratings_g
 ```
 
 ### Type of Travel
@@ -1354,6 +1376,14 @@ class_22 <- ggplot(airline_df, aes(Arrival.Delay.in.Minutes, colour = Class, fil
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
 ```
+
+
+### Correlation
+Further investigation on the correlation between different airline services and overall satisfaction.
+
+### Regression
+
+### Classification
 
 # Results
 
