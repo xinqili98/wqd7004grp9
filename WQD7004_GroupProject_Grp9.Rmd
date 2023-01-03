@@ -11,10 +11,10 @@ output:
     theme: spacelab
   word_document:
     toc: yes
-    toc_depth: '3'
+    toc_depth: '4'
   pdf_document:
     toc: yes
-    toc_depth: '3'
+    toc_depth: '4'
 editor_options:
   chunk_output_type: console
 ---
@@ -245,125 +245,42 @@ airline_df[, "X"] <- list(NULL)
 
 ## Analyses
 
-### Overall
+### Overview
 
-```{r echo = FALSE, warning = FALSE}
-# Inflight.wifi.service
-inflight_wifi_service_g <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Inflight.wifi.service, fill = Inflight.wifi.service)) + geom_bar(position = "dodge") + 
-  labs(title = "Inflight.wifi.service Overall Ratings", colour = "Inflight.wifi.service")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
+```{r include = FALSE, warning = FALSE}
+# Summarize table for visualization
+# Customer Type by ratings in each factors
+cs_type_ratings_df <- airline_df[c(3,8:21)]
+cs_type_ratings_df <- 
+  cs_type_ratings_df %>%
+  pivot_longer(-c(Customer.Type),
+               names_to = "services",
+               values_to = "ratings")  %>%
+  group_by(Customer.Type, services, ratings) %>%
+  summarise(counts = n())
 
-# Departure.Arrival.time.convenient
-departure_g <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Departure.Arrival.time.convenient, fill = Departure.Arrival.time.convenient)) + geom_bar(position = "dodge") + 
-  labs(title = "Departure Arrival time convenient Overall Ratings", colour = "Departure.Arrival.time.convenient")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
+# Ratings in each factors
+ratings_df <-
+  cs_type_ratings_df %>%
+  group_by(services, ratings) %>%
+  summarise(freq = sum(counts))
+```
 
-# Ease.of.Online.booking 
-online_booking_g <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Ease.of.Online.booking, fill = Ease.of.Online.booking)) + geom_bar(position = "dodge") + 
-  labs(title = "Ease.of.Online.booking Overall Ratings", colour = "Ease.of.Online.booking")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Gate.location
-gate_location_g <- ggplot(airline_df, aes(Gate.location, colour = Gate.location, fill = Gate.location)) + geom_bar(position = "dodge") + 
-  labs(title = "Gate.location Overall Ratings", colour = "Gate.location")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Online.boarding 
-online_boarding_g <- ggplot(airline_df, aes(Online.boarding, colour = Online.boarding, fill = Online.boarding)) + geom_bar(position = "dodge") + 
-  labs(title = "Online.boarding Overall Ratings", colour = "Online.boarding")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Seat.comfort 
-seat_comfort_g <- ggplot(airline_df, aes(Seat.comfort, colour = Seat.comfort, fill = Seat.comfort)) + geom_bar(position = "dodge") + 
-  labs(title = "Seat.comfort Overall Ratings", colour = "Seat.comfort")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Inflight.entertainment across Type of Travel
-inflight_entertainment_g <- ggplot(airline_df, aes(Inflight.entertainment, colour = Inflight.entertainment, fill = Inflight.entertainment)) + geom_bar(position = "dodge") + 
-  labs(title = "Inflight.entertainment Overall Ratings", colour = "Inflight.entertainment")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# On.board.service across Type of Travel
-onboard_service_g <- ggplot(airline_df, aes(On.board.service, colour = On.board.service, fill = On.board.service)) + geom_bar(position = "dodge") + 
-  labs(title = "On.board.service Overall Ratings", colour = "On.board.service")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Leg.room.service across Type of Travel
-legroom_service_g <- ggplot(airline_df, aes(Leg.room.service, colour = Leg.room.service, fill = Leg.room.service)) + geom_bar(position = "dodge") + 
-  labs(title = "Leg.room.service Overall Ratings", colour = "Leg.room.service")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Baggage.handling across Type of Travel
-baggage_handling_g <- ggplot(airline_df, aes(Baggage.handling, colour = Baggage.handling, fill = Baggage.handling)) + geom_bar(position = "dodge") + 
-  labs(title = "Baggage.handling Overall Ratings", colour = "Baggage.handling")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Checkin.service 
-checkin_service_g <- ggplot(airline_df, aes(Checkin.service, colour = Checkin.service, fill = Checkin.service)) + geom_bar(position = "dodge") + 
-  labs(title = "Checkin.service Overall Ratings", colour = "Checkin.service")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Inflight.service
-inflight_service_g <- ggplot(airline_df, aes(Inflight.service, colour = Inflight.service, fill = Inflight.service)) + geom_bar(position = "dodge") + 
-  labs(title = "Inflight.service Overall Ratings", colour = "Inflight.service")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
-# Cleanliness 
-cleanliness_g <- ggplot(airline_df, aes(Cleanliness, colour = Cleanliness, fill = Cleanliness)) + geom_bar(position = "dodge") + 
-  labs(title = "Cleanliness Overall Ratings", colour = "Cleanliness")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
+#### Service Ratings
+```{r echo = FALSE, warning = FALSE, fig.height = 20}
+ratings_g <- 
+  ggplot(ratings_df, 
+         aes(x = ratings,
+             y = freq, 
+             fill = ratings)) + 
+  geom_bar(stat='identity', position = "dodge") +
+  labs(title = "Ratings in each services",
+       x = "Ratings",
+       y = "") + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  facet_grid(services ~ .) +
+  scale_fill_brewer(palette="Spectral")
+ratings_g
 ```
 
 ### Customer Gender
