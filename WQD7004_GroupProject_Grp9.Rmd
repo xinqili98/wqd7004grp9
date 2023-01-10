@@ -36,7 +36,7 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 # check installed package
 packages <- c("stringr", "data.table", "ggpubr", "tidyr", "ggrepel", 
               "GGally", "vip", "patchwork", "ggplot2", "dplyr", 
-              "magrittr")
+              "magrittr", "caret")
 install.packages(setdiff(packages, rownames(installed.packages()))) 
 ```
 
@@ -53,6 +53,7 @@ library(GGally)
 library(vip)
 library(patchwork)
 library(magrittr)
+library(caret)
 ```
 
 ### Airline Passenger Satisfaction Dataset
@@ -243,7 +244,7 @@ airline_df[, "X"] <- list(NULL)
 ```
 
 
-## Analyses
+## Exploratory Data Analysis (EDA)
 
 ### Overview
 ```{r include = FALSE, warning = FALSE}
@@ -764,6 +765,7 @@ cs_type_travel_class_g
 * The distribution of age for loyal and disloyal customers is unalike; widely-spread age distribution for loyal customers and non-symmetric bimodal age distribution for disloyal customers, with larger distribution in mid 20's.
 * The quartiles of the loyal customers fall between 30's to 50's, whereas the quartiles of disloyal customers are more concentrated at mid 20's to near 40's.
 * Most disloyal customers are younger than loyal customers.
+
 ```{r echo = FALSE, warning = FALSE}
 # customer type by gender and age
 cs_type_gender_age_g <-
@@ -803,6 +805,7 @@ cs_type_flight_d_g
 
 * No significant difference in the satisfaction level of each customer type.
 * The number of customers whom satisfied with the service provided by the airline are slightly higher in each customer type group.
+
 ```{r echo = FALSE, warning = FALSE}
 # Customer Type by satisfaction
 cs_type_satisfaction_g <- 
@@ -823,6 +826,7 @@ cs_type_satisfaction_g
 
 * Similar distribution of ratings for each services in each customer type except in-flight Wifi service.
 * Both loyal and disloyal customers rated less than 4 for in-flight Wifi service, showing customers are not satisfied for this service provided by the airline.
+
 ```{r echo = FALSE, warning = FALSE, fig.height = 20, fig.width = 12}
 # Ratings by customer type
 cs_type_ratings_g <- 
@@ -1378,13 +1382,121 @@ class_22 <- ggplot(airline_df, aes(Arrival.Delay.in.Minutes, colour = Class, fil
 ```
 
 
-### Correlation
+## Correlation
 Further investigation on the correlation between different airline services and overall satisfaction.
 
-### Regression
+## Regression
 
-### Classification
+## Classification
+Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
+
+### Data Splitting
+Data is split into train and test dataset (80:20), 103,904 and 25,976 records respectively.
+```{r echo = TRUE, warning = FALSE}
+# Train dataset
+airline_df_train <- airline_df
+airline_df_train <- subset(airline_df_train, select = -c(id))
+airline_df_train$satisfaction <- factor(airline_df_train$satisfaction)
+
+# Test dataset
+airline_df_test <- 
+  read.csv("Airline Passenger Satisfaction Dataset\\test.csv"
+           , header = TRUE)
+airline_df_test <- subset(airline_df_test, select = -c(id, X))
+airline_df_test$satisfaction <- factor(airline_df_test$satisfaction)
+airline_df_test$Customer.Type[airline_df_test$Customer.Type=='disloyal Customer'] <- 'Disloyal Customer'
+# colSums(is.na(airline_df_test))
+airline_df_test$Arrival.Delay.in.Minutes[is.na(airline_df_test$Arrival.Delay.in.Minutes)] <- 0
+```
+
+### Handle Categorical Data
+Convert categorical data to numerical data using:  
+**Ordinal Data**  
+Convert Ordinal to Integer
+```{r echo = TRUE, warning = FALSE}
+ord_ratings <- c("Inflight.wifi.service", "Food.and.drink", "Seat.comfort",
+          "Departure.Arrival.time.convenient",	"Ease.of.Online.booking",
+          "Gate.location", "Online.boarding", "Inflight.entertainment",
+          "On.board.service",	"Leg.room.service",	"Baggage.handling",
+          "Checkin.service",	"Inflight.service",	"Cleanliness"
+          )
+airline_df_train[ord_ratings] <- 
+  lapply(airline_df_train[ord_ratings], 
+         function(x) as.numeric(as.character(x))
+         )
+```
+**Nominal Data**  
+One-hot encoding to convert each category into a new column and assign a value as 1 or 0 to the column
+```{r echo = TRUE, warning = FALSE}
+# One-Hot encoding
+features <- c("Gender",	"Customer.Type",	"Age", "Type.of.Travel", "Class",	
+              "Flight.Distance", ord_ratings, "Departure.Delay.in.Minutes",
+              "Arrival.Delay.in.Minutes")
+## Train dataset
+airline_df_train_trsf <- 
+  cbind(data.frame(predict(dummyVars(
+          ~.,
+          data = airline_df_train),
+          airline_df_train)
+          ), 
+        satisfaction = airline_df_train$satisfaction
+        )
+airline_df_train_trsf <- subset(airline_df_train_trsf, 
+                                select = -c(satisfaction.neutral.or.dissatisfied,
+                                            satisfaction.satisfied))
+## Test dataset
+airline_df_test_trsf <- 
+  cbind(data.frame(predict(dummyVars(
+          ~.,
+          data = airline_df_test),
+          airline_df_test)
+          ), 
+        satisfaction = airline_df_test$satisfaction
+        )
+airline_df_test_trsf <- subset(airline_df_test_trsf,
+                               select = -c(satisfaction.neutral.or.dissatisfied,
+                                            satisfaction.satisfied))
+
+# Remove perfectly correlated variables
+airline_df_train_trsf <- subset(airline_df_train_trsf, 
+                                select = -c(Gender.Male, Customer.Type.Loyal.Customer, 
+                                            Type.of.Travel.Personal.Travel, Class.Eco.Plus))
+airline_df_test_trsf <- subset(airline_df_test_trsf, 
+                                select = -c(GenderMale, Customer.TypeLoyal.Customer, 
+                                            Type.of.TravelPersonal.Travel, ClassEco.Plus))
+colnames(airline_df_test_trsf) <- colnames(airline_df_train_trsf)
+```
+
+### Logistic Regression
+Fit logistic regression model using the glm (generalized linear model) function  
+**Results of the model:**
+```{r echo = TRUE, warning = FALSE}
+logit_model <- glm(satisfaction ~.,
+                   family = binomial(link='logit'),
+                   data = airline_df_train_trsf)
+summary(logit_model)
+```
+
+### Model Evaluation
+```{r echo = TRUE, warning = FALSE}
+# Predict test data
+predict_reg <- predict(logit_model, 
+                       subset(airline_df_test_trsf, 
+                              select = -c(satisfaction)
+                              ),
+                       type = "response")
+predict_reg <- ifelse(predict_reg >0.5, "satisfied", "neutral or dissatisfied")
+
+# Evaluating model accuracy using confusion matrix
+table(airline_df_test_trsf$satisfaction, predict_reg)
+
+missing_classerr <- mean(predict_reg != airline_df_test_trsf$satisfaction)
+print(paste('Accuracy =', 1 - missing_classerr))
+
+```
 
 # Results
 
 # Conclusion
+
+# Contribution
