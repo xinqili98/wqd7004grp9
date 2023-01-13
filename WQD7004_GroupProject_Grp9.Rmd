@@ -1443,6 +1443,104 @@ ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
    lab = TRUE)
 ```   
 ## Regression
+#Linear regression and multiple linear regression are designed for modeling relationships between a continuous dependent variable and one or more independent variables. Since the dependent variable in airline dataset, 'satisfaction', is a categorical variable, it would not be appropriate to use linear regression or multiple linear regression.
+
+In this case, it's more appropriate to use logistic regression or other classification models such as decision tree, random forest, gradient boosting machine (GBM), neural network, etc. These models can handle categorical dependent variables and non-linear relationships.
+
+df2 <- data.frame(Cleanliness = airline_df$Cleanliness,
+                  Inflight.wifi.service = airline_df$Inflight.wifi.service,
+                  Departure.Arrival.time.convenient = airline_df$Departure.Arrival.time.convenient,
+                  Ease.of.Online.booking = airline_df$Ease.of.Online.booking,
+                  Gate.location = airline_df$Gate.location,
+                  Food.and.drink = airline_df$Food.and.drink,
+                  Online.boarding = airline_df$Online.boarding,
+                  Seat.comfort = airline_df$Seat.comfort,
+                  Inflight.entertainment = airline_df$Inflight.entertainment,
+                  On.board.service = airline_df$On.board.service,
+                  Leg.room.service = airline_df$Leg.room.service,
+                  Baggage.handling = airline_df$Baggage.handling,
+                  Checkin.service = airline_df$Checkin.service,
+                  Inflight.service = airline_df$Inflight.service,
+                  satisfaction = airline_df$satisfaction)
+
+#convert the satisfaction variable to a binary variable (1 for satisfied, 0 for neutral or dissatisfied)
+df2$satisfaction <- ifelse(df2$satisfaction == "satisfied", 1, 0)
+
+#run the logistic regression model
+model <- glm(satisfaction ~ ., data = df2, family = binomial)
+summary(model)
+
+library(ggplot2)
+library(gridExtra)
+
+g1 <- ggplot(data = df2, aes(x = Inflight.wifi.service, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Inflight wifi service", y = "Satisfaction")
+
+g2 <- ggplot(data = df2, aes(x = Departure.Arrival.time.convenient, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Departure Arrival time convenient", y = "Satisfaction")
+
+g3 <- ggplot(data = df2, aes(x = Ease.of.Online.booking, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Ease.of.Online.booking", y = "Satisfaction")
+
+g4 <- ggplot(data = df2, aes(x = Gate.location, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Gate.location", y = "Satisfaction")
+
+g5 <- ggplot(data = df2, aes(x = Food.and.drink, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Food.and.drink", y = "Satisfaction")
+
+g6 <- ggplot(data = df2, aes(x = Online.boarding, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Online.boarding", y = "Satisfaction")
+
+g6 <- ggplot(data = df2, aes(x = Seat.comfort, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Seat.comfort", y = "Satisfaction")
+
+g7 <- ggplot(data = df2, aes(x = Inflight.entertainment, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Inflight.entertainment", y = "Satisfaction")
+
+g8 <- ggplot(data = df2, aes(x = On.board.service, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "On.board.service", y = "Satisfaction")
+
+g9 <- ggplot(data = df2, aes(x = Leg.room.service, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Leg.room.service", y = "Satisfaction")
+
+g10 <- ggplot(data = df2, aes(x = Baggage.handling, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Baggage.handling", y = "Satisfaction")
+
+g11 <- ggplot(data = df2, aes(x = Checkin.service, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Checkin.service", y = "Satisfaction")
+
+g12 <- ggplot(data = df2, aes(x = Inflight.service, y = satisfaction)) +
+  geom_point() +
+  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+  labs(x = "Inflight.service", y = "Satisfaction")
+
+grid.arrange(g1, g2, g3, g4,  ncol = 2)
+grid.arrange(g5, g6, g7, g8, ncol = 2)
+grid.arrange(g9, g10, g11, g12, ncol = 2)
 
 ## Classification
 Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
