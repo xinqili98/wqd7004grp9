@@ -36,8 +36,8 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 # check installed package
 packages <- c("stringr", "data.table", "ggpubr", "tidyr", "ggrepel", 
               "GGally", "vip", "patchwork", "ggplot2", "dplyr", 
-              "magrittr", "caret","lattice","ggcorrplot")
-install.packages(setdiff(packages, rownames(installed.packages()))) 
+              "magrittr", "caret","lattice","ggcorrplot", "devtools")
+install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")
 ```
 
 ```{r echo = TRUE, warning = FALSE, message = FALSE, results = 'hide'}
@@ -56,6 +56,7 @@ library(vip)
 library(patchwork)
 library(magrittr)
 library(caret)
+library(devtools)
 ```
 
 ### Airline Passenger Satisfaction Dataset
@@ -1336,29 +1337,25 @@ Further investigation on the correlation between different airline services and 
 
 #Correlation between different variables
 #Removed the non-numeric data
-airline_corr<- airline_df %>%
-  select(!c('id','Gender',	'Customer.Type',	'Age',	'Type.of.Travel',	'Class',	'Flight.Distance',)) %>%   mutate_if(is.factor,as.numeric) 
-
-
-#Creating correlation matrix
-
-corr_mat <- round(cor(airline_corr),2)
-head(corr_mat)
-
-# reduce the size of correlation matrix
-melted_corr_mat <- melt(corr_mat)
-head(melted_corr_mat)
+# airline_corr<- airline_df %>%
+#   select(!c('id','Gender', 'Customer.Type',	'Age', 'Type.of.Travel',	'Class',	'Flight.Distance',)) %>%   mutate_if(is.factor,as.numeric) 
+# 
+# 
+# # Creating correlation matrix
+# corr_mat <- round(cor(airline_corr),2)
+# head(corr_mat)
+# 
+# # reduce the size of correlation matrix
+# melted_corr_mat <- melt(corr_mat)
+# head(melted_corr_mat)
  
 # plotting the correlation heatmap
-<!-- library(ggplot2) -->
-<!-- ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, -->
-<!--                                    fill=value)) + -->
-<!-- geom_tile() + -->
-<!-- geom_text(aes(Var2, Var1, label = value), -->
-<!--           color = "black", size = 4) -->
-
-ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
-   lab = TRUE)
+# library(ggplot2)
+# ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, fill=value)) + geom_tile() +
+#   geom_text(aes(Var2, Var1, label = value), color = "black", size = 4)
+# 
+# ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
+#    lab = TRUE)
    
 
 #Included categorical data in correlation heatmap
@@ -1370,29 +1367,31 @@ str(airline_corr2)
 
 #Creating correlation matrix
 
-corr_mat2 <- round(cor(airline_corr2),2)
-head(corr_mat2)
-
-# reduce the size of correlation matrix
-melted_corr_mat2 <- melt(corr_mat2)
-head(melted_corr_mat2)
+# corr_mat2 <- round(cor(airline_corr2),2)
+# head(corr_mat2)
+# 
+# # reduce the size of correlation matrix
+# melted_corr_mat2 <- melt(corr_mat2)
+# head(melted_corr_mat2)
  
 ## plotting the correlation heatmap
-<!-- library(ggplot2) -->
-<!-- ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, -->
-<!--                                    fill=value)) + -->
-<!-- geom_tile() + -->
-<!-- geom_text(aes(Var2, Var1, label = value), -->
-<!--           color = "black", size = 4) -->
+# <!-- library(ggplot2) -->
+# <!-- ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, -->
+# <!--                                    fill=value)) + -->
+# <!-- geom_tile() + -->
+# <!-- geom_text(aes(Var2, Var1, label = value), -->
+# <!--           color = "black", size = 4) -->
 
-ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
-   lab = TRUE)
+# ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
+#    lab = TRUE)
 ```   
 ## Regression
+
 </p>Linear regression and multiple linear regression are designed for modeling relationships between a continuous dependent variable and one or more independent variables. Since the dependent variable in airline dataset, 'satisfaction', is a categorical variable, it would not be appropriate to use linear regression or multiple linear regression.
 
 In this case, it's more appropriate to use logistic regression or other classification models such as decision tree, random forest, gradient boosting machine (GBM), neural network, etc. These models can handle categorical dependent variables and non-linear relationships.</p>
 
+```{r echo = TRUE, warning = FALSE}
 df2 <- data.frame(Cleanliness = airline_df$Cleanliness,
                   Inflight.wifi.service = airline_df$Inflight.wifi.service,
                   Departure.Arrival.time.convenient = airline_df$Departure.Arrival.time.convenient,
@@ -1487,6 +1486,7 @@ g12 <- ggplot(data = df2, aes(x = Inflight.service, y = satisfaction)) +
 grid.arrange(g1, g2, g3, g4,  ncol = 2)
 grid.arrange(g5, g6, g7, g8, ncol = 2)
 grid.arrange(g9, g10, g11, g12, ncol = 2)
+```
 
 <li> The equation for the logistic regression model is:
 </p>
