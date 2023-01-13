@@ -1132,80 +1132,60 @@ For Personal Travel, except the service **Departure Arrival time convenient** wh
 ### Class
 
 ```{r echo = FALSE, warning = FALSE}
+airline_df$Class.Group <- ifelse(airline_df$Class == "Eco" | airline_df$Class == "Eco Plus", "Eco", "Business")
+
 # Class of Airline Passengers
-class_1 <- ggplot(airline_df, aes(Class)) + geom_bar()+
+class_1 <- ggplot(airline_df, aes(Class.Group, colour = Class.Group, fill = Class.Group)) + geom_bar()+
   labs(title = "Class of Airline Passengers") + 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_1
 
 # Satisfaction across Class
-# q <- ggplot(df, aes(Class, colour = satisfaction, fill = satisfaction)) + geom_bar() +
-# labs(title = "Satisfaction across Class", colour = "satisfaction")
-# print(q)
-
- 
-
-class_2 <- ggplot(airline_df, aes(Class, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
+class_2 <- ggplot(airline_df, aes(Class.Group, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
   labs(title = "Satisfaction across Class", colour = "satisfaction")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_2
 
 # Gender across Class
-class_3 <- ggplot(airline_df, aes(Class, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
+class_3 <- ggplot(airline_df, aes(Class.Group, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
   labs(title = "Gender across Class", colour = "Gender")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_3
 
 # Customer.Type across Class
-class_4 <- ggplot(airline_df, aes(Class, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
+class_4 <- ggplot(airline_df, aes(Class.Group, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
   labs(title = "Customer.Type across Class", colour = "Customer.Type")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
-
-# Customer.Type across Class
-class_5 <- ggplot(airline_df, aes(Class, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Class across Class", colour = "Class")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
- 
+class_4
 
 # Age across Class
-class_6 <- ggplot(airline_df, aes(Age, colour = Class, fill = Class)) + geom_density(alpha = 0.5) + 
-  labs(title = "Age across Class", colour = "Class")+ 
+class_5 <- ggplot(airline_df, aes(Age, colour = Class.Group, fill = Class.Group)) + geom_density(alpha = 0.5) + 
+  labs(title = "Age across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_5
 
 # Flight Distance across Class
-class_7 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class)) +
+class_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class.Group)) +
   geom_density(alpha = 0.5) +
   labs(title = "Flight Distance by Class",
        y = "Frequency", 
@@ -1216,171 +1196,137 @@ class_7 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_6
 
 # Inflight.wifi.service across Class
-class_8 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Inflight.wifi.service across Class", colour = "Class")+ 
+class_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Inflight.wifi.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_7
 
 # Departure.Arrival.time.convenient across Class
-class_9 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Departure.Arrival.time.convenient across Class", colour = "Class")+ 
+class_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Departure.Arrival.time.convenient across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_8
 
 # Ease.of.Online.booking across Class
-class_10 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Ease.of.Online.booking across Class", colour = "Class")+ 
+class_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Ease.of.Online.booking across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_9
 
 # Gate.location across Class
-class_11 <- ggplot(airline_df, aes(Gate.location, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Gate.location across Class", colour = "Class")+ 
+class_10 <- ggplot(airline_df, aes(Gate.location, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Gate.location across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_10
 
 # Online.boarding across Class
-class_12 <- ggplot(airline_df, aes(Online.boarding, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Online.boarding across Class", colour = "Class")+ 
+class_11 <- ggplot(airline_df, aes(Online.boarding, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Online.boarding across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_11
 
 # Seat.comfort across Class
-class_13 <- ggplot(airline_df, aes(Seat.comfort, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Seat.comfort across Class", colour = "Class")+ 
+class_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Seat.comfort across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_12
 
 # Inflight.entertainment across Class
-class_14 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Inflight.entertainment across Class", colour = "Class")+ 
+class_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Inflight.entertainment across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_13
 
 # On.board.service across Class
-class_15 <- ggplot(airline_df, aes(On.board.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "On.board.service across Class", colour = "Class")+ 
+class_14 <- ggplot(airline_df, aes(On.board.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "On.board.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_14
 
 # Leg.room.service across Class
-class_16 <- ggplot(airline_df, aes(Leg.room.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Leg.room.service across Class", colour = "Class")+ 
+class_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Leg.room.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_15
 
 # Baggage.handling across Class
-class_17 <- ggplot(airline_df, aes(Baggage.handling, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Baggage.handling across Class", colour = "Class")+ 
+class_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Baggage.handling across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_16
 
 # Checkin.service across Class
-class_18 <- ggplot(airline_df, aes(Checkin.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Checkin.service across Class", colour = "Class")+ 
+class_17 <- ggplot(airline_df, aes(Checkin.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Checkin.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_17
 
 # Inflight.service across Class
-class_19 <- ggplot(airline_df, aes(Inflight.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Inflight.service across Class", colour = "Class")+ 
+class_18 <- ggplot(airline_df, aes(Inflight.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Inflight.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
+class_18
 
 # Cleanliness across Class
-class_20 <- ggplot(airline_df, aes(Cleanliness, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Cleanliness across Class", colour = "Class")+ 
+class_19 <- ggplot(airline_df, aes(Cleanliness, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+  labs(title = "Cleanliness across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-
- 
-
-# Departure.Delay.in.Minutes across Class
-class_21 <- ggplot(airline_df, aes(Departure.Delay.in.Minutes, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Departure.Delay.in.Minutes across Class", colour = "Class")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
-
- 
-
-# Arrival.Delay.in.Minutes across Class
-class_22 <- ggplot(airline_df, aes(Arrival.Delay.in.Minutes, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
-  labs(title = "Arrival.Delay.in.Minutes across Class", colour = "Class")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 5)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))
+class_19
 ```
 
 
