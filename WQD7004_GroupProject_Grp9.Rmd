@@ -1389,9 +1389,9 @@ ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
    lab = TRUE)
 ```   
 ## Regression
-#Linear regression and multiple linear regression are designed for modeling relationships between a continuous dependent variable and one or more independent variables. Since the dependent variable in airline dataset, 'satisfaction', is a categorical variable, it would not be appropriate to use linear regression or multiple linear regression.
+</p>Linear regression and multiple linear regression are designed for modeling relationships between a continuous dependent variable and one or more independent variables. Since the dependent variable in airline dataset, 'satisfaction', is a categorical variable, it would not be appropriate to use linear regression or multiple linear regression.
 
-In this case, it's more appropriate to use logistic regression or other classification models such as decision tree, random forest, gradient boosting machine (GBM), neural network, etc. These models can handle categorical dependent variables and non-linear relationships.
+In this case, it's more appropriate to use logistic regression or other classification models such as decision tree, random forest, gradient boosting machine (GBM), neural network, etc. These models can handle categorical dependent variables and non-linear relationships.</p>
 
 df2 <- data.frame(Cleanliness = airline_df$Cleanliness,
                   Inflight.wifi.service = airline_df$Inflight.wifi.service,
@@ -1487,6 +1487,24 @@ g12 <- ggplot(data = df2, aes(x = Inflight.service, y = satisfaction)) +
 grid.arrange(g1, g2, g3, g4,  ncol = 2)
 grid.arrange(g5, g6, g7, g8, ncol = 2)
 grid.arrange(g9, g10, g11, g12, ncol = 2)
+
+<li> The equation for the logistic regression model is:
+</p>
+log(p/(1-p)) = B0 + B1Cleanliness + B2Inflight.wifi.service + B3Departure.Arrival.time.convenient + B4Ease.of.Online.booking + B5Gate.location + B6Food.and.drink + B7Online.boarding + B8Seat.comfort + B9Inflight.entertainment + B10On.board.service + B11Leg.room.service + B12Baggage.handling + B13Checkin.service + B14Inflight.service
+</p>
+where:</p>
+p is the probability of the outcome variable taking on the value of "satisfied" (1)
+B0 is the intercept
+B1 to B14 are the coefficients for each predictor variable 
+</p>
+<li> The summary of the model shows that **all the predictor variables have a significant association with the outcome variable**, as the p-value for all predictor variables is less than 0.05.
+</p>
+<li> The z-value for all the predictor variables is high and the p-value is low, which indicates that the predictor variables are strongly associated with the outcome variable.
+</p>
+<li> The residual deviance, which measures the difference between the observed and predicted values of the outcome variable, is 91926 on 103889 degrees of freedom. The smaller the residual deviance, the better the model fits the data.
+</p>
+<li> The AIC value is 91956, which is a measure of the overall goodness of fit of the model, the smaller the AIC the better the model.</p>
+<li> It has been done 5 iterations of Fisher Scoring optimization to estimate the model coefficients.</p>
 
 ## Classification
 Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
