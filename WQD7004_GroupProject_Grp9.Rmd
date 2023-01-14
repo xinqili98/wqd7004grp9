@@ -36,8 +36,10 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 # check installed package
 packages <- c("stringr", "data.table", "ggpubr", "tidyr", "ggrepel", 
               "GGally", "vip", "patchwork", "ggplot2", "dplyr", 
-              "magrittr", "caret","lattice","ggcorrplot", "devtools")
-install.packages(setdiff(packages, rownames(installed.packages())), repos = "http://cran.us.r-project.org")
+              "magrittr", "caret","lattice","ggcorrplot", "devtools", 
+              "caTools")
+install.packages(setdiff(packages, rownames(installed.packages())), 
+                 repos = "http://cran.us.r-project.org")
 ```
 
 ```{r echo = TRUE, warning = FALSE, message = FALSE, results = 'hide'}
@@ -57,6 +59,8 @@ library(patchwork)
 library(magrittr)
 library(caret)
 library(devtools)
+library(caTools)
+library(party)
 ```
 
 ### Airline Passenger Satisfaction Dataset
@@ -1356,14 +1360,13 @@ Further investigation on the correlation between different airline services and 
 # 
 # ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
 #    lab = TRUE)
-   
 
 #Included categorical data in correlation heatmap
-airline_corr2<- airline_df %>%
-  select(!c('id')) %>%   mutate_if(is.factor,as.numeric) 
-airline_corr2<- airline_corr2 %>%
-  select(everything()) %>%   mutate_if(is.integer,as.numeric) 
-str(airline_corr2)
+# airline_corr2<- airline_df %>%
+#   select(!c('id')) %>%   mutate_if(is.factor,as.numeric) 
+# airline_corr2<- airline_corr2 %>%
+#   select(everything()) %>%   mutate_if(is.integer,as.numeric) 
+# str(airline_corr2)
 
 #Creating correlation matrix
 
@@ -1392,100 +1395,100 @@ str(airline_corr2)
 In this case, it's more appropriate to use logistic regression or other classification models such as decision tree, random forest, gradient boosting machine (GBM), neural network, etc. These models can handle categorical dependent variables and non-linear relationships.</p>
 
 ```{r echo = TRUE, warning = FALSE}
-df2 <- data.frame(Cleanliness = airline_df$Cleanliness,
-                  Inflight.wifi.service = airline_df$Inflight.wifi.service,
-                  Departure.Arrival.time.convenient = airline_df$Departure.Arrival.time.convenient,
-                  Ease.of.Online.booking = airline_df$Ease.of.Online.booking,
-                  Gate.location = airline_df$Gate.location,
-                  Food.and.drink = airline_df$Food.and.drink,
-                  Online.boarding = airline_df$Online.boarding,
-                  Seat.comfort = airline_df$Seat.comfort,
-                  Inflight.entertainment = airline_df$Inflight.entertainment,
-                  On.board.service = airline_df$On.board.service,
-                  Leg.room.service = airline_df$Leg.room.service,
-                  Baggage.handling = airline_df$Baggage.handling,
-                  Checkin.service = airline_df$Checkin.service,
-                  Inflight.service = airline_df$Inflight.service,
-                  satisfaction = airline_df$satisfaction)
-
-#convert the satisfaction variable to a binary variable (1 for satisfied, 0 for neutral or dissatisfied)
-df2$satisfaction <- ifelse(df2$satisfaction == "satisfied", 1, 0)
-
-#run the logistic regression model
-model <- glm(satisfaction ~ ., data = df2, family = binomial)
-summary(model)
-
-library(ggplot2)
-library(gridExtra)
-
-g1 <- ggplot(data = df2, aes(x = Inflight.wifi.service, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Inflight wifi service", y = "Satisfaction")
-
-g2 <- ggplot(data = df2, aes(x = Departure.Arrival.time.convenient, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Departure Arrival time convenient", y = "Satisfaction")
-
-g3 <- ggplot(data = df2, aes(x = Ease.of.Online.booking, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Ease.of.Online.booking", y = "Satisfaction")
-
-g4 <- ggplot(data = df2, aes(x = Gate.location, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Gate.location", y = "Satisfaction")
-
-g5 <- ggplot(data = df2, aes(x = Food.and.drink, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Food.and.drink", y = "Satisfaction")
-
-g6 <- ggplot(data = df2, aes(x = Online.boarding, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Online.boarding", y = "Satisfaction")
-
-g6 <- ggplot(data = df2, aes(x = Seat.comfort, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Seat.comfort", y = "Satisfaction")
-
-g7 <- ggplot(data = df2, aes(x = Inflight.entertainment, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Inflight.entertainment", y = "Satisfaction")
-
-g8 <- ggplot(data = df2, aes(x = On.board.service, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "On.board.service", y = "Satisfaction")
-
-g9 <- ggplot(data = df2, aes(x = Leg.room.service, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Leg.room.service", y = "Satisfaction")
-
-g10 <- ggplot(data = df2, aes(x = Baggage.handling, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Baggage.handling", y = "Satisfaction")
-
-g11 <- ggplot(data = df2, aes(x = Checkin.service, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Checkin.service", y = "Satisfaction")
-
-g12 <- ggplot(data = df2, aes(x = Inflight.service, y = satisfaction)) +
-  geom_point() +
-  geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
-  labs(x = "Inflight.service", y = "Satisfaction")
-
-grid.arrange(g1, g2, g3, g4,  ncol = 2)
-grid.arrange(g5, g6, g7, g8, ncol = 2)
-grid.arrange(g9, g10, g11, g12, ncol = 2)
+# df2 <- data.frame(Cleanliness = airline_df$Cleanliness,
+#                   Inflight.wifi.service = airline_df$Inflight.wifi.service,
+#                   Departure.Arrival.time.convenient = airline_df$Departure.Arrival.time.convenient,
+#                   Ease.of.Online.booking = airline_df$Ease.of.Online.booking,
+#                   Gate.location = airline_df$Gate.location,
+#                   Food.and.drink = airline_df$Food.and.drink,
+#                   Online.boarding = airline_df$Online.boarding,
+#                   Seat.comfort = airline_df$Seat.comfort,
+#                   Inflight.entertainment = airline_df$Inflight.entertainment,
+#                   On.board.service = airline_df$On.board.service,
+#                   Leg.room.service = airline_df$Leg.room.service,
+#                   Baggage.handling = airline_df$Baggage.handling,
+#                   Checkin.service = airline_df$Checkin.service,
+#                   Inflight.service = airline_df$Inflight.service,
+#                   satisfaction = airline_df$satisfaction)
+# 
+# #convert the satisfaction variable to a binary variable (1 for satisfied, 0 for neutral or dissatisfied)
+# df2$satisfaction <- ifelse(df2$satisfaction == "satisfied", 1, 0)
+# 
+# #run the logistic regression model
+# model <- glm(satisfaction ~ ., data = df2, family = binomial)
+# summary(model)
+# 
+# library(ggplot2)
+# library(gridExtra)
+# 
+# g1 <- ggplot(data = df2, aes(x = Inflight.wifi.service, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Inflight wifi service", y = "Satisfaction")
+# 
+# g2 <- ggplot(data = df2, aes(x = Departure.Arrival.time.convenient, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Departure Arrival time convenient", y = "Satisfaction")
+# 
+# g3 <- ggplot(data = df2, aes(x = Ease.of.Online.booking, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Ease.of.Online.booking", y = "Satisfaction")
+# 
+# g4 <- ggplot(data = df2, aes(x = Gate.location, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Gate.location", y = "Satisfaction")
+# 
+# g5 <- ggplot(data = df2, aes(x = Food.and.drink, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Food.and.drink", y = "Satisfaction")
+# 
+# g6 <- ggplot(data = df2, aes(x = Online.boarding, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Online.boarding", y = "Satisfaction")
+# 
+# g6 <- ggplot(data = df2, aes(x = Seat.comfort, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Seat.comfort", y = "Satisfaction")
+# 
+# g7 <- ggplot(data = df2, aes(x = Inflight.entertainment, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Inflight.entertainment", y = "Satisfaction")
+# 
+# g8 <- ggplot(data = df2, aes(x = On.board.service, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "On.board.service", y = "Satisfaction")
+# 
+# g9 <- ggplot(data = df2, aes(x = Leg.room.service, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Leg.room.service", y = "Satisfaction")
+# 
+# g10 <- ggplot(data = df2, aes(x = Baggage.handling, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Baggage.handling", y = "Satisfaction")
+# 
+# g11 <- ggplot(data = df2, aes(x = Checkin.service, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Checkin.service", y = "Satisfaction")
+# 
+# g12 <- ggplot(data = df2, aes(x = Inflight.service, y = satisfaction)) +
+#   geom_point() +
+#   geom_smooth(method = "glm", method.args = list(family = "binomial"), se = FALSE) +
+#   labs(x = "Inflight.service", y = "Satisfaction")
+# 
+# grid.arrange(g1, g2, g3, g4,  ncol = 2)
+# grid.arrange(g5, g6, g7, g8, ncol = 2)
+# grid.arrange(g9, g10, g11, g12, ncol = 2)
 ```
 
 <li> The equation for the logistic regression model is:
@@ -1509,38 +1512,20 @@ B1 to B14 are the coefficients for each predictor variable
 ## Classification
 Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
 
-### Data Splitting
-Data is split into train and test dataset (80:20), 103,904 and 25,976 records respectively.
-```{r echo = TRUE, warning = FALSE}
-# Train dataset
-airline_df_train <- airline_df
-airline_df_train <- subset(airline_df_train, select = -c(id))
-airline_df_train$satisfaction <- factor(airline_df_train$satisfaction)
-
-# Test dataset
-airline_df_test <- 
-  read.csv("Airline Passenger Satisfaction Dataset\\test.csv"
-           , header = TRUE)
-airline_df_test <- subset(airline_df_test, select = -c(id, X))
-airline_df_test$satisfaction <- factor(airline_df_test$satisfaction)
-airline_df_test$Customer.Type[airline_df_test$Customer.Type=='disloyal Customer'] <- 'Disloyal Customer'
-# colSums(is.na(airline_df_test))
-airline_df_test$Arrival.Delay.in.Minutes[is.na(airline_df_test$Arrival.Delay.in.Minutes)] <- 0
-```
-
 ### Handle Categorical Data
 Convert categorical data to numerical data using:  
 **Ordinal Data**  
 Convert Ordinal to Integer
 ```{r echo = TRUE, warning = FALSE}
+airline_df_m <- airline_df
 ord_ratings <- c("Inflight.wifi.service", "Food.and.drink", "Seat.comfort",
           "Departure.Arrival.time.convenient",	"Ease.of.Online.booking",
           "Gate.location", "Online.boarding", "Inflight.entertainment",
           "On.board.service",	"Leg.room.service",	"Baggage.handling",
           "Checkin.service",	"Inflight.service",	"Cleanliness"
           )
-airline_df_train[ord_ratings] <- 
-  lapply(airline_df_train[ord_ratings], 
+airline_df_m[ord_ratings] <- 
+  lapply(airline_df_m[ord_ratings], 
          function(x) as.numeric(as.character(x))
          )
 ```
@@ -1551,39 +1536,34 @@ One-hot encoding to convert each category into a new column and assign a value a
 features <- c("Gender",	"Customer.Type",	"Age", "Type.of.Travel", "Class",	
               "Flight.Distance", ord_ratings, "Departure.Delay.in.Minutes",
               "Arrival.Delay.in.Minutes")
-## Train dataset
-airline_df_train_trsf <- 
+airline_df_m_trsf <- 
   cbind(data.frame(predict(dummyVars(
           ~.,
-          data = airline_df_train),
-          airline_df_train)
+          data = airline_df_m),
+          airline_df_m)
           ), 
-        satisfaction = airline_df_train$satisfaction
+        satisfaction = airline_df_m$satisfaction
         )
-airline_df_train_trsf <- subset(airline_df_train_trsf, 
-                                select = -c(satisfaction.neutral.or.dissatisfied,
-                                            satisfaction.satisfied))
-## Test dataset
-airline_df_test_trsf <- 
-  cbind(data.frame(predict(dummyVars(
-          ~.,
-          data = airline_df_test),
-          airline_df_test)
-          ), 
-        satisfaction = airline_df_test$satisfaction
-        )
-airline_df_test_trsf <- subset(airline_df_test_trsf,
-                               select = -c(satisfaction.neutral.or.dissatisfied,
-                                            satisfaction.satisfied))
+airline_df_m_trsf <- subset(airline_df_m_trsf, 
+                            select = -c(satisfaction.neutral.or.dissatisfied,
+                                        satisfaction.satisfied, id))
 
 # Remove perfectly correlated variables
-airline_df_train_trsf <- subset(airline_df_train_trsf, 
-                                select = -c(Gender.Male, Customer.Type.Loyal.Customer, 
-                                            Type.of.Travel.Personal.Travel, Class.Eco.Plus))
-airline_df_test_trsf <- subset(airline_df_test_trsf, 
-                                select = -c(GenderMale, Customer.TypeLoyal.Customer, 
-                                            Type.of.TravelPersonal.Travel, ClassEco.Plus))
-colnames(airline_df_test_trsf) <- colnames(airline_df_train_trsf)
+airline_df_m_trsf <- subset(airline_df_m_trsf, 
+                            select = -c(Gender.Male, Customer.Type.Loyal.Customer, 
+                                        Type.of.Travel.Personal.Travel, Class.Eco.Plus))
+
+# Set satisfaction as factors
+airline_df_m_trsf$satisfaction <- factor(airline_df_m_trsf$satisfaction)
+```
+
+### Data Splitting
+Data is split into train and test dataset (80:20), 82,258 and 21,646 records respectively.
+```{r echo = TRUE, warning = FALSE}
+# Splitting dataset
+split <- sample.split(airline_df_m_trsf, SplitRatio = 0.8)
+train <- subset(airline_df_m_trsf, split == "TRUE")
+test <- subset(airline_df_m_trsf, split == "FALSE")
 ```
 
 ### Logistic Regression
@@ -1592,26 +1572,62 @@ Fit logistic regression model using the glm (generalized linear model) function
 ```{r echo = TRUE, warning = FALSE}
 logit_model <- glm(satisfaction ~.,
                    family = binomial(link='logit'),
-                   data = airline_df_train_trsf)
+                   data = train)
 summary(logit_model)
 ```
 
-### Model Evaluation
+**ANOVA Chi-square test**  
+To check the overall effect of variables on the dependent variables
+```{r echo = TRUE, warning = FALSE}
+anova(logit_model, test = "Chisq")
+```
+
+**Model Prediction & Evaluation**    
+Model evaluation using confusion matrix
 ```{r echo = TRUE, warning = FALSE}
 # Predict test data
 predict_reg <- predict(logit_model, 
-                       subset(airline_df_test_trsf, 
+                       subset(test, 
                               select = -c(satisfaction)
                               ),
                        type = "response")
 predict_reg <- ifelse(predict_reg >0.5, "satisfied", "neutral or dissatisfied")
 
-# Evaluating model accuracy using confusion matrix
-table(airline_df_test_trsf$satisfaction, predict_reg)
-
-missing_classerr <- mean(predict_reg != airline_df_test_trsf$satisfaction)
+# Confusion matrix
+table(test$satisfaction, predict_reg)
+## Accuracy
+## (True Positives + True Negatives)/(True Positives + True Negatives + False Positives + False Negatives)
+missing_classerr <- mean(predict_reg != test$satisfaction)
 print(paste('Accuracy =', 1 - missing_classerr))
+```
 
+## Decision Tree
+Build the decision tree model using ctree
+```{r echo = TRUE, warning = FALSE}
+dt_model <- ctree(satisfaction ~ ., train)
+# plot(dt_model)
+```
+
+**Model Prediction & Evaluation**    
+Model evaluation using confusion matrix
+```{r echo = TRUE, warning = FALSE}
+# Predict test data
+predict_dt <- predict(dt_model, test)
+
+# Confusion matrix
+dt_m <- table(test$satisfaction, predict_dt)
+dt_m
+dt_ac <- sum(diag(dt_m)) / sum(dt_m)
+print(paste('Accuracy =', dt_ac))
+```
+
+## K-Nearest Neighbour (KNN)
+Fit the KNN model
+```{r echo = TRUE, warning = FALSE}
+# knn_model <- knn(train = train_scale,
+#                  test = test_scale,
+#                       cl = train_cl$Species,
+#                       k = 1)
 ```
 
 # Results
