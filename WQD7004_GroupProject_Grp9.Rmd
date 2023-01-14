@@ -36,8 +36,8 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 # check installed package
 packages <- c("stringr", "data.table", "ggpubr", "tidyr", "ggrepel", 
               "GGally", "vip", "patchwork", "ggplot2", "dplyr", 
-              "magrittr", "caret","lattice","ggcorrplot", "devtools", 
-              "caTools")
+              "magrittr", "caret", "lattice","ggcorrplot", "devtools", 
+              "caTools", "e1071", "class")
 install.packages(setdiff(packages, rownames(installed.packages())), 
                  repos = "http://cran.us.r-project.org")
 ```
@@ -61,6 +61,8 @@ library(caret)
 library(devtools)
 library(caTools)
 library(party)
+library(e1071)
+library(class)
 ```
 
 ### Airline Passenger Satisfaction Dataset
@@ -1624,10 +1626,86 @@ print(paste('Accuracy =', dt_ac))
 ## K-Nearest Neighbour (KNN)
 Fit the KNN model
 ```{r echo = TRUE, warning = FALSE}
-# knn_model <- knn(train = train_scale,
-#                  test = test_scale,
-#                       cl = train_cl$Species,
-#                       k = 1)
+# Feature scaling
+# Normalize the range of independent variables or features of data
+train_scale <- scale(train[, 1:23])
+test_scale <- scale(test[, 1:23])
+
+# Determine the optimal k value using square root of total observations
+print(paste('Optimal k value:', sqrt(NROW(train))))
+
+# KNN (try 286, 287)
+knn_model_286 <- knn(train = train_scale,
+                     test = test_scale,
+                     cl = train$satisfaction,
+                     k = 286)
+knn_model_287 <- knn(train = train_scale,
+                     test = test_scale,
+                     cl = train$satisfaction,
+                     k = 287)
+
+knn_model_test <- knn(train = train_scale,
+                     test = test_scale,
+                     cl = train$satisfaction,
+                     k = 20)
+knn_acc_test <- 100 * sum(test$satisfaction == knn_model_test)/NROW(test)
+knn_acc_test
+```
+
+**Model Prediction & Evaluation**    
+Model evaluation using confusion matrix
+```{r echo = TRUE, warning = FALSE}
+# Accuracy
+knn_acc_286 <- 100 * sum(test$satisfaction == knn_model_286)/NROW(test)
+knn_acc_286
+
+knn_acc_287 <- 100 * sum(test$satisfaction == knn_model_287)/NROW(test)
+knn_acc_287
+
+# Confusion Matrix
+confusionMatrix(knn_model_286, test$satisfaction)
+confusionMatrix(knn_model_287, test$satisfaction)
+
+# Improve model and find optimal k value
+i = 5
+k.optm = 5
+for (i in 5:10){ 
+    knn <-  knn(train = train_scale, 
+                test = test_scale, 
+                cl = train$satisfaction, 
+                k = i)
+    k.optm[i] <- 100 * sum(test$satisfaction == knn)/NROW(test)
+    k = i
+    cat(k, '=', k.optm[i], '\n')
+}
+# 1 = 91.39795 
+# 2 = 91.00065 
+# 3 = 92.69611 
+# 4 = 92.39582 
+# 5 = 92.86242 
+# 6 = 92.72845 
+# 7 = 92.9733 
+# 8 = 92.73769 
+# 9 = 92.83932 
+# 10 = 92.8578 
+# 11 = 92.89014 
+# 12 = 92.8116 
+# 13 = 92.91324 
+# 14 = 92.86704 
+# 15 = 92.71921 
+# 16 = 92.64529 
+# 17 = 92.64529 
+# 18 = 92.56214 
+# 19 = 92.64529 
+# 20 = 92.66839 
+# 21 = 92.58062 
+# 22 = 92.4836 
+# 23 = 92.51132 
+# 24 = 92.43278 
+# 25 = 92.46974 
+# plot(k.optm, type="b", xlab="K- Value", ylab="Accuracy level")
+
+# Optimal k: 7
 ```
 
 # Results
