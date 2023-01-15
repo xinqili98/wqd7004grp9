@@ -910,7 +910,10 @@ p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
 ```
 * From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight wifi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
-* By focusing on these areas, businesses can work to enhance the overall satisfaction and loyalty of their employees. These services pertain to important aspects of the travel experience such as flight comfort, on-board amenities, ground transportation, and customer service. By identifying and addressing these specific areas, businesses can take effective measures to improve the overall travel experience for their employees, resulting in increased satisfaction and loyalty.
+* By identifying and addressing these specific areas, Airlines can take effective measures to improve the overall travel experience for their customers, resulting in increased satisfaction and loyalty.
+
+* On the other hand, when it comes to Personal Travel, while the service of "Departure Arrival Time Convenience" receives significant high ratings, the other services still have a significant potential to improve. 
+* The majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty.  Additionally, personal travel services should also consider external factors such as travel restrictions, health and safety concerns, or economic uncertainty to enhance the overall travel experience for their passengers.
 
 ```{r echo = FALSE, warning = FALSE}
 
