@@ -862,94 +862,56 @@ library(ggpubr)
 # Type of Travel of Airline Passengers
 p_1 <- ggplot(airline_df, aes(Type.of.Travel, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Type of Travel")+
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm'))
+  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm'))
 
 p_2 <- ggplot(airline_df, aes(Type.of.Travel, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
   labs(title = "Satisfaction across Type of Travel", colour = "satisfaction", y = "Number of Airline Passengers", x = "Type of Travel")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Gender across Type of Travel
 p_3 <- ggplot(airline_df, aes(Type.of.Travel, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
   labs(title = "Gender across Type of Travel", colour = "Gender", y = "Number of Airline Passengers", x = "Type of Travel")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Customer.Type across Type of Travel
 p_4 <- ggplot(airline_df, aes(Type.of.Travel, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
   labs(title = "Customer Type across Type of Travel", colour = "Customer.Type", y = "Number of Airline Passengers", x = "Type of Travel")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm'))
+  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm'))
   
 # Age across Type of Travel
 p_5 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_density(alpha = 0.5) + 
   labs(title = "Age across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Type of Travel")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Flight Distance across Type of Travel
-p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) +
-  geom_density(alpha = 0.5) +
-  labs(title = "Flight Distance by Type of Travel",
+p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_density(alpha = 0.5) + labs(title = "Flight Distance by Type of Travel",
        y = "Frequency", 
-       x = "Flight Distance") + 
-  guides(fill=guide_legend(title="Type.of.Travel")) + 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+       x = "Flight Distance") +  guides(fill=guide_legend(title="Type.of.Travel")) +  theme(axis.text = element_text(size = 5)) + 
+  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) + theme(legend.text = element_text(size = 5))+
+  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), egend.key.width= unit(0.5, 'cm')) 
 
 ggarrange(p_1, p_2, p_3, p_4, nrow = 2, ncol=2)  
-```
-</p>
-<li>As a first point, most passengers are traveling for business rather than for pleasure.</li>
-<li>Satisfied level to the Airline services from passengers who took Business Travel are higher than passengers from Personal Travel. While the Neutral or dissatisfied level are about the same among both travel types. </li>
-<li>Taking a look at the gender, both travel types have almost the same distribution, but Female passengers are slightly more than Male passengers. </li>
-<li> Additionally, both types of travel have a greater percentage of loyal customers than disloyal customers.</li>
-
-</p>
-</p>
-```{r echo = FALSE, warning = FALSE}
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
 ```
 </p>
-<li> The majority of passengers who travel for business are at mid of 20 and 40 years old. In contrast, personal travel occurs equally from the age of 10 to the age of 60 approximately.</li>
-<li> The flight distance of passengers who have taken Business Travel is obviously longer than passengers who have taken Personal Travel.</li>
-
+<li>From the plots, it does appear that most passengers are traveling for business rather than pleasure.</li>
+<li>The satisfaction level and loyalty for business travelers is higher than for personal travelers. </li>
+<li>The distribution of gender, customer type, and age also varies slightly between the two types of travel, with business travelers tending to be older and have longer flight distances. <li>
 </p>
 ---
 
-<font size="5">**Satisfaction on the Airline Services from the perspective of "Type of Travel"**</font>  
-**Below will focus on the 12 services given by Airlines:**
+<font size="3">**Satisfaction on the Airline Services from the perspective of "Type of Travel"**</font>  
+
 ```{r echo = FALSE, warning = FALSE}
 
 # Services
@@ -957,178 +919,101 @@ ggarrange(p_5, p_6, nrow = 2, ncol=1)
 
 p_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Inflight wifi service across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Departure.Arrival.time.convenient across Type of Travel
 
 p_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Departure Arrival time convenient across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Ease.of.Online.booking across Type of Travel
 p_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Ease of Online booking across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Gate.location across Type of Travel
 p_10 <- ggplot(airline_df, aes(Gate.location, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Gate location across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Online.boarding across Type of Travel
 p_11 <- ggplot(airline_df, aes(Online.boarding, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Online boarding across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Seat.comfort across Type of Travel
 p_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Seat comfort across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Inflight.entertainment across Type of Travel
 p_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Inflight entertainment across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # On.board.service across Type of Travel
 p_14 <- ggplot(airline_df, aes(On.board.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "On board service across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Leg.room.service across Type of Travel
 p_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Leg room service across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Baggage.handling across Type of Travel
 p_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Baggage handling across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Checkin.service across Type of Travel
 p_17 <- ggplot(airline_df, aes(Checkin.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Checking service across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Inflight.service across Type of Travel
 p_18 <- ggplot(airline_df, aes(Inflight.service, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Inflight service across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 
 # Cleanliness across Type of Travel
 p_19 <- ggplot(airline_df, aes(Cleanliness, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
   labs(title = "Cleanliness across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Rating")+ 
-  theme(axis.text = element_text(size = 5)) + 
-  theme(axis.title = element_text(size = 5)) +
-  theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+
-  theme(legend.key.height= unit(0.5, 'cm'),
-        legend.key.width= unit(0.5, 'cm')) 
+  theme(axis.text = element_text(size = 5)) +  theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+  legend.key.width= unit(0.5, 'cm')) 
 ```
 
 ```{r echo = FALSE, warning = FALSE}
 ggarrange(p_7, p_8, p_9, p_10, nrow = 2, ncol=2)
-```
-</p>
-<li> In general, majority of passengers from both travel types rate "2" to "4" for above 4 services. </li>
-<li> For Business Travel, the service on the arrangement of **Gate location**, overall, is better than the other 3 services as it has the lowest "0" rating, and  majority rate "3" to "4". Airline should focus more on the improvement for other 3 services for Business Travel passengers, especially **Departure Arrival Time Convenient**, as it contains highest "0" rating among other 3 services. </li>
-<li> For Personal Travel, the **Departure Arrival Time Convenient's** service, in overall, is better than the other 3 services, which is contrast with Business Travel passengers' perspective.</li>
-<li> To find the main reason of such contradiction, the airline is suggested to investigate the differences in **Departure Arrival Time Convenient's** services offered for both travel types. </li>
-</p>
-</p>
-```{r echo = FALSE, warning = FALSE}
-ggarrange(p_11, p_12, p_13, p_14, nrow = 2, ncol=2)
-```
-</p>
-<li> According to the perspective of business travelers, "4" to "5" ratings are rated for above 4 services, which is in contradiction with the perspective of personal travelers, who majority rate "3" to "4". </li>
-<li> Travelers of both types seemed to be satisfied with the **Seat comfort**, **In-flight entertainment**, and **On board service** provided by the airline, as there is lowest "0" ratings given.</li>
-<li> However, the **Online boarding** need to be improved for both travel types, as there is "0" ratings and rating of "5" is the 2nd lowest among others. </li>
-</p>
-</p>
-
-```{r echo = FALSE, warning = FALSE}
+ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ```
-</p>
-<li> It is astounding that both types of traveler give no "0" rating for service on **Baggage handling**. </li>
-<li> Despite this, some attentions can still be given to **Leg room service*** and **Checking Service** for both types of travel, as the ratings of "1" and "2" are slightly higher than the other 2 services.</li>
-
-</p>
-</p>
-
 Overall, </li>
 </p>
 For Business Travel, the first mentioned 4 services need higher attention than the other 8 services that mentioned latter, as the number of passengers rate for "2" to "4" is almost equally distributed, which indicates that the services is neither too bad nor too good.</li>
