@@ -898,7 +898,7 @@ p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_
        y = "Frequency", 
        x = "Flight Distance") +  guides(fill=guide_legend(title="Type.of.Travel")) +  theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) + theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), legend.key.width= unit(0.5, 'cm')) 
+  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), egend.key.width= unit(0.5, 'cm')) 
 
 ggarrange(p_1, p_2, p_3, p_4, nrow = 2, ncol=2)  
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
@@ -1016,9 +1016,9 @@ ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ```
 Overall, </li>
 </p>
-For Business Travel, while the first four services listed have similarly distributed ratings, the latter eight services have relatively high ratings, indicating a strong performance in those areas. Thus, airline should focus more on improving the performance of the first four services, which have similarly distributed ratings.</li>
+For Business Travel, the first mentioned 4 services need higher attention than the other 8 services that mentioned latter, as the number of passengers rate for "2" to "4" is almost equally distributed, which indicates that the services is neither too bad nor too good.</li>
 </p>
-For Personal Travel, while the service "Departure Arrival time convenient" has relatively high ratings, other services should also focus on improving their ratings from "2" to "4" to "3" to "5". </li>
+For Personal Travel, except the service **Departure Arrival time convenient** which shows significant high ratings, the other services still can take initiative to improve from ratings  "2" to "4" which stands majority, to ratings "3" to "5".</li>
 </p>
 
 #### Class
