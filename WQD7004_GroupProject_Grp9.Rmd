@@ -898,7 +898,7 @@ p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_
        y = "Frequency", 
        x = "Flight Distance") +  guides(fill=guide_legend(title="Type.of.Travel")) +  theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) + theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), egend.key.width= unit(0.5, 'cm')) 
+  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), legend.key.width= unit(0.5, 'cm')) 
 
 ggarrange(p_1, p_2, p_3, p_4, nrow = 2, ncol=2)  
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
