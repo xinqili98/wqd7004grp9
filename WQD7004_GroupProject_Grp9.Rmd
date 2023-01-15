@@ -28,9 +28,8 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 # Objectives
 
 # Methodology
-
 ## Data Understanding
-
+-purpose of data understanding.Got how many features, what are our variables?
 ### Libraries
 ```{r include = FALSE, warning = FALSE}
 # check installed package
@@ -90,6 +89,7 @@ summary(airline_df)
 ```
 
 ### Data Checking
+Explain about which column got what dirt...
 Check duplicate data using the id attribute (unique identifier)
 ```{r echo = TRUE, warning = FALSE}
 dim(airline_df[duplicated(airline_df$id),])[1]
@@ -444,7 +444,7 @@ ratings_g <-
 ratings_g
 ```
 
-### Customer Gender
+#### Customer Gender
 
 ```{r include = FALSE, warning = FALSE}
 #2a customer gender by customer type- table
@@ -726,7 +726,7 @@ service14_g
 
 ```
 
-### Customer Type
+#### Customer Type
 
 ```{r include = FALSE, warning = FALSE}
 # customer type by type of travel and class
@@ -853,7 +853,7 @@ cs_type_ratings_g <-
 cs_type_ratings_g
 ```
 
-### Type of Travel
+#### Type of Travel
 Below will focus on the perspective from feature "Type of Travel".
 ```{r echo = FALSE, warning = FALSE}
 #### **From the perspective of feature "Type of Travel"**
@@ -908,7 +908,7 @@ ggarrange(p_5, p_6, nrow = 2, ncol=1)
 <li>The satisfaction level and loyalty for business travelers is higher than for personal travelers. </li>
 <li>The distribution of gender, customer type, and age also varies slightly between the two types of travel, with business travelers tending to be older and have longer flight distances. <li>
 </p>
----
+
 
 <font size="3">**Satisfaction on the Airline Services from the perspective of "Type of Travel"**</font>  
 
@@ -1021,7 +1021,7 @@ For Business Travel, the first mentioned 4 services need higher attention than t
 For Personal Travel, except the service **Departure Arrival time convenient** which shows significant high ratings, the other services still can take initiative to improve from ratings  "2" to "4" which stands majority, to ratings "3" to "5".</li>
 </p>
 
-### Class
+#### Class
 
 ```{r echo = FALSE, warning = FALSE}
 airline_df$Class.Group <- ifelse(airline_df$Class == "Eco" | airline_df$Class == "Eco Plus", "Eco", "Business")
@@ -1222,59 +1222,6 @@ class_19
 ```
 
 
-## Correlation
-Further investigation on the correlation between different airline services and overall satisfaction.
-```{r echo = TRUE, warning = FALSE}
-
-#Correlation between different variables
-#Removed the non-numeric data
-# airline_corr<- airline_df %>%
-#   select(!c('id','Gender', 'Customer.Type',	'Age', 'Type.of.Travel',	'Class',	'Flight.Distance',)) %>%   mutate_if(is.factor,as.numeric) 
-# 
-# 
-# # Creating correlation matrix
-# corr_mat <- round(cor(airline_corr),2)
-# head(corr_mat)
-# 
-# # reduce the size of correlation matrix
-# melted_corr_mat <- melt(corr_mat)
-# head(melted_corr_mat)
- 
-# plotting the correlation heatmap
-# library(ggplot2)
-# ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, fill=value)) + geom_tile() +
-#   geom_text(aes(Var2, Var1, label = value), color = "black", size = 4)
-# 
-# ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
-#    lab = TRUE)
-
-#Included categorical data in correlation heatmap
-# airline_corr2<- airline_df %>%
-#   select(!c('id')) %>%   mutate_if(is.factor,as.numeric) 
-# airline_corr2<- airline_corr2 %>%
-#   select(everything()) %>%   mutate_if(is.integer,as.numeric) 
-# str(airline_corr2)
-
-#Creating correlation matrix
-
-# corr_mat2 <- round(cor(airline_corr2),2)
-# head(corr_mat2)
-# 
-# # reduce the size of correlation matrix
-# melted_corr_mat2 <- melt(corr_mat2)
-# head(melted_corr_mat2)
- 
-## plotting the correlation heatmap
-# <!-- library(ggplot2) -->
-# <!-- ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, -->
-# <!--                                    fill=value)) + -->
-# <!-- geom_tile() + -->
-# <!-- geom_text(aes(Var2, Var1, label = value), -->
-# <!--           color = "black", size = 4) -->
-
-# ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
-#    lab = TRUE)
-```   
 ## Classification
 Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
 
@@ -1323,6 +1270,61 @@ airline_df_m_trsf <- subset(airline_df_m_trsf,
 airline_df_m_trsf$satisfaction <- factor(airline_df_m_trsf$satisfaction)
 ```
 
+### Correlation
+Further investigation on the correlation between different airline services and overall satisfaction.
+```{r echo = TRUE, warning = FALSE}
+
+#Correlation between different variables
+#Removed the non-numeric data
+# airline_corr<- airline_df %>%
+#   select(!c('id','Gender', 'Customer.Type',	'Age', 'Type.of.Travel',	'Class',	'Flight.Distance',)) %>%   mutate_if(is.factor,as.numeric) 
+# 
+# 
+# # Creating correlation matrix
+# corr_mat <- round(cor(airline_corr),2)
+# head(corr_mat)
+# 
+# # reduce the size of correlation matrix
+# melted_corr_mat <- melt(corr_mat)
+# head(melted_corr_mat)
+ 
+# plotting the correlation heatmap
+# library(ggplot2)
+# ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, fill=value)) + geom_tile() +
+#   geom_text(aes(Var2, Var1, label = value), color = "black", size = 4)
+# 
+# ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
+#    lab = TRUE)
+
+#Included categorical data in correlation heatmap
+# airline_corr2<- airline_df %>%
+#   select(!c('id')) %>%   mutate_if(is.factor,as.numeric) 
+# airline_corr2<- airline_corr2 %>%
+#   select(everything()) %>%   mutate_if(is.integer,as.numeric) 
+# str(airline_corr2)
+
+#Creating correlation matrix
+
+# corr_mat2 <- round(cor(airline_corr2),2)
+# head(corr_mat2)
+# 
+# # reduce the size of correlation matrix
+# melted_corr_mat2 <- melt(corr_mat2)
+# head(melted_corr_mat2)
+ 
+## plotting the correlation heatmap
+#  library(ggplot2) 
+#  ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, 
+#                                    fill=value)) + 
+#  geom_tile() + 
+#  geom_text(aes(Var2, Var1, label = value), 
+#            color = "black", size = 4) 
+
+# ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
+#    lab = TRUE)
+```   
+
+
 ### Data Splitting
 Data is split into train and test dataset (80:20), 82,258 and 21,646 records respectively.
 ```{r echo = TRUE, warning = FALSE}
@@ -1344,7 +1346,7 @@ summary(logit_model)
 
 **ANOVA Chi-square test**  
 To check the overall effect of variables on the dependent variables
-```{r echo = TRUE, warning = FALSE}
+```{r echo=TRUE, warning=FALSE}
 anova(logit_model, test = "Chisq")
 ```
 
@@ -1367,7 +1369,7 @@ missing_classerr <- mean(predict_reg != test$satisfaction)
 print(paste('Accuracy =', 1 - missing_classerr))
 ```
 
-## Decision Tree
+### Decision Tree
 Build the decision tree model using ctree
 ```{r echo = TRUE, warning = FALSE}
 dt_model <- ctree(satisfaction ~ ., train)
@@ -1387,7 +1389,7 @@ dt_ac <- sum(diag(dt_m)) / sum(dt_m)
 print(paste('Accuracy =', dt_ac))
 ```
 
-## K-Nearest Neighbour (KNN)
+### K-Nearest Neighbour (KNN)
 Fit the KNN model
 ```{r echo = TRUE, warning = FALSE}
 # Feature scaling
@@ -1473,7 +1475,7 @@ for (i in 5:10){
 ```
 
 # Results
-
+Which model works the best? Justify.
 # Conclusion
-
+Summarize the EDA part and model part. Airline of which class need to focus on what services?
 # Contribution
