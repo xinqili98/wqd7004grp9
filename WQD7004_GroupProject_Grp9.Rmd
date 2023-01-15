@@ -854,17 +854,18 @@ cs_type_ratings_g
 ```
 
 #### Type of Travel
-Below will focus on the perspective from feature "Type of Travel".
+**Different perspectives from Type of Travel**
+
+* Business travelers tend to have a higher level of satisfaction and loyalty when compared to personal travelers. This could be due to a number of reasons such as the more comfortable and convenient travel arrangements offered by businesses to their employees, as well as the added perks and privileges that come with business travel such as upgrades and access to exclusive lounges.
+* However, it's also worth noting that both types of travelers seem to have similar levels of dissatisfaction, raising concerns.
+
 ```{r echo = FALSE, warning = FALSE}
-#### **From the perspective of feature "Type of Travel"**
-library(ggplot2)
-library(ggpubr)
 # Type of Travel of Airline Passengers
-p_1 <- ggplot(airline_df, aes(Type.of.Travel, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
-  labs(title = "Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Type of Travel")+
-  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
-  legend.key.width= unit(0.5, 'cm'))
+# p_1 <- ggplot(airline_df, aes(Type.of.Travel, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_bar(position = "dodge") + 
+# labs(title = "Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Type of Travel")+
+# theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+# theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+# legend.key.width= unit(0.5, 'cm'))
 
 p_2 <- ggplot(airline_df, aes(Type.of.Travel, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
   labs(title = "Satisfaction across Type of Travel", colour = "satisfaction", y = "Number of Airline Passengers", x = "Type of Travel")+ 
@@ -873,11 +874,11 @@ p_2 <- ggplot(airline_df, aes(Type.of.Travel, colour = satisfaction, fill = sati
   legend.key.width= unit(0.5, 'cm')) 
 
 # Gender across Type of Travel
-p_3 <- ggplot(airline_df, aes(Type.of.Travel, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
-  labs(title = "Gender across Type of Travel", colour = "Gender", y = "Number of Airline Passengers", x = "Type of Travel")+ 
-  theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
-  theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
-  legend.key.width= unit(0.5, 'cm')) 
+# p_3 <- ggplot(airline_df, aes(Type.of.Travel, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
+# labs(title = "Gender across Type of Travel", colour = "Gender", y = "Number of Airline Passengers", x = "Type of Travel")+ 
+# theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
+# theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
+# legend.key.width= unit(0.5, 'cm')) 
 
 # Customer.Type across Type of Travel
 p_4 <- ggplot(airline_df, aes(Type.of.Travel, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
@@ -885,7 +886,13 @@ p_4 <- ggplot(airline_df, aes(Type.of.Travel, colour = Customer.Type, fill = Cus
   theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
   theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
   legend.key.width= unit(0.5, 'cm'))
+  ggarrange(p_2, p_4, nrow = 2, ncol=1) 
+  ```
+* Business travelers tend to be older and have longer flight distances than personal travelers. This could be due to a number of factors such as the nature of their work requiring more frequent and longer-distance travel, or the fact that older individuals may be more likely to hold positions that involve traveling for business. 
+* Additionally, business travelers may also have a higher disposable income and be more likely to upgrade to premium seating or business class, which can result in longer flight distances. 
+* Furthermore, older travelers may also prefer longer flights as they offer more comfort and amenities.
   
+  ```{r echo = FALSE, warning = FALSE}
 # Age across Type of Travel
 p_5 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_density(alpha = 0.5) + 
   labs(title = "Age across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Type of Travel")+ 
@@ -899,18 +906,11 @@ p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_
        x = "Flight Distance") +  guides(fill=guide_legend(title="Type.of.Travel")) +  theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) + theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), legend.key.width= unit(0.5, 'cm'))
-
-ggarrange(p_1, p_2, p_3, p_4, nrow = 2, ncol=2)  
+ 
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
 ```
-</p>
-<li>From the plots, it does appear that most passengers are traveling for business rather than pleasure.</li>
-<li>The satisfaction level and loyalty for business travelers is higher than for personal travelers. </li>
-<li>The distribution of gender, customer type, and age also varies slightly between the two types of travel, with business travelers tending to be older and have longer flight distances. <li>
-</p>
-
-
-<font size="3">**Satisfaction on the Airline Services from the perspective of "Type of Travel"**</font>  
+* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight wifi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
+* By focusing on these areas, businesses can work to enhance the overall satisfaction and loyalty of their employees. These services pertain to important aspects of the travel experience such as flight comfort, on-board amenities, ground transportation, and customer service. By identifying and addressing these specific areas, businesses can take effective measures to improve the overall travel experience for their employees, resulting in increased satisfaction and loyalty.
 
 ```{r echo = FALSE, warning = FALSE}
 
@@ -1014,18 +1014,11 @@ ggarrange(p_7, p_8, p_9, p_10, nrow = 2, ncol=2)
 ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ```
-Overall, </li>
-</p>
-For Business Travel, the first mentioned 4 services need higher attention than the other 8 services that mentioned latter, as the number of passengers rate for "2" to "4" is almost equally distributed, which indicates that the services is neither too bad nor too good.</li>
-</p>
-For Personal Travel, except the service **Departure Arrival time convenient** which shows significant high ratings, the other services still can take initiative to improve from ratings  "2" to "4" which stands majority, to ratings "3" to "5".</li>
-</p>
 
 #### Class
 
 ```{r echo = FALSE, warning = FALSE}
 airline_df$Class.Group <- ifelse(airline_df$Class == "Eco" | airline_df$Class == "Eco Plus", "Eco", "Business")
-
 # Class of Airline Passengers
 class_1 <- ggplot(airline_df, aes(Class.Group, colour = Class.Group, fill = Class.Group)) + geom_bar()+
   labs(title = "Class of Airline Passengers") + 
@@ -1034,7 +1027,6 @@ class_1 <- ggplot(airline_df, aes(Class.Group, colour = Class.Group, fill = Clas
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_1
 
 # Satisfaction across Class
 class_2 <- ggplot(airline_df, aes(Class.Group, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
@@ -1044,7 +1036,6 @@ class_2 <- ggplot(airline_df, aes(Class.Group, colour = satisfaction, fill = sat
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_2
 
 # Gender across Class
 class_3 <- ggplot(airline_df, aes(Class.Group, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
@@ -1054,7 +1045,6 @@ class_3 <- ggplot(airline_df, aes(Class.Group, colour = Gender, fill = Gender)) 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_3
 
 # Customer.Type across Class
 class_4 <- ggplot(airline_df, aes(Class.Group, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
@@ -1064,7 +1054,6 @@ class_4 <- ggplot(airline_df, aes(Class.Group, colour = Customer.Type, fill = Cu
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_4
 
 # Age across Class
 class_5 <- ggplot(airline_df, aes(Age, colour = Class.Group, fill = Class.Group)) + geom_density(alpha = 0.5) + 
@@ -1074,7 +1063,6 @@ class_5 <- ggplot(airline_df, aes(Age, colour = Class.Group, fill = Class.Group)
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_5
 
 # Flight Distance across Class
 class_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class.Group)) +
@@ -1088,7 +1076,6 @@ class_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class.Group)) +
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_6
 
 # Inflight.wifi.service across Class
 class_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1098,7 +1085,6 @@ class_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class.Group, f
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_7
 
 # Departure.Arrival.time.convenient across Class
 class_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1108,7 +1094,6 @@ class_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Cl
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_8
 
 # Ease.of.Online.booking across Class
 class_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1118,7 +1103,6 @@ class_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class.Group, 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_9
 
 # Gate.location across Class
 class_10 <- ggplot(airline_df, aes(Gate.location, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1128,7 +1112,6 @@ class_10 <- ggplot(airline_df, aes(Gate.location, colour = Class.Group, fill = C
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_10
 
 # Online.boarding across Class
 class_11 <- ggplot(airline_df, aes(Online.boarding, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1138,7 +1121,6 @@ class_11 <- ggplot(airline_df, aes(Online.boarding, colour = Class.Group, fill =
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_11
 
 # Seat.comfort across Class
 class_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1148,7 +1130,6 @@ class_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Class.Group, fill = Cl
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_12
 
 # Inflight.entertainment across Class
 class_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1158,7 +1139,6 @@ class_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class.Group,
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_13
 
 # On.board.service across Class
 class_14 <- ggplot(airline_df, aes(On.board.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1168,7 +1148,6 @@ class_14 <- ggplot(airline_df, aes(On.board.service, colour = Class.Group, fill 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_14
 
 # Leg.room.service across Class
 class_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1178,7 +1157,6 @@ class_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Class.Group, fill 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_15
 
 # Baggage.handling across Class
 class_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1188,7 +1166,6 @@ class_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Class.Group, fill 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_16
 
 # Checkin.service across Class
 class_17 <- ggplot(airline_df, aes(Checkin.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1198,7 +1175,6 @@ class_17 <- ggplot(airline_df, aes(Checkin.service, colour = Class.Group, fill =
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_17
 
 # Inflight.service across Class
 class_18 <- ggplot(airline_df, aes(Inflight.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1208,7 +1184,6 @@ class_18 <- ggplot(airline_df, aes(Inflight.service, colour = Class.Group, fill 
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_18
 
 # Cleanliness across Class
 class_19 <- ggplot(airline_df, aes(Cleanliness, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
@@ -1218,9 +1193,53 @@ class_19 <- ggplot(airline_df, aes(Cleanliness, colour = Class.Group, fill = Cla
   theme(plot.title = element_text(size = 5)) +
   theme(legend.text = element_text(size = 5))+
   theme(legend.title = element_text(size = 5))
-class_19
+  
+# Type of Travel across Class
+class_20 <- ggplot(airline_df, aes(Type.of.Travel, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") +
+labs(title = "Type.of.Travel across Class") +
+theme(axis.text = element_text(size = 5)) +
+theme(axis.title = element_text(size = 5)) +
+theme(plot.title = element_text(size = 5)) +
+theme(legend.text = element_text(size = 5)) +
+theme(legend.title = element_text(size = 5))
 ```
+* The distribution of passengers between business and economy class is roughly equal, with a nearly equal number of male and female passengers in both classes.
+```{r echo = FALSE, warning = FALSE}
+ggarrange(class_1, class_3, nrow = 2, ncol=2)
+```
+* In addition, the customer demographic in both business and economy class is similar, with the majority of passengers being Loyal Customers and a small percentage being Disloyal Customers.
+```{r echo = FALSE, warning = FALSE}
+class_4
+```
+* In economy class, there is a higher proportion of passengers aged below 30 and between 60 to 70 years old, whereas in business class, there is a higher proportion of passengers aged between 30 to 60 years old. The demographic differences between economy and business class passengers could be due to various factors such as pricing, travel purpose, life stage and perception of comfort.
 
+* Younger passengers might choose eco class due to cost concerns, as it is typically the most affordable option. They might also be more likely to be traveling for leisure or personal reasons rather than for work, leading them to prioritize cost savings over amenities. Alternatively, younger passengers might prioritize other aspects of their trip, such as destination or duration, and choose the eco class in order to allocate more of their budget to those factors.
+
+* Business class is often chosen by adults for the enhanced comfort it provides, such as more spacious seating and additional amenities. It may also be preferred for the convenience it offers, including priority services at the airport and access to exclusive lounges. The ability to work or relax in a more comfortable setting during long flights can also be a factor in the choice of business class. Additionally, some adults may be attracted to the prestige associated with flying in this class.
+
+```{r echo = FALSE, warning = FALSE}
+class_5
+```
+According to the graph, a significant number of business class passengers are traveling for business purposes. While the eco class also has a proportion of business travelers, there is a slightly higher percentage of passengers traveling for personal reasons.
+
+```{r echo = FALSE, warning = FALSE}
+class_20
+```
+* From the graph, we can see that passengers often choose business class for further flights. It may because of the added comfort and amenities on long flights.
+```{r echo = FALSE, warning = FALSE}
+class_6
+```
+* Passengers in the business class are generally happy with the airline's services, but there is still room for improvement. On the other hand, many passengers in the economy classes were not satisfied or were neutral about the services they received. To make sure that all passengers have a good experience, it is important to focus on improving the services provided to the economy and economy plus classes.
+```{r echo = FALSE, warning = FALSE}
+class_2
+```
+* From the perspective of Class ETC...
+
+```{r echo = FALSE, warning = FALSE}
+ggarrange(class_7, class_8, class_9, class_10, nrow = 2, ncol=2)
+ggarrange(class_11, class_12, class_13, class_14, nrow = 2, ncol=2)
+ggarrange(class_15, class_16, class_17, class_18, nrow = 2, ncol=2)
+```
 
 ## Classification
 Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
