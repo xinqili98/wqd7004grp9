@@ -1411,7 +1411,16 @@ print(paste('Accuracy =', dt_ac))
 ```
 
 ### K-Nearest Neighbour (KNN)
+The K-Nearest Neighbors (KNN) algorithm is a simple, yet powerful, supervised machine learning algorithm. It is used for both classification and regression problems. In classification, the idea is to find the k-number of nearest data points in the training set for a new data point, and then predict the class of the new data point based on the majority class among its k-nearest neighbors.
+
 Fit the KNN model
+
+* Scaling the features is carried to ensures that all features are on the same scale, so that one feature does not dominate the distance measure.
+
+* The square root of the total number of observations is commonly used to determine the optimal k value as it balances the trade-off between overfitting and underfitting. Overfitting occurs when a model is too complex and is fitting the noise in the training data, while underfitting occurs when a model is too simple and is not fitting the training data well. And it shows approximate 288.31406486677.
+
+* The 286 & 287 is chosen because of checking the square root of the total number of observations in the training set, as a commonly used rule to determine the optimal k value, which balances the trade-off between overfitting and underfitting.
+
 ```{r echo = TRUE, warning = FALSE}
 # Feature scaling
 # Normalize the range of independent variables or features of data
@@ -1430,10 +1439,14 @@ knn_model_287 <- knn(train = train_scale,
                      test = test_scale,
                      cl = train$satisfaction,
                      k = 287)
-```
 
 **Model Prediction & Evaluation**    
 Model evaluation using confusion matrix
+
+* The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. Generally, an accuracy of 90% or higher is considered to be very good.
+
+* The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. The model is able to correctly predict the majority of the test data points. The model may have slightly better performance with k = 287, but the difference is very small.
+
 ```{r echo = TRUE, warning = FALSE}
 # Accuracy
 knn_acc_286 <- 100 * sum(test$satisfaction == knn_model_286)/NROW(test)
@@ -1487,6 +1500,7 @@ confusionMatrix(knn_model_287, test$satisfaction)
 
 # Optimal k: 7
 ```
+From the output, it can be seen that the highest accuracy is 92.9733% when k = 7, which means that when k = 7, the model correctly predicted the class for 92.9733% of the test samples. Therefore, 7 is the optimal k value for this model.
 
 # Results
 Which model works the best? Justify.
