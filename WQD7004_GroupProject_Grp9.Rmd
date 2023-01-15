@@ -898,7 +898,7 @@ p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_
        y = "Frequency", 
        x = "Flight Distance") +  guides(fill=guide_legend(title="Type.of.Travel")) +  theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) + theme(legend.text = element_text(size = 5))+
-  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), egend.key.width= unit(0.5, 'cm')) 
+  theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'), legend.key.width= unit(0.5, 'cm'))
 
 ggarrange(p_1, p_2, p_3, p_4, nrow = 2, ncol=2)  
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
@@ -1324,7 +1324,6 @@ Further investigation on the correlation between different airline services and 
 #    lab = TRUE)
 ```   
 
-
 ### Data Splitting
 Data is split into train and test dataset (80:20), 82,258 and 21,646 records respectively.
 ```{r echo = TRUE, warning = FALSE}
@@ -1409,13 +1408,6 @@ knn_model_287 <- knn(train = train_scale,
                      test = test_scale,
                      cl = train$satisfaction,
                      k = 287)
-
-knn_model_test <- knn(train = train_scale,
-                     test = test_scale,
-                     cl = train$satisfaction,
-                     k = 20)
-knn_acc_test <- 100 * sum(test$satisfaction == knn_model_test)/NROW(test)
-knn_acc_test
 ```
 
 **Model Prediction & Evaluation**    
@@ -1433,17 +1425,17 @@ confusionMatrix(knn_model_286, test$satisfaction)
 confusionMatrix(knn_model_287, test$satisfaction)
 
 # Improve model and find optimal k value
-i = 5
-k.optm = 5
-for (i in 5:10){ 
-    knn <-  knn(train = train_scale, 
-                test = test_scale, 
-                cl = train$satisfaction, 
-                k = i)
-    k.optm[i] <- 100 * sum(test$satisfaction == knn)/NROW(test)
-    k = i
-    cat(k, '=', k.optm[i], '\n')
-}
+# i = 5
+# k.optm = 5
+# for (i in 5:10){ 
+#     knn <-  knn(train = train_scale, 
+#                 test = test_scale, 
+#                 cl = train$satisfaction, 
+#                 k = i)
+#     k.optm[i] <- 100 * sum(test$satisfaction == knn)/NROW(test)
+#     k = i
+#     cat(k, '=', k.optm[i], '\n')
+# }
 # 1 = 91.39795 
 # 2 = 91.00065 
 # 3 = 92.69611 
