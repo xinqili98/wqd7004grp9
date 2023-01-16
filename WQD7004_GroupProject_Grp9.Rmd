@@ -32,7 +32,9 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 
 # Methodology
 ## Data Understanding
-In this report, we analyze the Airline satisfaction dataset which contains 24 distinct features and 103,904 entries. The dataset includes information on various aspects of the flight experience, including inflight wifi service, ease of online booking, gate location, food and drink, seat comfort, inflight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, and passenger demographics such as gender, age, and type of travel. The dataset also includes information on departure and arrival delay times, as well as the passenger's overall satisfaction with their flight experience. The data is composed of categorical, ordinal and character variables, which allows us to understand the behavior of the passengers and their level of satisfaction. The data will be explored and cleaned to identify any potential issues or outliers before conducting the analysis.
+In this report, we analyze the Airline satisfaction dataset which contains 24 distinct features and 103,904 entries. The dataset includes information on various aspects of the flight experience, including inflight wifi service, ease of online booking, gate location, food and drink, seat comfort, inflight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, and passenger demographics such as gender, age, and type of travel. 
+The dataset also includes information on departure and arrival delay times, as well as the passenger's overall satisfaction with their flight experience. 
+Besides, the data is composed of categorical, ordinal and character variables, which allows us to understand the behavior of the passengers and their level of satisfaction. It will be explored and cleaned to identify any potential issues or outliers before conducting the analysis.
 
 ### Libraries
 ```{r include = FALSE, warning = FALSE}
@@ -418,34 +420,40 @@ arrival_delay_g <-
        y = "") + 
   scale_fill_brewer(palette="Spectral")
 ```
+
 * The below graphs provide a visual representation of the demographics of the passenger population, which will be used in further analysis. As seen in the data, the distribution of genders among the passenger population is relatively balanced, with 50.7% of the passengers being male and 49.3% of the passengers being female. The slight difference of 1.4% between the two indicates that the data is not skewed towards one gender, allowing for a fair representation of both male and female passengers.
 
 * The age distribution of the passenger population shows a clear pattern of increasing numbers as age increases, peaking in the twenties range. The number then drops slightly in the thirties age range, before climbing back up to the highest peak in the forties. From there, the number of passengers gradually decreases as age increases. This pattern is clearly visible in the graph, providing an overall picture of the age distribution among the passenger population.
 
-```{r echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
+```{r echo = FALSE, warning = FALSE}
 ggarrange(ggarrange(cs_gender_g, cs_age_g))
 ```
+
 * The data provided gives an overview of the customer characteristics of the passengers. 
 * Firstly, it can be observed that 18% of the customers are disloyal and 82% are loyal. This indicates that most of the customers have a history of repeat business with the company and can inform strategies to retain and attract loyal customers.
 
-```{r echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
+```{r echo = FALSE, warning = FALSE}
 cs_type_g        
 ```
+
 * Additionally, the data shows that 69% of the customers are traveling for business purposes and 31% are traveling for personal reasons. This can provide insight into the type of customers the company is serving and can inform marketing and sales efforts to specific segments of the customer base.
 
-```{r echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
+```{r echo = FALSE, warning = FALSE}
 type_travel_g
 ```
+
 * Lastly, regarding flight class, the data indicates that 47.8% of the customers are traveling in business class, 52.2% in economy class. This information can be used to understand the type of customers that are traveling in different classes, adjust pricing and inventory management strategies, and understand the revenue generated from different classes of customers.
 
 ```{r echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
 class_g
 ```
+
 * (Pending TONY's interpretation) 
 
 ```{r echo = FALSE, warning = FALSE, fig.height = 4}
 ggarrange(departure_delay_g, arrival_delay_g, ncol = 2)
 ```
+
 * Overall, the data provided gives valuable insights into the customer base and can be used to inform business decisions and improve customer satisfaction. It allows the Airlines to understand the characteristics of their customers, such as loyalty, travel type and flight class, and use it to tailor their services and attract more customers.
 
 #### Service Ratings
@@ -1236,14 +1244,19 @@ theme(plot.title = element_text(size = 5)) +
 theme(legend.text = element_text(size = 5)) +
 theme(legend.title = element_text(size = 5))
 ```
+
 * The distribution of passengers between business and economy class is roughly equal, with a nearly equal number of male and female passengers in both classes.
+
 ```{r echo = FALSE, warning = FALSE}
 ggarrange(class_1, class_3, nrow = 2, ncol=2)
 ```
+
 * In addition, the customer demographic in both business and economy class is similar, with the majority of passengers being Loyal Customers and a small percentage being Disloyal Customers.
+
 ```{r echo = FALSE, warning = FALSE}
 class_4
 ```
+
 * In economy class, there is a higher proportion of passengers aged below 30 and between 60 to 70 years old, whereas in business class, there is a higher proportion of passengers aged between 30 to 60 years old. The demographic differences between economy and business class passengers could be due to various factors such as pricing, travel purpose, life stage and perception of comfort.
 
 * Younger passengers might choose eco class due to cost concerns, as it is typically the most affordable option. They might also be more likely to be traveling for leisure or personal reasons rather than for work, leading them to prioritize cost savings over amenities. Alternatively, younger passengers might prioritize other aspects of their trip, such as destination or duration, and choose the eco class in order to allocate more of their budget to those factors.
@@ -1478,7 +1491,7 @@ Model evaluation using confusion matrix
 * The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. Generally, an accuracy of 90% or higher is considered to be very good.
 
 * The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. The model is able to correctly predict the majority of the test data points. The model may have slightly better performance with k = 287, but the difference is very small.
-* 
+
 ```{r echo = TRUE, warning = FALSE}
 # Accuracy
 knn_acc_286 <- 100 * sum(test$satisfaction == knn_model_286)/NROW(test)
@@ -1544,7 +1557,8 @@ KNN - 92.97%
 Summarize the EDA part and model part. Airline of which class need to focus on what services?
 
 (Draft)
+
 * From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight wifi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
-*  For Personal Travel, the majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty. 
+* For Personal Travel, the majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty. 
 
 # Contribution
