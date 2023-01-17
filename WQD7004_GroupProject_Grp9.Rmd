@@ -21,23 +21,19 @@ editor_options:
 
 # Introduction
 
-Airline satisfaction is a crucial aspect of the aviation industry as it directly impacts the loyalty and repeat business of customers. A dataset of airline satisfaction data collected from Kaggle will be analyzed in this report. We will examine the data and conduct various analyses to understand the behavior and satisfaction of passengers. It is hoped that the insights and conclusions from this analysis will enable airlines to improve their services and increase their passenger satisfaction.
+Airline satisfaction is a crucial aspect in the aviation industry as it directly impacts the loyalty and customer retention. Airline satisfaction data which is collected from Kaggle are used to conduct various analysis to understand passenger preferences in airline services. With the insights and conclusions from this analysis, we seek to improve the airline services and increase the passenger satisfaction.
 
 The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction)
 
 # Objectives
-1. To understand the main factor that affects the passenger satisfaction.
+1. To determine the main factor that affects the passenger satisfaction.
 2. To understand the correlation between the services provided by Airline.
-3. To understatnd the accuracy of classification model.
+3. To evaluate the performance of classification model and identify the best model in terms of accuracy.
 
 # Methodology
 ## Data Understanding
 
-* Our dataset contains 24 distinct features and 103,904 entries, including information on various aspects of the flight experience, such as in-flight Wi-Fi service, online booking ease, gate location, food and drink, seat comfort, in-flight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, as well as passenger demographics such as gender, age, and travel type. 
-
-* A passenger's overall satisfaction with the flight is also included, along with information on departure and arrival delay times. 
-
-* Additionally, the data is composed of categorical and numerical variables, which serves as a tool for understanding passenger behavior and their level of satisfaction. The data will be explored and cleaned before analysis to identify any potential issues.
+It is critical for understanding data that is available for mining and avoiding unexpected problems during data preparation. In this phase, the steps involved are collecting data, describing and exploring data and lastly to verify the data quality. Further details are elaborated in each step.
 
 ### Libraries
 ```{r include = FALSE, warning = FALSE}
@@ -80,19 +76,28 @@ airline_df <- read.csv("Airline Passenger Satisfaction Dataset\\train_unclean.cs
                        , header = TRUE
                        , stringsAsFactors = TRUE)
 ```
-Dimension of the dataset
+
+**Attributes and Dimension of the dataset**
 ```{r echo = TRUE, warning = FALSE}
+colnames(airline_df)
 dim(airline_df)
 ```
-First 5 rows in the dataset
+
+The dataset contains 24 distinct features and 103,904 entries, including information on various aspects of the flight experience, such as in-flight Wi-Fi service, online booking ease, gate location, food and drink, seat comfort, in-flight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, passenger demographics such as gender, age, and travel type, as well as the information on departure and arrival delay times.  
+
+**First 5 rows in the dataset**
 ```{r echo = TRUE, warning = FALSE}
 head(airline_df)
 ```
-Data Types for each attribute in the dataset
+
+**Data Types for each attribute in the dataset**
 ```{r echo = TRUE, warning = FALSE}
 sapply(airline_df, class)
 ```
-Summary of the dataset
+
+The data is composed of categorical (nominal and ordinal) and numerical (continuous) variables, which serves as a tool for understanding passenger behavior and their level of satisfaction. 
+
+**Summary of the dataset**
 ```{r echo = TRUE, warning = FALSE}
 summary(airline_df)
 ```
@@ -103,10 +108,13 @@ The purpose of data checking is to ensure that the data gathered is accurate, co
 ```{r echo = TRUE, warning = FALSE}
 dim(airline_df[duplicated(airline_df$id),])[1]
 ```
+
 **Check missing values in each attribute**
 ```{r echo = TRUE, warning = FALSE}
 colSums(is.na(airline_df))
 ```
+92 and 310 missing values were detected in continuous data, which are the attributes of Departure.Delay.in.Minutes and Arrival.Delay.in.Minutes respectively.  
+
 **Check distinct values in each nominal attribute**
 ```{r echo = TRUE, warning = FALSE}
 levels(airline_df$Gender)
@@ -116,6 +124,9 @@ levels(airline_df$Class)
 ```
 
 ## Data Cleaning
+
+Having clean data will ultimately increase overall productivity and allow for the highest quality information in your decision-making. 92 and 310 missing values were detected in continuous data, which are the attributes of Departure.Delay.in.Minutes and Arrival.Delay.in.Minutes respectively and are cleaned by replacing with 0 value. Incorrect, misspell and structural error values are detected in nominal values such as Gender, Customer.Type, Type.of.Travel and Class attributes. Incorrect values are found in the ordinal type of attributes which are fixed using imputation method. All noisy data are cleaned, formatted and renamed accordingly. Irrelevant attributes are dropped to get the final clean data.  
+
 ### Nominal Data
 **Gender**  
 Convert Gender into proper case
@@ -483,15 +494,15 @@ Now, we will perform analysis from different perspectives, such as customer age,
 
 ### Customer Age
 
-*  Chart below is a plot of satisfaction (count of satisfied customers) based on age. It is evident from the plot that more number of younger customers (20–60 years) are satisfied with the airline, whereas a higher number of customers (10–60 years) are dissatisfied with the airline. Older customers were in general more satisfied with all features and rated them higher compared to younger travellers. This could indicate that younger travelers are more critical of factors and have higher expectations from products when compared to older/ middle aged population.
-
-```{r include = FALSE, warning = FALSE}
+```{r echo = FALSE, warning = FALSE}
 Age_1 <- ggplot(airline_df, aes(Age, fill = satisfaction)) + geom_density(alpha = 0.5) + labs(title = "Age across Satisfaction", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Satisfaction")+ 
   theme(axis.text = element_text(size = 5)) + theme(axis.title = element_text(size = 5)) + theme(plot.title = element_text(size = 7)) +
   theme(legend.text = element_text(size = 5))+ theme(legend.title = element_text(size = 5))+ theme(legend.key.height= unit(0.5, 'cm'),
                                                                                                    legend.key.width= unit(0.5, 'cm'))
 Age_1
 ```
+
+Chart above describes the satisfaction (count of satisfied customers) by age. It is evident from the plot that more number of younger customers (20–60 years) are satisfied with the airline, whereas a higher number of customers (10–60 years) are dissatisfied with the airline. Older customers were in general more satisfied with all features and rated them higher compared to younger travelers. This could indicate that younger travelers are more critical of factors and have higher expectations from products when compared to older/ middle aged population.
 
 ### Customer Gender
 
@@ -1315,13 +1326,12 @@ class_2
 
 * Passengers in the business class are generally happy with the airline's services, but there is still room for improvement. On the other hand, many passengers in the economy classes were not satisfied or were neutral about the services they received. To make sure that all passengers have a good experience, it is important to focus on improving the services provided to the economy and economy plus classes.
 
-**(Pending RACHMAT's interpretation)**
-
 ```{r echo = FALSE, warning = FALSE}
 ggarrange(class_7, class_8, class_9, class_10, nrow = 2, ncol=2)
 ggarrange(class_11, class_12, class_13, class_14, nrow = 2, ncol=2)
 ggarrange(class_15, class_16, class_17, class_18, nrow = 2, ncol=2)
 ```
+
 * From the graphs presented above, the areas that generate the most dissatisfaction among passengers for both business class and economy class are inflight wifi service, ease of online booking, gate location, and food and drink. To enhance the passenger experience and improve the airline's image and values, these areas require improvement.
 * Furthermore, for economy class, additional areas such as seat comfort, inflight entertainment, on-board service, leg room, check-in service, and cleanliness also need attention as they frequently receive low ratings and affect the overall passenger experience.
 
@@ -1375,57 +1385,24 @@ airline_df_m_trsf$satisfaction <- factor(airline_df_m_trsf$satisfaction)
 
 ### Correlation
 Further investigation on the correlation between different airline services and overall satisfaction.
+It is observed that the class and online boarding service have a stronger positive correlation with the overall satisfaction, i.e. more than 0.5 Pearson correlation coefficient. Passengers rely on the type of flight class and the online boarding service to rate higher satisfaction for the flight.
 ```{r echo = TRUE, warning = FALSE}
+#Changing Satisfaction attribute to numeric
+airline_corr<- airline_df_m_trsf %>%
+  select(everything()) %>%   mutate_if(is.factor,as.numeric)
+str(airline_corr)
 
-#Correlation between different variables
-#Removed the non-numeric data
-# airline_corr<- airline_df %>%
-#   select(!c('id','Gender', 'Customer.Type',	'Age', 'Type.of.Travel',	'Class',	'Flight.Distance',)) %>%   mutate_if(is.factor,as.numeric) 
-# 
-# 
-# # Creating correlation matrix
-# corr_mat <- round(cor(airline_corr),2)
-# head(corr_mat)
-# 
-# # reduce the size of correlation matrix
-# melted_corr_mat <- melt(corr_mat)
-# head(melted_corr_mat)
- 
-# plotting the correlation heatmap
-# library(ggplot2)
-# ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, fill=value)) + geom_tile() +
-#   geom_text(aes(Var2, Var1, label = value), color = "black", size = 4)
-# 
-# ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
-#    lab = TRUE)
+#Creating correlation between different airline services and overall satisfaction.
+df_corr<-cor(airline_corr[-1], airline_corr$satisfaction) 
+colnames(df_corr)[1] <- "Satisfaction"
+df_corr
 
-#Included categorical data in correlation heatmap
-# airline_corr2<- airline_df %>%
-#   select(!c('id')) %>%   mutate_if(is.factor,as.numeric) 
-# airline_corr2<- airline_corr2 %>%
-#   select(everything()) %>%   mutate_if(is.integer,as.numeric) 
-# str(airline_corr2)
-
-#Creating correlation matrix
-
-# corr_mat2 <- round(cor(airline_corr2),2)
-# head(corr_mat2)
-# 
-# # reduce the size of correlation matrix
-# melted_corr_mat2 <- melt(corr_mat2)
-# head(melted_corr_mat2)
- 
-## plotting the correlation heatmap
-#  library(ggplot2) 
-#  ggplot(data = melted_corr_mat, aes(x=Var1, y=Var2, 
-#                                    fill=value)) + 
-#  geom_tile() + 
-#  geom_text(aes(Var2, Var1, label = value), 
-#            color = "black", size = 4) 
-
-# ggcorrplot::ggcorrplot(corr_mat2, hc.order = TRUE, type = "lower",
-#    lab = TRUE)
-```   
+#Creating correlation heatmap between different attributes.
+corr_mat <- round(cor(airline_corr),2)
+head(corr_mat)
+ggcorrplot::ggcorrplot(corr_mat, hc.order = TRUE, type = "lower",
+   lab = TRUE)   
+```
 
 ### Data Splitting
 Data is split into train and test dataset (80:20), 82,258 and 21,646 records respectively.
@@ -1491,6 +1468,9 @@ dt_m
 dt_ac <- sum(diag(dt_m)) / sum(dt_m)
 print(paste('Accuracy =', dt_ac))
 ```
+
+The accuracy score for Decision Tree model is 95, which is relatively high.
+From the confusion matrix, the model has correctly predicted that 8,717 passengers are satisfied with the services provided, while 11,836 passengers rated neutral or dissatisfied. By analogy, the model misclassified 436 as happy passengers and 658 as unhappy passengers.
 
 ### K-Nearest Neighbour (KNN)
 
@@ -1603,13 +1583,8 @@ Which model works the best? Justify.
 # Conclusion
 Summarize the EDA part and model part. Airline of which class need to focus on what services?
 
-
-<<<<<<< Updated upstream
-* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight wifi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
-
-=======
 * From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight Wi-Fi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
->>>>>>> Stashed changes
+
 * For Personal Travel, the majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty. 
 
 # Contribution
