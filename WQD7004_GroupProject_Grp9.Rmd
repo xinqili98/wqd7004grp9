@@ -425,6 +425,9 @@ class_g
 Lastly, regarding flight class, the data indicates that 47.8% of the customers are traveling in business class, 52.2% in economy class. This information can be used to understand the type of customers that are traveling in different classes, adjust pricing and inventory management strategies, and understand the revenue generated from different classes of customers.
 
 **Flight Arrival & Delay in Minutes**  
+
+* Based on the box plot below, we can conclude that both arrival and departure delay mostly fall in the region of 0 minute to 10 minutes and with less amount of delay more than 10 minutes. Both delay are comparable to each other also.
+
 ```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # Departure Delay in Minutes
 departure_delay_g <-
@@ -452,9 +455,7 @@ arrival_delay_g <-
        y = "") + 
   scale_fill_brewer(palette="Spectral")
 ggarrange(departure_delay_g, arrival_delay_g, ncol = 2)
-```
-
-**(Pending TONY's interpretation)**  
+```  
 
 Overall, the data gives valuable insights into the customer base and can be used to inform business decisions and improve customer satisfaction. It allows the Airlines to understand the characteristics of their customers, such as loyalty, travel type and flight class, and use it to tailor their services and attract more customers.
 
