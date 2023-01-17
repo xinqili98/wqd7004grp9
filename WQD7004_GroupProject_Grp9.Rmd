@@ -32,9 +32,9 @@ The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://
 
 # Methodology
 ## Data Understanding
-In this report, we analyze the Airline satisfaction dataset which contains 24 distinct features and 103,904 entries. The dataset includes information on various aspects of the flight experience, including inflight wifi service, ease of online booking, gate location, food and drink, seat comfort, inflight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, and passenger demographics such as gender, age, and type of travel. 
+In this report, we analyze the Airline satisfaction dataset which contains 24 distinct features and 103,904 entries. The dataset includes information on various aspects of the flight experience, including in-flight Wi-Fi service, ease of online booking, gate location, food and drink, seat comfort, in-flight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, and passenger demographics such as gender, age, and type of travel. 
 The dataset also includes information on departure and arrival delay times, as well as the passenger's overall satisfaction with their flight experience. 
-Besides, the data is composed of categorical, ordinal and character variables, which allows us to understand the behavior of the passengers and their level of satisfaction. It will be explored and cleaned to identify any potential issues or outliers before conducting the analysis.
+Besides, the data is composed of categorical and numerical variables, which allows us to understand the behavior of the passengers and their level of satisfaction. It will be explored and cleaned to identify any potential issues or outliers before conducting the analysis.
 
 ### Libraries
 ```{r include = FALSE, warning = FALSE}
@@ -95,16 +95,16 @@ summary(airline_df)
 ```
 
 ### Data Checking
-Explain about which column got what dirt...
-Check duplicate data using the id attribute (unique identifier)
+The purpose of data checking is to ensure that the data gathered is accurate, consistent, and complete to perform reliable analysis in the later stage.  
+**Check duplicate data using the id attribute (unique identifier)**
 ```{r echo = TRUE, warning = FALSE}
 dim(airline_df[duplicated(airline_df$id),])[1]
 ```
-Check missing values in each attribute
+**Check missing values in each attribute**
 ```{r echo = TRUE, warning = FALSE}
 colSums(is.na(airline_df))
 ```
-Check distinct values in each nominal attribute
+**Check distinct values in each nominal attribute**
 ```{r echo = TRUE, warning = FALSE}
 levels(airline_df$Gender)
 levels(airline_df$Customer.Type)
@@ -261,6 +261,7 @@ airline_df[, "X"] <- list(NULL)
 ## Exploratory Data Analysis (EDA)
 
 ### Overview
+In this section, we will walk through an overall view of the airline satisfaction dataset, by customer demographics and service ratings.
 ```{r include = FALSE, warning = FALSE}
 # Summarize table for visualization
 # Customer Gender
@@ -313,7 +314,10 @@ ratings_df <-
 ```
 
 #### Customers
-```{r include = FALSE, warning = FALSE}
+Below graphs represent an overview of the passengers demographics and characteristics, which will be used in further analysis.  
+
+**Customer Gender**  
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # Gender Pie Chart
 cs_gender_g <- 
   ggplot(cs_gender_df, 
@@ -322,27 +326,38 @@ cs_gender_g <-
              fill = Gender)) + 
   geom_bar(width = 1, stat = "identity") +
   coord_polar("y", start = 0) +
-  guides(fill=guide_legend(title="Customer Gender")) +
+  guides(fill=guide_legend(title="Gender")) +
   geom_text(aes(label = labels), 
             position = position_stack(vjust = 0.5),
             show.legend = FALSE) +
   theme(plot.title = element_text(hjust = 1.0)) +
   scale_fill_brewer(palette="PRGn") +
-  labs(title = "Customer Gender") +
+  # labs(title = "Customer Gender") +
   theme_void()
+cs_gender_g
+```
 
+As seen in the pie chart, the distribution of genders among the passenger population is relatively balanced, with 50.7% of the passengers being male and 49.3% of the passengers being female. The slight difference of 1.4% between the two indicates that the data is not skewed towards one gender, allowing for a fair representation of both male and female passengers.
+  
+**Customer Age**  
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # Age Density Graph
 cs_age_g <- 
   ggplot(data = airline_df, 
          aes( x = Age)
          ) + 
   geom_density(fill="navy blue", color="black", alpha=0.75) +
-  labs(title = "Customer Age", 
-       x = "Age", 
+  labs(x = "Age", 
        y = "") + 
   theme(plot.title = element_text(hjust = 0.5)) +
   scale_fill_brewer(palette="Spectral")
+cs_age_g
+```
 
+The age distribution of the passenger population shows a clear pattern of increasing numbers as age increases, peaking in the twenties range. The number then drops slightly in the thirties age range, before climbing back up to the highest peak in the forties. From there, the number of passengers gradually decreases as age increases. This pattern is clearly visible in the graph, providing an overall picture of the age distribution among the passenger population.
+
+**Customer Type**  
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # customer type
 cs_type_g <- 
   ggplot(cs_type_df, 
@@ -357,9 +372,15 @@ cs_type_g <-
             show.legend = FALSE) +
   theme(plot.title = element_text(hjust = 1.0)) +
   scale_fill_brewer(palette="Spectral") +
-  labs(title = "Customer Type") +
+  # labs(title = "Customer Type") +
   theme_void()
+cs_type_g        
+```
 
+It can be observed that 18% of the customers are disloyal and 82% are loyal. This indicates that most of the customers have a history of repeat business with the company and can inform strategies to retain and attract loyal customers.
+
+**Travel Type**  
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # Type of Travel
 type_travel_g <- 
   ggplot(type_travel_df, 
@@ -374,9 +395,15 @@ type_travel_g <-
             show.legend = FALSE) +
   theme(plot.title = element_text(hjust = 1.0)) +
   scale_fill_brewer(palette="Spectral") +
-  labs(title = "Customer Travel Type") +
+  # labs(title = "Customer Travel Type") +
   theme_void()
+type_travel_g
+```
 
+Additionally, the data shows that 69% of the customers are traveling for business purposes and 31% are traveling for personal reasons. This can provide insight into the type of customers the company is serving and can inform marketing and sales efforts to specific segments of the customer base.
+
+**Flight Class**  
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # Class
 class_g <- 
   ggplot(class_df, 
@@ -391,9 +418,15 @@ class_g <-
             show.legend = FALSE) +
   theme(plot.title = element_text(hjust = 1.0)) +
   scale_fill_brewer(palette="Spectral") +
-  labs(title = "Flight Class") +
+  # labs(title = "Flight Class") +
   theme_void()
+class_g
+```
 
+Lastly, regarding flight class, the data indicates that 47.8% of the customers are traveling in business class, 52.2% in economy class. This information can be used to understand the type of customers that are traveling in different classes, adjust pricing and inventory management strategies, and understand the revenue generated from different classes of customers.
+
+**Flight Arrival & Delay in Minutes**  
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 # Departure Delay in Minutes
 departure_delay_g <-
   ggplot(airline_df, 
@@ -419,42 +452,12 @@ arrival_delay_g <-
        x = "Arrival Delay in Minutes",
        y = "") + 
   scale_fill_brewer(palette="Spectral")
-```
-
-* The below graphs provide a visual representation of the demographics of the passenger population, which will be used in further analysis. As seen in the data, the distribution of genders among the passenger population is relatively balanced, with 50.7% of the passengers being male and 49.3% of the passengers being female. The slight difference of 1.4% between the two indicates that the data is not skewed towards one gender, allowing for a fair representation of both male and female passengers.
-
-* The age distribution of the passenger population shows a clear pattern of increasing numbers as age increases, peaking in the twenties range. The number then drops slightly in the thirties age range, before climbing back up to the highest peak in the forties. From there, the number of passengers gradually decreases as age increases. This pattern is clearly visible in the graph, providing an overall picture of the age distribution among the passenger population.
-
-```{r echo = FALSE, warning = FALSE}
-ggarrange(ggarrange(cs_gender_g, cs_age_g))
-```
-
-* The data provided gives an overview of the customer characteristics of the passengers. 
-* Firstly, it can be observed that 18% of the customers are disloyal and 82% are loyal. This indicates that most of the customers have a history of repeat business with the company and can inform strategies to retain and attract loyal customers.
-
-```{r echo = FALSE, warning = FALSE}
-cs_type_g        
-```
-
-* Additionally, the data shows that 69% of the customers are traveling for business purposes and 31% are traveling for personal reasons. This can provide insight into the type of customers the company is serving and can inform marketing and sales efforts to specific segments of the customer base.
-
-```{r echo = FALSE, warning = FALSE}
-type_travel_g
-```
-
-* Lastly, regarding flight class, the data indicates that 47.8% of the customers are traveling in business class, 52.2% in economy class. This information can be used to understand the type of customers that are traveling in different classes, adjust pricing and inventory management strategies, and understand the revenue generated from different classes of customers.
-
-```{r echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 10}
-class_g
-```
-
-* (Pending TONY's interpretation) 
-
-```{r echo = FALSE, warning = FALSE, fig.height = 4}
 ggarrange(departure_delay_g, arrival_delay_g, ncol = 2)
 ```
 
-* Overall, the data provided gives valuable insights into the customer base and can be used to inform business decisions and improve customer satisfaction. It allows the Airlines to understand the characteristics of their customers, such as loyalty, travel type and flight class, and use it to tailor their services and attract more customers.
+**(Pending TONY's interpretation)**  
+
+Overall, the data gives valuable insights into the customer base and can be used to inform business decisions and improve customer satisfaction. It allows the Airlines to understand the characteristics of their customers, such as loyalty, travel type and flight class, and use it to tailor their services and attract more customers.
 
 #### Service Ratings
 ```{r echo = FALSE, warning = FALSE, fig.height = 20}
@@ -472,9 +475,15 @@ ratings_g <-
   scale_fill_brewer(palette="Spectral")
 ratings_g
 ```
-#### Customer Age
 
-* (Pending TONY's interpretation) 
+**(Pending interpretation)**  
+
+---
+Now, we will perform analysis from different perspectives, such as customer age, customer gender, customer type, travel type and flight class.
+
+### Customer Age
+
+**(Pending TONY's interpretation)**  
 
 ```{r include = FALSE, warning = FALSE}
 Age_1 <- ggplot(airline_df, aes(Age, fill = satisfaction)) + geom_density(alpha = 0.5) + labs(title = "Age across Type of Travel", colour = "Type.of.Travel", y = "Number of Airline Passengers", x = "Type of Travel")+ 
@@ -483,7 +492,8 @@ Age_1 <- ggplot(airline_df, aes(Age, fill = satisfaction)) + geom_density(alpha 
                                                                                                    legend.key.width= unit(0.5, 'cm'))
 Age_1
 ```
-#### Customer Gender
+
+### Customer Gender
 
 ```{r include = FALSE, warning = FALSE}
 #2a customer gender by customer type- table
@@ -763,7 +773,7 @@ service14_g <-
 service14_g
 ```
 
-#### Customer Type
+### Customer Type
 
 ```{r include = FALSE, warning = FALSE}
 # customer type by type of travel and class
@@ -788,8 +798,6 @@ cs_type_satisfaction_lvl_df <-
 ```
 **Different perspectives from Customer Type**  
 
-* Both customers tend to choose the airline for business travel rather than personal travel, with a more distinct distribution of travel type in the disloyal customers group.  
-* Disloyal customers prefer Eco class for business travel, while majority of loyal customers prefer Business class for business travel but Eco class for personal travel.  
 ```{r echo = FALSE, warning = FALSE}
 # customer type by type of travel and class
 cs_type_travel_class_g <- 
@@ -807,10 +815,8 @@ cs_type_travel_class_g <-
 cs_type_travel_class_g
 ```
 
-* The distribution of age for gender in each customer type is similar.
-* The distribution of age for loyal and disloyal customers is unalike; widely-spread age distribution for loyal customers and non-symmetric bimodal age distribution for disloyal customers, with larger distribution in mid 20's.
-* The quartiles of the loyal customers fall between 30's to 50's, whereas the quartiles of disloyal customers are more concentrated at mid 20's to near 40's.
-* Most disloyal customers are younger than loyal customers.
+* Both customers tend to choose the airline for business travel rather than personal travel, with a more distinct distribution of travel type in the disloyal customers group.  
+* Disloyal customers prefer Eco class for business travel, while majority of loyal customers prefer Business class for business travel but Eco class for personal travel.
 
 ```{r echo = FALSE, warning = FALSE}
 # customer type by gender and age
@@ -831,6 +837,11 @@ cs_type_gender_age_g <-
 cs_type_gender_age_g
 ```
 
+* The distribution of age for gender in each customer type is similar.
+* The distribution of age for loyal and disloyal customers is unalike; widely-spread age distribution for loyal customers and non-symmetric bimodal age distribution for disloyal customers, with larger distribution in mid 20's.
+* The quartiles of the loyal customers fall between 30's to 50's, whereas the quartiles of disloyal customers are more concentrated at mid 20's to near 40's.
+* Most disloyal customers are younger than loyal customers.
+
 ```{r include = FALSE, warning = FALSE}
 # Not showing
 # Flight distance by customer type and class
@@ -848,9 +859,6 @@ cs_type_flight_d_g <-
   scale_fill_brewer(palette = "Spectral")
 cs_type_flight_d_g
 ```
-
-* No significant difference in the satisfaction level of each customer type.
-* The number of customers whom satisfied with the service provided by the airline are slightly higher in each customer type group.
 
 ```{r echo = FALSE, warning = FALSE}
 # Customer Type by satisfaction
@@ -870,13 +878,25 @@ cs_type_satisfaction_g <-
 cs_type_satisfaction_g
 ```
 
-* Similar distribution of ratings for each services in each customer type except in-flight Wifi service.
-* Both loyal and disloyal customers rated less than 4 for in-flight Wifi service, showing customers are not satisfied for this service provided by the airline.
+* No significant difference in the satisfaction level of each customer type.
+* The number of customers whom satisfied with the service provided by the airline are slightly higher in each customer type group.
 
-```{r echo = FALSE, warning = FALSE, fig.height = 20, fig.width = 12}
+Since majority of the customers are loyal customers, hence we will focus on the ratings distribution of loyal customers. Looking into the distribution of ratings for loyal customers, most services have similar distribution of ratings in each customer type with gradually increase in the count from rating 1 to 4, peak at rating 4, and slight decrease in the rating count at rating 5. However, some services did not follow this pattern, such as ease of online booking, gate location and in-flight Wi-fi service, therefore we will focus on the distribution of ratings in these 3 services in the graphs below.
+
+```{r echo = FALSE, warning = FALSE, fig.height = 7}
+# Focus on three service type and only loyal customers
+cs_type_ratings_df_focus <- 
+  cs_type_ratings_df %>%
+  filter((Customer.Type == "Loyal Customer") & 
+           (services == "Gate.location" | 
+            services == "Ease.of.Online.booking" |
+            services == "Inflight.wifi.service"
+            )
+         )
+
 # Ratings by customer type
 cs_type_ratings_g <- 
-  ggplot(cs_type_ratings_df, 
+  ggplot(cs_type_ratings_df_focus, 
          aes(x = ratings,
              y = counts, 
              fill = ratings)) + 
@@ -890,11 +910,11 @@ cs_type_ratings_g <-
 cs_type_ratings_g
 ```
 
-#### Type of Travel
-**Different perspectives from Type of Travel**
+* It is observed that most customers rated 2 and 3 for ease of online booking and gate location service, and rated 3 for gate location service.
+* This indicates that further investigation is required to examine the bad performance of online booking and gate location service, and immediate actions are required to improve the ratings for these two services.
 
-* Business travelers tend to have a higher level of satisfaction and loyalty when compared to personal travelers. This could be due to a number of reasons such as the more comfortable and convenient travel arrangements offered by businesses to their employees, as well as the added perks and privileges that come with business travel such as upgrades and access to exclusive lounges.
-* However, it's also worth noting that both types of travelers seem to have similar levels of dissatisfaction, raising concerns.
+### Type of Travel
+**Different perspectives from Type of Travel**
 
 ```{r echo = FALSE, warning = FALSE}
 # Type of Travel of Airline Passengers
@@ -926,10 +946,9 @@ p_4 <- ggplot(airline_df, aes(Type.of.Travel, colour = Customer.Type, fill = Cus
   ggarrange(p_2, p_4, nrow = 2, ncol=1) 
 ```
 
-* Business travelers tend to be older and have longer flight distances than personal travelers. This could be due to a number of factors such as the nature of their work requiring more frequent and longer-distance travel, or the fact that older individuals may be more likely to hold positions that involve traveling for business. 
-* Additionally, business travelers may also have a higher disposable income and be more likely to upgrade to premium seating or business class, which can result in longer flight distances. 
-* Furthermore, older travelers may also prefer longer flights as they offer more comfort and amenities.
-  
+* Business travelers tend to have a higher level of satisfaction and loyalty when compared to personal travelers. This could be due to a number of reasons such as the more comfortable and convenient travel arrangements offered by businesses to their employees, as well as the added perks and privileges that come with business travel such as upgrades and access to exclusive lounges.
+* However, it's also worth noting that both types of travelers seem to have similar levels of dissatisfaction, raising concerns.
+
 ```{r echo = FALSE, warning = FALSE}
 # Age across Type of Travel
 p_5 <- ggplot(airline_df, aes(Age, colour = Type.of.Travel, fill = Type.of.Travel)) + geom_density(alpha = 0.5) + 
@@ -948,10 +967,9 @@ p_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Type.of.Travel)) + geom_
 ggarrange(p_5, p_6, nrow = 2, ncol=1) 
 ```
 
-* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight Wi-fi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
-* By identifying and addressing these specific areas, Airlines can take effective measures to improve the overall travel experience for their customers, resulting in increased satisfaction and loyalty.
-* On the other hand, when it comes to Personal Travel, while the service of "Departure Arrival Time Convenience" receives significant high ratings, the other services still have a significant potential to improve. 
-* The majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty.  
+* Business travelers tend to be older and have longer flight distances than personal travelers. This could be due to a number of factors such as the nature of their work requiring more frequent and longer-distance travel, or the fact that older individuals may be more likely to hold positions that involve traveling for business. 
+* Additionally, business travelers may also have a higher disposable income and be more likely to upgrade to premium seating or business class, which can result in longer flight distances. 
+* Furthermore, older travelers may also prefer longer flights as they offer more comfort and amenities.
 
 ```{r echo = FALSE, warning = FALSE}
 
@@ -1056,7 +1074,13 @@ ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ```
 
-#### Class
+* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight Wi-fi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
+* By identifying and addressing these specific areas, Airlines can take effective measures to improve the overall travel experience for their customers, resulting in increased satisfaction and loyalty.
+* On the other hand, when it comes to Personal Travel, while the service of "Departure Arrival Time Convenience" receives significant high ratings, the other services still have a significant potential to improve. 
+* The majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty.  
+
+### Class
+**Different perspectives from Flight Class**
 
 ```{r echo = FALSE, warning = FALSE}
 airline_df$Class.Group <- ifelse(airline_df$Class == "Eco" | airline_df$Class == "Eco Plus", "Eco", "Business")
@@ -1245,41 +1269,47 @@ theme(legend.text = element_text(size = 5)) +
 theme(legend.title = element_text(size = 5))
 ```
 
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
+ggarrange(class_1, class_3, ncol=2)
+```
+
 * The distribution of passengers between business and economy class is roughly equal, with a nearly equal number of male and female passengers in both classes.
 
-```{r echo = FALSE, warning = FALSE}
-ggarrange(class_1, class_3, nrow = 2, ncol=2)
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
+class_4
 ```
 
 * In addition, the customer demographic in both business and economy class is similar, with the majority of passengers being Loyal Customers and a small percentage being Disloyal Customers.
 
-```{r echo = FALSE, warning = FALSE}
-class_4
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
+class_5
 ```
 
 * In economy class, there is a higher proportion of passengers aged below 30 and between 60 to 70 years old, whereas in business class, there is a higher proportion of passengers aged between 30 to 60 years old. The demographic differences between economy and business class passengers could be due to various factors such as pricing, travel purpose, life stage and perception of comfort.
 
-* Younger passengers might choose eco class due to cost concerns, as it is typically the most affordable option. They might also be more likely to be traveling for leisure or personal reasons rather than for work, leading them to prioritize cost savings over amenities. Alternatively, younger passengers might prioritize other aspects of their trip, such as destination or duration, and choose the eco class in order to allocate more of their budget to those factors.
+* Younger passengers might choose Eco class due to cost concerns, as it is typically the most affordable option. They might also be more likely to be traveling for leisure or personal reasons rather than for work, leading them to prioritize cost savings over amenities. Alternatively, younger passengers might prioritize other aspects of their trip, such as destination or duration, and choose the Eco class in order to allocate more of their budget to those factors.
 
 * Business class is often chosen by adults for the enhanced comfort it provides, such as more spacious seating and additional amenities. It may also be preferred for the convenience it offers, including priority services at the airport and access to exclusive lounges. The ability to work or relax in a more comfortable setting during long flights can also be a factor in the choice of business class. Additionally, some adults may be attracted to the prestige associated with flying in this class.
 
-```{r echo = FALSE, warning = FALSE}
-class_5
-```
-According to the graph, a significant number of business class passengers are traveling for business purposes. While the eco class also has a proportion of business travelers, there is a slightly higher percentage of passengers traveling for personal reasons.
-
-```{r echo = FALSE, warning = FALSE}
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 class_20
 ```
-* From the graph, we can see that passengers often choose business class for further flights. It may because of the added comfort and amenities on long flights.
-```{r echo = FALSE, warning = FALSE}
+
+According to the graph, a significant number of business class passengers are traveling for business purposes. While the Eco class also has a proportion of business travelers, there is a slightly higher percentage of passengers traveling for personal reasons.
+
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 class_6
 ```
-* Passengers in the business class are generally happy with the airline's services, but there is still room for improvement. On the other hand, many passengers in the economy classes were not satisfied or were neutral about the services they received. To make sure that all passengers have a good experience, it is important to focus on improving the services provided to the economy and economy plus classes.
-```{r echo = FALSE, warning = FALSE}
+
+* From the graph, we can see that passengers often choose business class for further flights. It may because of the added comfort and amenities on long flights.
+
+```{r echo = FALSE, warning = FALSE, fig.height = 4}
 class_2
 ```
-(Pending RACHMAT's interpretation) 
+
+* Passengers in the business class are generally happy with the airline's services, but there is still room for improvement. On the other hand, many passengers in the economy classes were not satisfied or were neutral about the services they received. To make sure that all passengers have a good experience, it is important to focus on improving the services provided to the economy and economy plus classes.
+
+**(Pending RACHMAT's interpretation)**
 
 ```{r echo = FALSE, warning = FALSE}
 ggarrange(class_7, class_8, class_9, class_10, nrow = 2, ncol=2)
@@ -1288,7 +1318,7 @@ ggarrange(class_15, class_16, class_17, class_18, nrow = 2, ncol=2)
 ```
 
 ## Classification
-Classification model is built to predict the satisfaction of customers based on other attributes such as customer demographics, flight details, service ratings etc. 
+Classification is the process of predicting the target label based on features in the dataset. In this project, we will build classification model using different algorithms to predict the satisfaction of customers (either satisfied or neutral/dissatisfied) based on available features such as customer demographics, flight details, service ratings etc. 
 
 ### Handle Categorical Data
 Convert categorical data to numerical data using:  
@@ -1398,15 +1428,23 @@ train <- subset(airline_df_m_trsf, split == "TRUE")
 test <- subset(airline_df_m_trsf, split == "FALSE")
 ```
 
+---
+
+We will build the classification model using several classifiers, which is Logistic Regression, Decision Trees and K-Nearest Neighbors (KNN), then evaluate, discuss and compare the results accordingly.
+
 ### Logistic Regression
+Logistic Regression is a regression algorithm that predicts the value of target variable (dependent variable) by investigating the relationship between the independent variable and the dependent variable. There are few important assumptions for regression, which is appropriate outcome structure, observations independence, little or no multicollinearity among the independent variables, linearity of independent variables and log odds and large sample size.  
+
 Fit logistic regression model using the glm (generalized linear model) function  
-**Results of the model:**
+**Model Summary:**
 ```{r echo = TRUE, warning = FALSE}
 logit_model <- glm(satisfaction ~.,
                    family = binomial(link='logit'),
                    data = train)
 summary(logit_model)
 ```
+
+
 
 **ANOVA Chi-square test**  
 To check the overall effect of variables on the dependent variables
@@ -1562,3 +1600,5 @@ Summarize the EDA part and model part. Airline of which class need to focus on w
 * For Personal Travel, the majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty. 
 
 # Contribution
+
+# Reference
