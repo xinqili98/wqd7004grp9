@@ -1077,10 +1077,11 @@ ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 ```
 
-* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight Wi-fi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
+* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "**In-flight Wi-fi service**", "**Ease of Online Booking**", "**Departure Arrival time convenient**" and "**Gate location**" as they are identified to be major sources of dissatisfaction among business travelers. 
 * By identifying and addressing these specific areas, Airlines can take effective measures to improve the overall travel experience for their customers, resulting in increased satisfaction and loyalty.
-* On the other hand, when it comes to Personal Travel, while the service of "Departure Arrival Time Convenience" receives significant high ratings, the other services still have a significant potential to improve. 
-* The majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty.  
+
+* On the other hand, when it comes to Personal Travel, the service of "**Departure Arrival Time Convenience**" receives significant high ratings and the other services still have a significant potential to improve as majority of the ratings for those services fall between "1" and "3" which indicates that those services are not performing as well as they could. 
+* By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty.  
 
 ### Class
 **Different perspectives from Flight Class**
@@ -1298,7 +1299,7 @@ class_5
 class_20
 ```
 
-According to the graph, a significant number of business class passengers are traveling for business purposes. While the Eco class also has a proportion of business travelers, there is a slightly higher percentage of passengers traveling for personal reasons.
+* According to the graph, a significant number of business class passengers are traveling for business purposes. While the Eco class also has a proportion of business travelers, there is a slightly higher percentage of passengers traveling for personal reasons.
 
 ```{r echo = FALSE, warning = FALSE, fig.height = 4}
 class_6
@@ -1502,9 +1503,9 @@ Fit the KNN model
 
 * Scaling the features is carried to ensures that all features are on the same scale, so that one feature does not dominate the distance measure.
 
-* The square root of the total number of observations is commonly used to determine the optimal k value as it balances the trade-off between overfitting and underfitting. Overfitting occurs when a model is too complex and is fitting the noise in the training data, while underfitting occurs when a model is too simple and is not fitting the training data well. And it shows approximate 288.31406486677.
+* The square root of the total number of observations is commonly used to determine the optimal k value as it balances the trade-off between overfitting and underfitting. Overfitting occurs when a model is too complex and is fitting the noise in the training data, while underfitting occurs when a model is too simple and is not fitting the training data well. 
 
-* The 286 & 287 is chosen because of checking the square root of the total number of observations in the training set, as a commonly used rule to determine the optimal k value, which balances the trade-off between overfitting and underfitting.
+* After running the code, it shows that k value is approximate 286.808298345777 and k value 286 & 287 are further being chosen for our model prediction.
 
 ```{r echo = TRUE, warning = FALSE}
 # Feature scaling
@@ -1529,9 +1530,11 @@ knn_model_287 <- knn(train = train_scale,
 **Model Prediction & Evaluation**    
 Model evaluation using confusion matrix
 
-* The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. Generally, an accuracy of 90% or higher is considered to be very good.
+* The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. 
+* The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. (Generally, an accuracy of 90% or higher is considered to be very good.)
 
-* The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. The model is able to correctly predict the majority of the test data points. The model may have slightly better performance with k = 287, but the difference is very small.
+* The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. 
+* The model is able to correctly predict the majority of the test data points and it may have slightly better performance with k = 287, but the difference is very small.
 
 ```{r echo = TRUE, warning = FALSE}
 # Accuracy
@@ -1544,7 +1547,11 @@ knn_acc_287
 # Confusion Matrix
 confusionMatrix(knn_model_286, test$satisfaction)
 confusionMatrix(knn_model_287, test$satisfaction)
+```
+* In order to further improve the KNN model, we proceed to find the optimal k value.
+* From the output, it can be seen that the highest accuracy is 92.9733% when k = 7, which means that when k = 7, the model correctly predicted the class for 92.9733% of the test samples. Therefore, 7 is the optimal k value for this model.
 
+```{r echo = TRUE, warning = FALSE}
 # Improve model and find optimal k value
 # i = 5
 # k.optm = 5
@@ -1586,20 +1593,17 @@ confusionMatrix(knn_model_287, test$satisfaction)
 
 # Optimal k: 7
 ```
-From the output, it can be seen that the highest accuracy is 92.9733% when k = 7, which means that when k = 7, the model correctly predicted the class for 92.9733% of the test samples. Therefore, 7 is the optimal k value for this model.
 
 # Results
-Which model works the best? Justify. (Accuracy, AUC-ROC, F1 score)
-Decision Tree - 94.2 %
-Logistic Regression - 87.28%
-KNN - 92.97%
+Which model works the best? Justify. 
+
 
 # Conclusion
 Summarize the EDA part and model part. Airline of which class need to focus on what services?
 
-(Draft)
 
 * From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight wifi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
+
 * For Personal Travel, the majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty. 
 
 # Contribution
