@@ -21,20 +21,23 @@ editor_options:
 
 # Introduction
 
-Airline satisfaction is a crucial aspect of the aviation industry as it directly impacts the loyalty and repeat business of customers. In this report, we will analyze a dataset of Airline satisfaction data collected from Kaggle. We will explore the data and conduct various analysis to understand the behavior of the passengers and their level of satisfaction. The insights and conclusion drawn from this analysis will be useful for the airline industry to improve services and increase passenger satisfaction.
+Airline satisfaction is a crucial aspect of the aviation industry as it directly impacts the loyalty and repeat business of customers. A dataset of airline satisfaction data collected from Kaggle will be analyzed in this report. We will examine the data and conduct various analyses to understand the behavior and satisfaction of passengers. It is hoped that the insights and conclusions from this analysis will enable airlines to improve their services and increase their passenger satisfaction.
 
 The dataset can be found here: [Airline Passenger Satisfaction Dataset](https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction)
 
 # Objectives
 1. To understand the main factor that affects the passenger satisfaction.
-2. To understand the correlation between the services provided by Airlines.
+2. To understand the correlation between the services provided by Airline.
 3. To understatnd the accuracy of classification model.
 
 # Methodology
 ## Data Understanding
-In this report, we analyze the Airline satisfaction dataset which contains 24 distinct features and 103,904 entries. The dataset includes information on various aspects of the flight experience, including in-flight Wi-Fi service, ease of online booking, gate location, food and drink, seat comfort, in-flight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, and passenger demographics such as gender, age, and type of travel. 
-The dataset also includes information on departure and arrival delay times, as well as the passenger's overall satisfaction with their flight experience. 
-Besides, the data is composed of categorical and numerical variables, which allows us to understand the behavior of the passengers and their level of satisfaction. It will be explored and cleaned to identify any potential issues or outliers before conducting the analysis.
+
+* Our dataset contains 24 distinct features and 103,904 entries, including information on various aspects of the flight experience, such as in-flight Wi-Fi service, online booking ease, gate location, food and drink, seat comfort, in-flight entertainment, on-board service, legroom, baggage handling, check-in service, cleanliness, as well as passenger demographics such as gender, age, and travel type. 
+
+* A passenger's overall satisfaction with the flight is also included, along with information on departure and arrival delay times. 
+
+* Additionally, the data is composed of categorical and numerical variables, which serves as a tool for understanding passenger behavior and their level of satisfaction. The data will be explored and cleaned before analysis to identify any potential issues.
 
 ### Libraries
 ```{r include = FALSE, warning = FALSE}
