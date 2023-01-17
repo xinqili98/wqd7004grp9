@@ -1321,6 +1321,8 @@ ggarrange(class_7, class_8, class_9, class_10, nrow = 2, ncol=2)
 ggarrange(class_11, class_12, class_13, class_14, nrow = 2, ncol=2)
 ggarrange(class_15, class_16, class_17, class_18, nrow = 2, ncol=2)
 ```
+* From the graphs presented above, the areas that generate the most dissatisfaction among passengers for both business class and economy class are inflight wifi service, ease of online booking, gate location, and food and drink. To enhance the passenger experience and improve the airline's image and values, these areas require improvement.
+* Furthermore, for economy class, additional areas such as seat comfort, inflight entertainment, on-board service, leg room, check-in service, and cleanliness also need attention as they frequently receive low ratings and affect the overall passenger experience.
 
 ## Classification
 Classification is the process of predicting the target label based on features in the dataset. In this project, we will build classification model using different algorithms to predict the satisfaction of customers (either satisfied or neutral/dissatisfied) based on available features such as customer demographics, flight details, service ratings etc. 
