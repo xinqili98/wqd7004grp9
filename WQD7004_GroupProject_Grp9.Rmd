@@ -146,11 +146,7 @@ Correct Class categories
 ```{r echo = TRUE, warning = FALSE}
 airline_df$Class.C <- 
   ifelse(grepl('^b', airline_df$Class, ignore.case = TRUE), 
-         "Business",
-         ifelse(grepl('^(ekon|econ|Eco$)', airline_df$Class, ignore.case = TRUE),
-                "Eco",
-                "Eco Plus")
-         )
+         "Business", "Eco")
 airline_df$Class.C <- as.factor(airline_df$Class.C)
 levels(airline_df$Class.C)
 ```
@@ -515,11 +511,15 @@ cs_gender_travel_class_df <- airline_df %>%
   summarise(counts = n())
 
 #5a Create age group
-airline_df["age_group"] = cut(airline_df$Age, c(0, 10, 20, 30, 40, 50, 60, 70, 80, Inf), c("0-10", "11-20", "21-30","31-40","41-50","51-60","61-70","71-80", ">80"), include.lowest=TRUE)
+airline_age_df <- airline_df
+airline_age_df["age_group"] <- 
+  cut(airline_age_df$Age, c(0, 10, 20, 30, 40, 50, 60, 70, 80, Inf),
+  c("0-10", "11-20", "21-30","31-40","41-50","51-60","61-70","71-80", ">80"),
+  include.lowest=TRUE)
 
 #5b customer gender by age group and customer type- table
-cs_gender_age_type_df <- airline_df %>%
-  group_by(Gender, age_group,Customer.Type) %>%
+cs_gender_age_type_df <- airline_age_df %>%
+  group_by(Gender, age_group, Customer.Type) %>%
   summarise(counts = n())
 
 #6b customer gender by satisfaction- table
@@ -528,7 +528,7 @@ cs_gender_satisfied_df <- airline_df %>%
   summarise(counts = n())
 
 #6d customer gender by age group and satisfaction- table
-cs_gender_age_satisfied_df <- airline_df %>%
+cs_gender_age_satisfied_df <- airline_age_df %>%
   group_by(Gender, age_group, satisfaction) %>%
   summarise(counts = n())
 ```
@@ -917,6 +917,7 @@ cs_type_ratings_g
 * This indicates that further investigation is required to examine the bad performance of online booking and gate location service, and immediate actions are required to improve the ratings for these two services.
 
 ### Type of Travel
+
 **Different perspectives from Type of Travel**
 
 ```{r echo = FALSE, warning = FALSE}
@@ -1087,9 +1088,9 @@ ggarrange(p_15, p_16, p_17, p_18, nrow = 2, ncol=2)
 **Different perspectives from Flight Class**
 
 ```{r echo = FALSE, warning = FALSE}
-airline_df$Class.Group <- ifelse(airline_df$Class == "Eco" | airline_df$Class == "Eco Plus", "Eco", "Business")
+
 # Class of Airline Passengers
-class_1 <- ggplot(airline_df, aes(Class.Group, colour = Class.Group, fill = Class.Group)) + geom_bar()+
+class_1 <- ggplot(airline_df, aes(Class, colour = Class, fill = Class)) + geom_bar()+
   labs(title = "Class of Airline Passengers") + 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1098,7 +1099,7 @@ class_1 <- ggplot(airline_df, aes(Class.Group, colour = Class.Group, fill = Clas
   theme(legend.title = element_text(size = 5))
 
 # Satisfaction across Class
-class_2 <- ggplot(airline_df, aes(Class.Group, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
+class_2 <- ggplot(airline_df, aes(Class, colour = satisfaction, fill = satisfaction)) + geom_bar(position = "dodge") + 
   labs(title = "Satisfaction across Class", colour = "satisfaction")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1107,7 +1108,7 @@ class_2 <- ggplot(airline_df, aes(Class.Group, colour = satisfaction, fill = sat
   theme(legend.title = element_text(size = 5))
 
 # Gender across Class
-class_3 <- ggplot(airline_df, aes(Class.Group, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
+class_3 <- ggplot(airline_df, aes(Class, colour = Gender, fill = Gender)) + geom_bar(position = "dodge") + 
   labs(title = "Gender across Class", colour = "Gender")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1116,7 +1117,7 @@ class_3 <- ggplot(airline_df, aes(Class.Group, colour = Gender, fill = Gender)) 
   theme(legend.title = element_text(size = 5))
 
 # Customer.Type across Class
-class_4 <- ggplot(airline_df, aes(Class.Group, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
+class_4 <- ggplot(airline_df, aes(Class, colour = Customer.Type, fill = Customer.Type)) + geom_bar(position = "dodge") + 
   labs(title = "Customer.Type across Class", colour = "Customer.Type")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1125,7 +1126,7 @@ class_4 <- ggplot(airline_df, aes(Class.Group, colour = Customer.Type, fill = Cu
   theme(legend.title = element_text(size = 5))
 
 # Age across Class
-class_5 <- ggplot(airline_df, aes(Age, colour = Class.Group, fill = Class.Group)) + geom_density(alpha = 0.5) + 
+class_5 <- ggplot(airline_df, aes(Age, colour = Class, fill = Class)) + geom_density(alpha = 0.5) + 
   labs(title = "Age across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1134,7 +1135,7 @@ class_5 <- ggplot(airline_df, aes(Age, colour = Class.Group, fill = Class.Group)
   theme(legend.title = element_text(size = 5))
 
 # Flight Distance across Class
-class_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class.Group)) +
+class_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class)) +
   geom_density(alpha = 0.5) +
   labs(title = "Flight Distance by Class",
        y = "Frequency", 
@@ -1147,7 +1148,7 @@ class_6 <- ggplot(airline_df,aes(x = Flight.Distance,fill = Class.Group)) +
   theme(legend.title = element_text(size = 5))
 
 # Inflight.wifi.service across Class
-class_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Inflight.wifi.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1156,7 +1157,7 @@ class_7 <- ggplot(airline_df, aes(Inflight.wifi.service, colour = Class.Group, f
   theme(legend.title = element_text(size = 5))
 
 # Departure.Arrival.time.convenient across Class
-class_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Departure.Arrival.time.convenient across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1165,7 +1166,7 @@ class_8 <- ggplot(airline_df, aes(Departure.Arrival.time.convenient, colour = Cl
   theme(legend.title = element_text(size = 5))
 
 # Ease.of.Online.booking across Class
-class_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Ease.of.Online.booking across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1174,7 +1175,7 @@ class_9 <- ggplot(airline_df, aes(Ease.of.Online.booking, colour = Class.Group, 
   theme(legend.title = element_text(size = 5))
 
 # Gate.location across Class
-class_10 <- ggplot(airline_df, aes(Gate.location, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_10 <- ggplot(airline_df, aes(Gate.location, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Gate.location across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1183,7 +1184,7 @@ class_10 <- ggplot(airline_df, aes(Gate.location, colour = Class.Group, fill = C
   theme(legend.title = element_text(size = 5))
 
 # Online.boarding across Class
-class_11 <- ggplot(airline_df, aes(Online.boarding, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_11 <- ggplot(airline_df, aes(Online.boarding, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Online.boarding across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1192,7 +1193,7 @@ class_11 <- ggplot(airline_df, aes(Online.boarding, colour = Class.Group, fill =
   theme(legend.title = element_text(size = 5))
 
 # Seat.comfort across Class
-class_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Seat.comfort across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1201,7 +1202,7 @@ class_12 <- ggplot(airline_df, aes(Seat.comfort, colour = Class.Group, fill = Cl
   theme(legend.title = element_text(size = 5))
 
 # Inflight.entertainment across Class
-class_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Inflight.entertainment across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1210,7 +1211,7 @@ class_13 <- ggplot(airline_df, aes(Inflight.entertainment, colour = Class.Group,
   theme(legend.title = element_text(size = 5))
 
 # On.board.service across Class
-class_14 <- ggplot(airline_df, aes(On.board.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_14 <- ggplot(airline_df, aes(On.board.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "On.board.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1219,7 +1220,7 @@ class_14 <- ggplot(airline_df, aes(On.board.service, colour = Class.Group, fill 
   theme(legend.title = element_text(size = 5))
 
 # Leg.room.service across Class
-class_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Leg.room.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1228,7 +1229,7 @@ class_15 <- ggplot(airline_df, aes(Leg.room.service, colour = Class.Group, fill 
   theme(legend.title = element_text(size = 5))
 
 # Baggage.handling across Class
-class_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Baggage.handling across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1237,7 +1238,7 @@ class_16 <- ggplot(airline_df, aes(Baggage.handling, colour = Class.Group, fill 
   theme(legend.title = element_text(size = 5))
 
 # Checkin.service across Class
-class_17 <- ggplot(airline_df, aes(Checkin.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_17 <- ggplot(airline_df, aes(Checkin.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Checkin.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1246,7 +1247,7 @@ class_17 <- ggplot(airline_df, aes(Checkin.service, colour = Class.Group, fill =
   theme(legend.title = element_text(size = 5))
 
 # Inflight.service across Class
-class_18 <- ggplot(airline_df, aes(Inflight.service, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_18 <- ggplot(airline_df, aes(Inflight.service, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Inflight.service across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1255,7 +1256,7 @@ class_18 <- ggplot(airline_df, aes(Inflight.service, colour = Class.Group, fill 
   theme(legend.title = element_text(size = 5))
 
 # Cleanliness across Class
-class_19 <- ggplot(airline_df, aes(Cleanliness, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") + 
+class_19 <- ggplot(airline_df, aes(Cleanliness, colour = Class, fill = Class)) + geom_bar(position = "dodge") + 
   labs(title = "Cleanliness across Class")+ 
   theme(axis.text = element_text(size = 5)) + 
   theme(axis.title = element_text(size = 5)) +
@@ -1264,7 +1265,7 @@ class_19 <- ggplot(airline_df, aes(Cleanliness, colour = Class.Group, fill = Cla
   theme(legend.title = element_text(size = 5))
   
 # Type of Travel across Class
-class_20 <- ggplot(airline_df, aes(Type.of.Travel, colour = Class.Group, fill = Class.Group)) + geom_bar(position = "dodge") +
+class_20 <- ggplot(airline_df, aes(Type.of.Travel, colour = Class, fill = Class)) + geom_bar(position = "dodge") +
 labs(title = "Type.of.Travel across Class") +
 theme(axis.text = element_text(size = 5)) +
 theme(axis.title = element_text(size = 5)) +
@@ -1363,7 +1364,7 @@ airline_df_m_trsf <- subset(airline_df_m_trsf,
 # Remove perfectly correlated variables
 airline_df_m_trsf <- subset(airline_df_m_trsf, 
                             select = -c(Gender.Male, Customer.Type.Loyal.Customer, 
-                                        Type.of.Travel.Personal.Travel, Class.Eco.Plus))
+                                        Type.of.Travel.Personal.Travel, Class.Eco))
 
 # Set satisfaction as factors
 airline_df_m_trsf$satisfaction <- factor(airline_df_m_trsf$satisfaction)
@@ -1432,8 +1433,6 @@ train <- subset(airline_df_m_trsf, split == "TRUE")
 test <- subset(airline_df_m_trsf, split == "FALSE")
 ```
 
----
-
 We will build the classification model using several classifiers, which is Logistic Regression, Decision Trees and K-Nearest Neighbors (KNN), then evaluate, discuss and compare the results accordingly.
 
 ### Logistic Regression
@@ -1448,13 +1447,8 @@ logit_model <- glm(satisfaction ~.,
 summary(logit_model)
 ```
 
-
-
-**ANOVA Chi-square test**  
-To check the overall effect of variables on the dependent variables
-```{r echo=TRUE, warning=FALSE}
-anova(logit_model, test = "Chisq")
-```
+* Most of the predictors are statistically significant to the customer satisfaction (p < 0.05), except Gender and Flight Distance.
+* Looking at the null and residual deviance, it is shown that the difference between these two deviance is huge, thus can conclude that the model is a good fit. 
 
 **Model Prediction & Evaluation**    
 Model evaluation using confusion matrix
@@ -1468,12 +1462,12 @@ predict_reg <- predict(logit_model,
 predict_reg <- ifelse(predict_reg >0.5, "satisfied", "neutral or dissatisfied")
 
 # Confusion matrix
-table(test$satisfaction, predict_reg)
-## Accuracy
-## (True Positives + True Negatives)/(True Positives + True Negatives + False Positives + False Negatives)
-missing_classerr <- mean(predict_reg != test$satisfaction)
-print(paste('Accuracy =', 1 - missing_classerr))
+confusionMatrix(factor(predict_reg), test$satisfaction)
 ```
+
+* Based on the confusion matrix, it is observed that the accuracy of the model is high with roughly 88%, and the accuracy is much higher than the no information rate (percentage of the data with the majority class). 
+* The model also shows high sensitivity and specificity, which means it can correctly predict the customer satisfaction, and only less than 17% of the customers satisfaction are wrongly predicted.
+* The Kappa statistic is around 0.75, indicate excellent agreement between individuals.
 
 ### Decision Tree
 Build the decision tree model using ctree
@@ -1530,12 +1524,6 @@ knn_model_287 <- knn(train = train_scale,
 **Model Prediction & Evaluation**    
 Model evaluation using confusion matrix
 
-* The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. 
-* The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. (Generally, an accuracy of 90% or higher is considered to be very good.)
-
-* The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. 
-* The model is able to correctly predict the majority of the test data points and it may have slightly better performance with k = 287, but the difference is very small.
-
 ```{r echo = TRUE, warning = FALSE}
 # Accuracy
 knn_acc_286 <- 100 * sum(test$satisfaction == knn_model_286)/NROW(test)
@@ -1548,8 +1536,14 @@ knn_acc_287
 confusionMatrix(knn_model_286, test$satisfaction)
 confusionMatrix(knn_model_287, test$satisfaction)
 ```
+
+* The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. 
+* The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. (Generally, an accuracy of 90% or higher is considered to be very good.)
+
+* The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. 
+* The model is able to correctly predict the majority of the test data points and it may have slightly better performance with k = 287, but the difference is very small.
+
 * In order to further improve the KNN model, we proceed to find the optimal k value.
-* From the output, it can be seen that the highest accuracy is 92.9733% when k = 7, which means that when k = 7, the model correctly predicted the class for 92.9733% of the test samples. Therefore, 7 is the optimal k value for this model.
 
 ```{r echo = TRUE, warning = FALSE}
 # Improve model and find optimal k value
@@ -1594,6 +1588,8 @@ confusionMatrix(knn_model_287, test$satisfaction)
 # Optimal k: 7
 ```
 
+* From the output, it can be seen that the highest accuracy is 92.9733% when k = 7, which means that when k = 7, the model correctly predicted the class for 92.9733% of the test samples. Therefore, 7 is the optimal k value for this model.
+
 # Results
 Which model works the best? Justify. 
 
@@ -1602,8 +1598,12 @@ Which model works the best? Justify.
 Summarize the EDA part and model part. Airline of which class need to focus on what services?
 
 
+<<<<<<< Updated upstream
 * From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight wifi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
 
+=======
+* From the perspective of "Type of Travel," it is advised that Airlines should give more attention to the four services such as "In-flight Wi-Fi service," "Ease of Online Booking," "Departure Arrival time convenient," and "Gate location" as they are identified to be major sources of dissatisfaction among business travelers. 
+>>>>>>> Stashed changes
 * For Personal Travel, the majority of the ratings for these services fall between "1" and "3" which indicates that these services are not performing as well as they could. By taking initiative to improve these services, the ratings could be increased from "1" to "3" to "3" to "5", indicating a significant increase in passenger satisfaction and loyalty. 
 
 # Contribution
