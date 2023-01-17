@@ -1504,52 +1504,46 @@ Fit the KNN model
 ```{r echo = TRUE, warning = FALSE}
 # Feature scaling
 # Normalize the range of independent variables or features of data
-train_scale <- scale(train[, 1:23])
-test_scale <- scale(test[, 1:23])
+train_scale <- scale(train[, 1:22])
+test_scale <- scale(test[, 1:22])
 
 # Determine the optimal k value using square root of total observations
-print(paste('Optimal k value:', sqrt(NROW(train))))
+# sqrt(NROW(train))
+# 285.1596
 
-# KNN (try 286, 287)
+# KNN (try 285, 286)
+knn_model_285 <- knn(train = train_scale,
+                     test = test_scale,
+                     cl = train$satisfaction,
+                     k = 285)
 knn_model_286 <- knn(train = train_scale,
                      test = test_scale,
                      cl = train$satisfaction,
                      k = 286)
-knn_model_287 <- knn(train = train_scale,
-                     test = test_scale,
-                     cl = train$satisfaction,
-                     k = 287)
 ```
 
 **Model Prediction & Evaluation**    
 Model evaluation using confusion matrix
 
 ```{r echo = TRUE, warning = FALSE}
-# Accuracy
-knn_acc_286 <- 100 * sum(test$satisfaction == knn_model_286)/NROW(test)
-knn_acc_286
-
-knn_acc_287 <- 100 * sum(test$satisfaction == knn_model_287)/NROW(test)
-knn_acc_287
-
 # Confusion Matrix
+confusionMatrix(knn_model_285, test$satisfaction)
 confusionMatrix(knn_model_286, test$satisfaction)
-confusionMatrix(knn_model_287, test$satisfaction)
 ```
 
-* The result shows that the accuracy of the KNN model is 90.43792 for k = 286 and 90.44755 for k = 287. 
+* The result shows that the accuracy of the KNN model is 90.6% for k = 285 and 90.5% for k = 286. 
 * The accuracy is quite high, which means that the model is performing well and making correct predictions for a high percentage of the test data. (Generally, an accuracy of 90% or higher is considered to be very good.)
 
-* The confusion matrix results indicate that the KNN model with k = 286 and k = 287 have a high accuracy of around 90%, and good sensitivity and specificity. 
-* The model is able to correctly predict the majority of the test data points and it may have slightly better performance with k = 287, but the difference is very small.
+* The confusion matrix results indicate that the KNN model with k = 285 and k = 286 have a high accuracy of around 90%, and good sensitivity and specificity. 
+* The model is able to correctly predict the majority of the test data points and it may have slightly better performance with k = 285, but the difference is very small.
 
 * In order to further improve the KNN model, we proceed to find the optimal k value.
 
 ```{r echo = TRUE, warning = FALSE}
 # Improve model and find optimal k value
-# i = 5
-# k.optm = 5
-# for (i in 5:10){ 
+# i = 1
+# k.optm = 1
+# for (i in 1:25){ 
 #     knn <-  knn(train = train_scale, 
 #                 test = test_scale, 
 #                 cl = train$satisfaction, 
@@ -1564,7 +1558,7 @@ confusionMatrix(knn_model_287, test$satisfaction)
 # 4 = 92.39582 
 # 5 = 92.86242 
 # 6 = 92.72845 
-# 7 = 92.9733 
+# 7 = 92.99185 
 # 8 = 92.73769 
 # 9 = 92.83932 
 # 10 = 92.8578 
@@ -1586,9 +1580,18 @@ confusionMatrix(knn_model_287, test$satisfaction)
 # plot(k.optm, type="b", xlab="K- Value", ylab="Accuracy level")
 
 # Optimal k: 7
+
+# KNN (use 7)
+knn_model_7 <- knn(train = train_scale,
+                    test = test_scale,
+                    cl = train$satisfaction,
+                    k = 7)
+
+# Confusion Matrix
+confusionMatrix(knn_model_7, test$satisfaction)
 ```
 
-* From the output, it can be seen that the highest accuracy is 92.9733% when k = 7, which means that when k = 7, the model correctly predicted the class for 92.9733% of the test samples. Therefore, 7 is the optimal k value for this model.
+* From the output, it can be seen that the highest accuracy is 93% when k = 7, which means that when k = 7, the model correctly predicted the class for 93% of the test samples. Therefore, 7 is the optimal k value for this model.
 
 # Results
 Which model works the best? Justify. 
