@@ -1344,6 +1344,18 @@ Summarize the EDA part and model part. Airline of which class need to focus on w
 
 # Contribution
 
+Rachmat Fangilin:
+	
+* EDA for Type Of Class
+* Interpretation of Graphs and Charts
+
+Xin Qi Li:
+
+* Data checking and cleaning
+* EDA for Overview and Customer Type
+* Model building for logistic regression and k-means algorithm
+* Presentation slide and recording
+
 YuXuan Lim:  
 
 * Unclean the ready dataset for data cleaning
@@ -1353,23 +1365,11 @@ YuXuan Lim:
 * Modelling Result comparison
 * Presentation slide and recording
 
-Li Xin Qi:
-
-* Data checking and cleaning
-* EDA for Overview and Customer Type
-* Model building for logistic regression and k-means algorithm
-* Presentation slide and recording
-
 YiTing Thum:
 	
 * Introduction
 * EDA for Type Of Travel
 * Presentation slide and recording
-
-Rachmat Fangilin:
-	
-* EDA for Type Of Class
-* Interpretation of Graphs and Charts
 
 # Reference
 
