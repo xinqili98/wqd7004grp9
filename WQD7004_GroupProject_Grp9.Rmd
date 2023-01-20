@@ -1353,6 +1353,13 @@ YuXuan Lim:
 * Modelling Result comparison
 * Presentation slide and recording
 
+Li Xin Qi:
+
+* Data checking and cleaning
+* EDA for Overview and Customer Type
+* Model building for logistic regression and k-means algorithm
+* Presentation
+
 # Reference
 
 Bhandari, P. (2023, January 9). Descriptive Statistics | Definitions, Types, Examples. Scribbr. https://www.scribbr.com/statistics/descriptive-statistics/  
