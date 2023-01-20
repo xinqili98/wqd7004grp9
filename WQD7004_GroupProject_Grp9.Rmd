@@ -1358,7 +1358,14 @@ Li Xin Qi:
 * Data checking and cleaning
 * EDA for Overview and Customer Type
 * Model building for logistic regression and k-means algorithm
-* Presentation
+* Presentation slide and recording
+
+YiTing Thum:
+	
+* Introduction
+* EDA for Type Of Travel
+* Presentation slide and recording
+
 
 # Reference
 
