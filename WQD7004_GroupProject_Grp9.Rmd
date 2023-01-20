@@ -1366,6 +1366,10 @@ YiTing Thum:
 * EDA for Type Of Travel
 * Presentation slide and recording
 
+Rachmat Fangilin:
+	
+* EDA for Type Of Class
+* Interpretation of Graphs and Charts
 
 # Reference
 
