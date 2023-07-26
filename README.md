@@ -1,4 +1,5 @@
 WQD7004 Group 9 - Airline Passenger Satisfaction
+
 1 Introduction
 Airline satisfaction is a crucial aspect in the aviation industry as it directly impacts the loyalty and customer retention. Airline satisfaction data collected from Kaggle is used to conduct various exploratory data analysis for better understanding of passenger preferences in airline services. Several classification Machine Learning algorithms are applied to predict their passengers satisfaction. With the insights and conclusions from this analysis, we seek to improve the airline services and increase passenger satisfaction.
 
